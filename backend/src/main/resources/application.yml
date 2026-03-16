@@ -1,0 +1,57 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    # 使用纯内存模式，不创建文件
+    url: jdbc:h2:mem:campus_courier;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+    hikari:
+      maximum-pool-size: 5
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+  
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:init-h2.sql
+      data-locations: classpath:data-h2.sql
+
+  data:
+    redis:
+      # 使用内存数据库替代 Redis
+      connect-timeout: 1000ms
+      timeout: 1000ms
+      # 如果 Redis 不可用，不报错
+      lettuce:
+        pool:
+          enabled: false
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+app:
+  jwt:
+    secret: campus-courier-secret-key-2024-very-long-string
+    expiration: 86400000   # 24小时，毫秒
+  upload:
+    path: /uploads/
+
+logging:
+  level:
+    com.campus.courier: debug

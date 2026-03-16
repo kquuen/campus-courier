@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="24dp"
+    android:background="@color/white">
+
+    <TextView android:id="@+id/tvLabel"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textSize="18sp" android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="评分" android:textSize="15sp" android:layout_marginBottom="8dp"/>
+
+    <RatingBar android:id="@+id/ratingBar"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:numStars="5" android:stepSize="1"
+        android:layout_marginBottom="24dp"/>
+
+    <EditText android:id="@+id/etContent"
+        android:layout_width="match_parent" android:layout_height="120dp"
+        android:hint="写下你的评价（选填）"
+        android:gravity="top" android:padding="12dp"
+        android:background="@color/gray_bg"
+        android:layout_marginBottom="24dp"/>
+
+    <Button android:id="@+id/btnSubmit"
+        android:layout_width="match_parent" android:layout_height="52dp"
+        android:text="提交评价" android:backgroundTint="@color/primary"/>
+</LinearLayout>

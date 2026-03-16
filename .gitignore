@@ -1,0 +1,26 @@
+# Maven
+target/
+*.class
+*.jar
+
+# Android
+*.iml
+.gradle/
+local.properties
+.idea/
+build/
+*.apk
+*.aab
+captures/
+.externalNativeBuild/
+.cxx/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Env
+application-local.yml
