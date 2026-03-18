@@ -50,4 +50,10 @@ public class Order {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
+
+    /**
+     * 智能匹配得分（不持久化，仅用于排序）
+     */
+    @TableField(exist = false)
+    private transient BigDecimal matchScore;
 }

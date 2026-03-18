@@ -36,12 +36,11 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- 注释掉 Redis 依赖，演示模式不需要
+        <!-- Redis 缓存支持 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-        -->
 
         <!-- Spring Security Crypto (密码加密) -->
         <dependency>
@@ -49,12 +48,7 @@
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
-        <!-- H2 Database (for demo) -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+        <!-- Redis 缓存支持 -->
         
         <!-- MySQL Driver -->
         <dependency>

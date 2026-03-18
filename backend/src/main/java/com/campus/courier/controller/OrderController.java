@@ -1,13 +1,13 @@
 package com.campus.courier.controller;
 
 import com.campus.courier.config.UserContext;
+import com.campus.courier.dto.PublishOrderRequest;
 import com.campus.courier.dto.Result;
 import com.campus.courier.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
@@ -19,17 +19,16 @@ public class OrderController {
 
     /** POST /api/order/publish - 发布代取需求 */
     @PostMapping("/publish")
-    public Result<?> publish(@RequestBody Map<String, Object> body) {
-        String fee = (String) body.getOrDefault("fee", "2.00");
+    public Result<?> publish(@Valid @RequestBody PublishOrderRequest request) {
         return orderService.publishOrder(
                 UserContext.getUserId(),
-                (String) body.get("trackingNo"),
-                (String) body.get("expressCompany"),
-                (String) body.get("pickupAddress"),
-                (String) body.get("deliveryAddress"),
-                (String) body.get("remark"),
-                new BigDecimal(fee),
-                null   // expectedTime 可选，暂简化
+                request.getTrackingNo(),
+                request.getExpressCompany(),
+                request.getPickupAddress(),
+                request.getDeliveryAddress(),
+                request.getRemark(),
+                request.getFee(),
+                null
         );
     }
 
@@ -65,6 +64,14 @@ public class OrderController {
     public Result<?> pending(@RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "10") int size) {
         return orderService.listPendingOrders(page, size);
+    }
+
+    /** GET /api/order/recommend - 智能推荐订单（综合评分排序） */
+    @GetMapping("/recommend")
+    public Result<?> recommend(@RequestParam(defaultValue = "1") int page,
+                                @RequestParam(defaultValue = "10") int size) {
+        if (UserContext.getRole() < 1) return Result.forbidden();
+        return orderService.smartRecommendOrders(page, size);
     }
 
     /** GET /api/order/my-published - 我发布的订单 */

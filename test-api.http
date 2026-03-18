@@ -30,8 +30,6 @@ Content-Type: application/json
   "expectedTime": "2026-03-15 18:00:00"
 }
 
-### 5. 获取H2数据库控制台
-GET http://localhost:8080/h2-console
 
 ### 6. 健康检查
 GET http://localhost:8080/actuator/health

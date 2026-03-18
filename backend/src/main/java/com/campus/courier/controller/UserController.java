@@ -1,8 +1,11 @@
 package com.campus.courier.controller;
 
 import com.campus.courier.config.UserContext;
+import com.campus.courier.dto.LoginRequest;
+import com.campus.courier.dto.RegisterRequest;
 import com.campus.courier.dto.Result;
 import com.campus.courier.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +20,19 @@ public class UserController {
 
     /** POST /api/user/register */
     @PostMapping("/register")
-    public Result<?> register(@RequestBody Map<String, String> body) {
+    public Result<?> register(@Valid @RequestBody RegisterRequest request) {
         return userService.register(
-                body.get("phone"),
-                body.get("password"),
-                body.get("studentId"),
-                body.get("nickname")
+                request.getPhone(),
+                request.getPassword(),
+                request.getStudentId(),
+                request.getNickname()
         );
     }
 
     /** POST /api/user/login */
     @PostMapping("/login")
-    public Result<?> login(@RequestBody Map<String, String> body) {
-        return userService.login(body.get("phone"), body.get("password"));
+    public Result<?> login(@Valid @RequestBody LoginRequest request) {
+        return userService.login(request.getPhone(), request.getPassword());
     }
 
     /** POST /api/user/logout */

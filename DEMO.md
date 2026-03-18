@@ -12,21 +12,22 @@
    - 状态：✅ 运行中
    - 启动时间：3.034秒
 
-2. **数据库**：H2内存数据库
-   - 类型：内存数据库（无需安装MySQL）
-   - 控制台：http://localhost:8080/h2-console
-   - 连接URL：`jdbc:h2:mem:campus_courier`
-   - 用户名：`sa`
-   - 密码：空
+2. **数据库**：MySQL 8.0
+   - 类型：关系型数据库
+   - 连接URL：`jdbc:mysql://localhost:3306/campus_courier`
+   - 用户名：`root`
+   - 密码：`123456`
 
-3. **Redis**：本地Redis
+3. **Redis/Memurai**：本地缓存服务
    - 状态：✅ 运行中（端口6379）
+   - 说明：Windows用户使用Memurai作为Redis兼容服务
 
 ## 🔗 访问地址
 
+
 ### Web接口
 - **后端API**：http://localhost:8080
-- **H2数据库控制台**：http://localhost:8080/h2-console
+- **Redis/Memurai监控**：需使用Redis客户端连接 localhost:6379（Windows使用Memurai）
 - **健康检查**：http://localhost:8080/actuator/health
 
 ### 测试账号
@@ -90,15 +91,15 @@ Authorization: Bearer {token}
 ### 后端技术
 - **框架**：Spring Boot 3.3.0
 - **Java版本**：21
-- **数据库**：H2（演示）/ MySQL（生产）
+- **数据库**：MySQL 8.0
 - **缓存**：Redis
 - **ORM**：MyBatis Plus
 - **安全**：JWT认证
 - **构建工具**：Maven
 
 ### 部署特点
-1. **零配置启动**：无需安装MySQL
-2. **内存数据库**：数据重启后清空
+1. **MySQL数据库**：需安装MySQL 8.0
+2. **Redis缓存**：需安装Redis
 3. **预置测试数据**：开箱即用
 4. **完整日志**：便于调试
 
@@ -110,8 +111,8 @@ campus-courier/
 │   ├── src/main/resources/    # 配置文件
 │   │   ├── application.yml    # 主配置
 │   │   ├── application-demo.yml # 演示配置
-│   │   ├── init-h2.sql        # H2初始化脚本
-│   │   └── data-h2.sql        # 测试数据
+│   │   ├── init-mysql.sql     # MySQL初始化脚本
+│   │   └── data-mysql.sql     # MySQL测试数据
 │   └── pom.xml               # Maven配置
 ├── DEMO.md                   # 本演示文档
 └── test-api.http            # API测试脚本
@@ -149,12 +150,12 @@ campus-courier/
 # 检查服务是否响应
 curl http://localhost:8080
 
-# 访问H2数据库控制台
-# 浏览器打开：http://localhost:8080/h2-console
-# 连接设置：
-# - JDBC URL: jdbc:h2:mem:campus_courier
-# - User Name: sa
-# - Password: (空)
+# 访问MySQL数据库
+# 使用MySQL客户端连接：
+# - Host: localhost:3306
+# - Database: campus_courier
+# - User Name: root
+# - Password: 123456
 ```
 
 ## 🎓 毕业设计演示要点
@@ -201,14 +202,6 @@ curl http://localhost:8080
    java -jar target/courier-1.0.0.jar
    ```
 
-### 备用方案：使用H2内存数据库
-如果MySQL无法启动，可以切换回H2内存数据库：
-1. 修改`application.yml`，注释MySQL配置，取消注释H2配置
-2. 启动应用：
-   ```bash
-   cd backend
-   java -jar target/courier-1.0.0.jar --spring.profiles.active=demo
-   ```
 
 ## 📞 技术支持
 

@@ -31,12 +31,15 @@ public class PaymentService {
      */
     @Transactional
     public Result<?> pay(Long userId, Long orderId, Integer payType) {
+        if (payType == null || payType < 1 || payType > 3) {
+            return Result.fail(400, "支付方式无效");
+        }
+
         Order order = orderMapper.selectById(orderId);
         if (order == null) return Result.fail("订单不存在");
         if (!order.getPublisherId().equals(userId)) return Result.fail("无权支付");
         if (order.getStatus() == 4) return Result.fail("订单已取消");
 
-        // 检查是否已有待支付记录
         Long existing = paymentMapper.selectCount(
                 new LambdaQueryWrapper<Payment>()
                         .eq(Payment::getOrderId, orderId)
@@ -46,23 +49,24 @@ public class PaymentService {
         BigDecimal amount = order.getFee();
 
         if (payType == 3) {
-            // 余额支付
             User user = userMapper.selectById(userId);
-            if (user.getBalance().compareTo(amount) < 0) {
+            if (user == null) return Result.fail("用户不存在");
+
+            BigDecimal balance = user.getBalance() != null ? user.getBalance() : BigDecimal.ZERO;
+            if (balance.compareTo(amount) < 0) {
                 return Result.fail("余额不足，请充值或选择其他支付方式");
             }
-            user.setBalance(user.getBalance().subtract(amount));
+            user.setBalance(balance.subtract(amount));
             userMapper.updateById(user);
         }
 
-        // 创建支付记录
         Payment payment = new Payment();
         payment.setPaymentNo(generatePaymentNo());
         payment.setOrderId(orderId);
         payment.setUserId(userId);
         payment.setAmount(amount);
         payment.setPayType(payType);
-        payment.setPayStatus(payType == 3 ? 1 : 0);  // 余额支付直接成功，其他等回调
+        payment.setPayStatus(payType == 3 ? 1 : 0);
         payment.setThirdPartyNo(payType != 3 ? "MOCK_" + UUID.randomUUID().toString().substring(0, 12).toUpperCase() : null);
         payment.setPaidAt(payType == 3 ? LocalDateTime.now() : null);
         paymentMapper.insert(payment);
@@ -70,7 +74,6 @@ public class PaymentService {
         if (payType == 3) {
             return Result.ok("余额支付成功");
         } else {
-            // 模拟返回支付跳转链接（实际项目中接入真实SDK）
             String mockPayUrl = "http://mock-pay.example.com/pay?no=" + payment.getPaymentNo()
                     + "&amount=" + amount + "&type=" + (payType == 1 ? "wechat" : "alipay");
             return Result.ok(mockPayUrl);
