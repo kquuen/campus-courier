@@ -1,39 +1,56 @@
 server:
-  port: 8081
+  port: 8082
+  shutdown: graceful
+  # HTTPS配置（暂时禁用以启动应用）
+  # ssl:
+  #   enabled: true
+  #   key-store: classpath:keystore.p12
+  #   key-store-password: changeit
+  #   key-alias: tomcat
 
 spring:
   datasource:
-    # 使用纯内存模式，不创建文件
-    url: jdbc:h2:mem:campus_courier;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: 
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/campus_courier?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      maximum-pool-size: 5
-  
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        trace: false
-        web-allow-others: false
-  
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
   sql:
     init:
-      mode: always
-      schema-locations: classpath:init-h2.sql
-      data-locations: classpath:data-h2.sql
+      mode: never
+      schema-locations: classpath:init-mysql.sql
+      data-locations: classpath:data-mysql.sql
 
   data:
     redis:
-      # 使用内存数据库替代 Redis
-      connect-timeout: 1000ms
-      timeout: 1000ms
-      # 如果 Redis 不可用，不报错
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 3000ms
       lettuce:
         pool:
-          enabled: false
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+    # Redis缓存配置
+    cache:
+      type: redis
+      redis:
+        time-to-live: 3600000  # 默认缓存1小时
+        key-prefix: "campus:courier:"
+      cache-names:
+        - orders
+        - users
+        - user-profile
+        - order-details
+        - order-list
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -49,6 +66,7 @@ app:
   jwt:
     secret: campus-courier-secret-key-2024-very-long-string
     expiration: 86400000   # 24小时，毫秒
+    refreshExpiration: 604800000  # 7天，毫秒
   upload:
     path: /uploads/
 

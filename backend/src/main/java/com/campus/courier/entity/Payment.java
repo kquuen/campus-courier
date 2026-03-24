@@ -20,11 +20,9 @@ public class Payment {
 
     private BigDecimal amount;
 
-    /** 1微信 2支付宝 3余额 */
-    private Integer payType;
+    private PayType payType;
 
-    /** 0待支付 1已支付 2已退款 */
-    private Integer payStatus;
+    private PayStatus payStatus;
 
     private String thirdPartyNo;
 

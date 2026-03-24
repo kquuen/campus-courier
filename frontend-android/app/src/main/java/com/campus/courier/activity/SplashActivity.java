@@ -14,6 +14,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ApiClient.init(this);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             long userId = ApiClient.getSavedUserId();

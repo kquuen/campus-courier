@@ -21,8 +21,7 @@ public class Review {
 
     private String content;
 
-    /** 1用户评代取员 2代取员评用户 */
-    private Integer type;
+    private ReviewType type;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

@@ -30,10 +30,7 @@ public class Order {
 
     private BigDecimal fee;
 
-    /**
-     * 0待接单 1已接单 2取件中 3已完成 4已取消 5异常
-     */
-    private Integer status;
+    private OrderStatus status;
 
     private LocalDateTime expectedTime;
 
@@ -50,4 +47,8 @@ public class Order {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
+
+    /** 智能匹配得分（不持久化，仅用于排序） */
+    @TableField(exist = false)
+    private transient BigDecimal matchScore;
 }
