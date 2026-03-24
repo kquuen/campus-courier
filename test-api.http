@@ -1,5 +1,5 @@
 ### 1. 用户登录
-POST http://localhost:8080/api/auth/login
+POST http://localhost:8082/api/auth/login
 Content-Type: application/json
 
 {
@@ -8,15 +8,15 @@ Content-Type: application/json
 }
 
 ### 2. 获取用户信息
-GET http://localhost:8080/api/user/info
+GET http://localhost:8082/api/user/info
 Authorization: Bearer {{token}}
 
 ### 3. 获取订单列表
-GET http://localhost:8080/api/order/list?page=1&size=10
+GET http://localhost:8082/api/order/list?page=1&size=10
 Authorization: Bearer {{token}}
 
 ### 4. 创建新订单
-POST http://localhost:8080/api/order/create
+POST http://localhost:8082/api/order/create
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 
 ### 6. 健康检查
-GET http://localhost:8080/actuator/health
+GET http://localhost:8082/actuator/health
 
 ### 7. 获取系统信息
-GET http://localhost:8080/api/system/info
+GET http://localhost:8082/api/system/info

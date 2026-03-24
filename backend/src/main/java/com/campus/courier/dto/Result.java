@@ -1,15 +1,22 @@
 package com.campus.courier.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Result<T> {
 
     private int code;
     private String message;
     private T data;
 
-    private Result(int code, String message, T data) {
+    @JsonCreator
+    private Result(@JsonProperty("code") int code,
+                   @JsonProperty("message") String message,
+                   @JsonProperty("data") T data) {
         this.code = code;
         this.message = message;
         this.data = data;

@@ -1,5 +1,6 @@
 server:
   port: 8082
+  shutdown: graceful
   # HTTPS配置（暂时禁用以启动应用）
   # ssl:
   #   enabled: true
@@ -28,7 +29,6 @@ spring:
 
   data:
     redis:
-      # Windows用户请使用Memurai作为Redis兼容服务 (https://www.memurai.com/)
       host: localhost
       port: 6379
       password:

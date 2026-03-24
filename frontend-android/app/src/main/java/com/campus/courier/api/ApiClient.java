@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ApiClient {
 
-    // 开发时指向本机后端，真机调试换成电脑局域网IP，例如 http://192.168.1.100:8080
-    private static final String BASE_URL = "http://10.0.2.2:8080";
+    // 开发时指向本机后端，真机调试换成电脑局域网IP，例如 http://192.168.1.100:8082
+    private static final String BASE_URL = "http://10.0.2.2:8082";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private static OkHttpClient client;

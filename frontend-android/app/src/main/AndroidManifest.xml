@@ -29,7 +29,8 @@
         <activity android:name=".activity.RegisterActivity"
             android:exported="false"/>
         <activity android:name=".activity.MainActivity"
-            android:exported="false"/>
+            android:exported="false"
+            android:theme="@style/Theme.CampusCourier.NoActionBar"/>
         <activity android:name=".activity.PublishOrderActivity"
             android:exported="false"/>
         <activity android:name=".activity.OrderDetailActivity"

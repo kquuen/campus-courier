@@ -1,5 +1,7 @@
 package com.campus.courier.config;
 
+import com.campus.courier.entity.UserRole;
+import com.campus.courier.service.TokenBlacklistService;
 import com.campus.courier.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class JwtInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -20,8 +23,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
-            if (jwtUtil.isValid(token)) {
-                UserContext.set(jwtUtil.getUserId(token), jwtUtil.getRole(token));
+            if (jwtUtil.isValid(token) && !tokenBlacklistService.isBlacklisted(token)) {
+                Long userId = jwtUtil.getUserId(token);
+                Integer roleCode = jwtUtil.getRole(token);
+                UserRole role = UserRole.values()[roleCode];
+                UserContext.set(userId, role);
                 return true;
             }
         }

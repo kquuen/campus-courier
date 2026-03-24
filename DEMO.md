@@ -8,7 +8,7 @@
 
 ### ✅ 已启动的服务
 1. **后端服务**：Spring Boot 3.3 + Java 21
-   - 端口：8080
+   - 端口：8082
    - 状态：✅ 运行中
    - 启动时间：3.034秒
 
@@ -26,9 +26,9 @@
 
 
 ### Web接口
-- **后端API**：http://localhost:8080
-- **Redis/Memurai监控**：需使用Redis客户端连接 localhost:6379（Windows使用Memurai）
-- **健康检查**：http://localhost:8080/actuator/health
+- **后端API**：http://localhost:8082
+- **Redis/监控**：需使用Redis客户端连接 localhost:6379（Windows使用Memurai）
+- **健康检查**：http://localhost:8082/actuator/health
 
 ### 测试账号
 系统已预置以下测试账号：
@@ -57,7 +57,7 @@
 
 ### 1. 用户登录
 ```bash
-POST http://localhost:8080/api/auth/login
+POST http://localhost:8082/api/auth/login
 Content-Type: application/json
 
 {
@@ -68,13 +68,13 @@ Content-Type: application/json
 
 ### 2. 获取用户信息
 ```bash
-GET http://localhost:8080/api/user/info
+GET http://localhost:8082/api/user/info
 Authorization: Bearer {token}
 ```
 
 ### 3. 获取订单列表
 ```bash
-GET http://localhost:8080/api/order/list?page=1&size=10
+GET http://localhost:8082/api/order/list?page=1&size=10
 Authorization: Bearer {token}
 ```
 
@@ -143,12 +143,12 @@ campus-courier/
 
 3. 访问演示界面：
    - 打开 `test-system.html` 文件
-   - 或直接访问：http://localhost:8080
+   - 或直接访问：http://localhost:8082
 
 ### 验证服务运行
 ```bash
 # 检查服务是否响应
-curl http://localhost:8080
+curl http://localhost:8082
 
 # 访问MySQL数据库
 # 使用MySQL客户端连接：
@@ -206,7 +206,7 @@ curl http://localhost:8080
 ## 📞 技术支持
 
 如有问题，请检查：
-1. 端口8080是否被占用
+1. 端口8082是否被占用
 2. Redis服务是否正常运行
 3. Java版本是否为21+
 

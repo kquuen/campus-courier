@@ -40,8 +40,7 @@ campus-courier/
 - **框架**: Spring Boot 3.3 + Java 21
 - **数据库**: MySQL 8.0
 - **ORM**: MyBatis-Plus 3.5.7
-- **缓存**: Redis + Spring Cache (Windows用户使用Memurai)
-- **安全认证**: JWT (jjwt 0.12.5) + BCrypt密码加密
+- **缓存**: Redis + Spring Cache
 - **构建工具**: Maven
 - **其他**: Spring Validation、Jackson、Lombok
 
@@ -99,11 +98,11 @@ campus-courier/
 
 ### 方法一：一键启动（推荐）
 1. 双击运行 `start-demo.bat`
-2. 脚本会自动启动Redis/Memurai和后端服务
+2. 脚本会自动启动Redis和后端服务
 3. 打开演示界面 `test-system.html`
 
 ### 方法二：手动启动
-1. 确保Redis/Memurai服务运行
+1. 确保Redis服务运行
 2. 启动后端服务：
    ```bash
    cd backend
@@ -112,8 +111,8 @@ campus-courier/
 3. 访问演示界面：`test-system.html`
 
 ### 演示配置
-- **数据库**: MySQL 8.0（需安装MySQL和Redis/Memurai）
-- **端口**: 8080
+- **数据库**: MySQL 8.0（需安装MySQL和Redis）
+- **端口**: 8082
 - **测试账号**:
   - 普通用户: 13800138000 / user123
   - 代取员: 13900139000 / courier123
@@ -121,13 +120,13 @@ campus-courier/
 
 ## 📁 项目文件说明
 
-| 文件 | 说明 |
-|------|------|
-| `DEMO.md` | 完整的部署和演示文档 |
+| 文件                 | 说明 |
+|--------------------|------|
+| `DEMO.md`          | 完整的部署和演示文档 |
 | `test-system.html` | 可视化演示界面 |
-| `start-demo.bat` | 一键启动脚本 |
-| `test-api.http` | API测试脚本 |
-| `init-mysql.bat` | MySQL初始化脚本 |
+| `start-simple.bat` | 一键启动脚本 |
+| `test-api.http`    | API测试脚本 |
+
 
 ## 🔧 本地启动步骤（生产环境）
 
@@ -143,7 +142,7 @@ campus-courier/
    cd backend
    mvn spring-boot:run
    ```
-   服务运行在 `http://localhost:8080`
+   服务运行在 `http://localhost:8082`
 
 ### Android客户端部署
 1. 用 Android Studio 打开 `frontend-android/` 目录

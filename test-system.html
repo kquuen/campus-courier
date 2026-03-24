@@ -225,7 +225,7 @@
         <div class="status-bar">
             <div class="status">
                 <div class="status-dot"></div>
-                <span>后端服务运行中 · 端口：8080</span>
+                <span>后端服务运行中 · 端口：8082</span>
             </div>
         </div>
     </div>
@@ -252,7 +252,7 @@
             resultDiv.textContent = '⏳ 正在登录...';
 
             try {
-                const response = await fetch('http://localhost:8080/api/user/login', {
+                const response = await fetch('http://localhost:8082/api/user/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

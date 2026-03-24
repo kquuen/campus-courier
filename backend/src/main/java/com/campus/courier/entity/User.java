@@ -24,8 +24,7 @@ public class User {
 
     private String avatar;
 
-    /** 0普通用户 1代取员 2管理员 */
-    private Integer role;
+    private UserRole role;
 
     private BigDecimal creditScore;
 

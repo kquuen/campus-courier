@@ -32,3 +32,5 @@ mybatis-plus:
 app:
   jwt:
     secret: campus-courier-secret-key-2024-very-long-string
+    expiration: 86400000   # 24小时，毫秒
+    refreshExpiration: 604800000  # 7天，毫秒

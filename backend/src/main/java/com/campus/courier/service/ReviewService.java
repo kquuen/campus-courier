@@ -2,9 +2,7 @@ package com.campus.courier.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.campus.courier.dto.Result;
-import com.campus.courier.entity.Order;
-import com.campus.courier.entity.Review;
-import com.campus.courier.entity.User;
+import com.campus.courier.entity.*;
 import com.campus.courier.mapper.OrderMapper;
 import com.campus.courier.mapper.ReviewMapper;
 import com.campus.courier.mapper.UserMapper;
@@ -26,33 +24,32 @@ public class ReviewService {
 
     /**
      * 提交评价（双向）
-     * type=1：用户评代取员；type=2：代取员评用户
      */
     @Transactional
     public Result<?> submitReview(Long reviewerId, Long orderId, Integer score,
-                                  String content, Integer type) {
+                                  String content, ReviewType type) {
         if (score < 1 || score > 5) return Result.fail("评分范围为1-5");
 
         Order order = orderMapper.selectById(orderId);
         if (order == null) return Result.fail("订单不存在");
-        if (order.getStatus() != 3) return Result.fail("只有已完成的订单才能评价");
+        if (order.getStatus() != OrderStatus.COMPLETED) return Result.fail("只有已完成的订单才能评价");
 
-        // 检查权限
-        if (type == 1 && !order.getPublisherId().equals(reviewerId)) {
+        if (type == ReviewType.USER_TO_COURIER && !order.getPublisherId().equals(reviewerId)) {
             return Result.fail("无权评价");
         }
-        if (type == 2 && !order.getCourierId().equals(reviewerId)) {
+        if (type == ReviewType.COURIER_TO_USER && !order.getCourierId().equals(reviewerId)) {
             return Result.fail("无权评价");
         }
 
-        // 防止重复评价
         Long exists = reviewMapper.selectCount(
                 new LambdaQueryWrapper<Review>()
                         .eq(Review::getOrderId, orderId)
                         .eq(Review::getType, type));
         if (exists > 0) return Result.fail("已评价，不能重复提交");
 
-        Long revieweeId = type == 1 ? order.getCourierId() : order.getPublisherId();
+        Long revieweeId = type == ReviewType.USER_TO_COURIER
+                ? order.getCourierId()
+                : order.getPublisherId();
 
         Review review = new Review();
         review.setOrderId(orderId);
@@ -63,9 +60,7 @@ public class ReviewService {
         review.setType(type);
         reviewMapper.insert(review);
 
-        // 更新被评人信用分（加权平均算法）
         updateCreditScore(revieweeId);
-
         return Result.ok("评价提交成功");
     }
 
@@ -86,8 +81,9 @@ public class ReviewService {
                 .average()
                 .orElse(3.0);
 
-        // 评分1-5 映射到 0-100
-        double newScore = user.getCreditScore().doubleValue() * 0.7 + (avg * 20) * 0.3;
+        BigDecimal currentCredit = user.getCreditScore() != null
+                ? user.getCreditScore() : new BigDecimal("100.0");
+        double newScore = currentCredit.doubleValue() * 0.7 + (avg * 20) * 0.3;
         newScore = Math.min(100, Math.max(0, newScore));
 
         user.setCreditScore(BigDecimal.valueOf(newScore).setScale(1, RoundingMode.HALF_UP));
