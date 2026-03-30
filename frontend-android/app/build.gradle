@@ -3,6 +3,15 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// IntelliJ/Android Studio Gradle sync may try to execute this task name.
+// Some Gradle/Kotlin/AGP combinations don't register it automatically for Groovy builds,
+// which leads to "Task 'prepareKotlinBuildScriptModel' not found" during sync.
+if (tasks.findByName("prepareKotlinBuildScriptModel") == null) {
+    tasks.register("prepareKotlinBuildScriptModel") {
+        // No-op: used only to satisfy the tooling task lookup.
+    }
+}
+
 android {
     namespace 'com.campus.courier'
     compileSdk 34
