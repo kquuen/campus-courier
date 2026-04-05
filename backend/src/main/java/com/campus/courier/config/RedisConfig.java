@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -14,10 +15,9 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Redis缓存配置
- */
 @Configuration
 @EnableCaching
 public class RedisConfig {
@@ -40,14 +40,28 @@ public class RedisConfig {
         template.setValueSerializer(serializer);
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(serializer);
+        template.afterPropertiesSet();
         return template;
     }
 
     @Bean
-    public RedisCacheConfiguration cacheConfiguration() {
-        return RedisCacheConfiguration.defaultCacheConfig()
+    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(jsonSerializer()))
                 .entryTtl(Duration.ofHours(1));
+
+        Map<String, RedisCacheConfiguration> cacheConfigs = new HashMap<>();
+        
+        cacheConfigs.put("orders", defaultConfig.entryTtl(Duration.ofMinutes(5)));
+        cacheConfigs.put("user-profile", defaultConfig.entryTtl(Duration.ofHours(1)));
+        cacheConfigs.put("user-orders", defaultConfig.entryTtl(Duration.ofMinutes(30)));
+        cacheConfigs.put("courier-orders", defaultConfig.entryTtl(Duration.ofMinutes(30)));
+        cacheConfigs.put("order-details", defaultConfig.entryTtl(Duration.ofMinutes(10)));
+
+        return RedisCacheManager.builder(connectionFactory)
+                .cacheDefaults(defaultConfig)
+                .withInitialCacheConfigurations(cacheConfigs)
+                .build();
     }
 }

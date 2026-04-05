@@ -1,0 +1,3838 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.13.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.2)" variant="all" version="8.13.2">
+
+    <issue
+        id="UseGetLayoutInflater"
+        message="Use of LayoutInflater.from(getContext()) detected. Consider using getLayoutInflater() instead"
+        errorLine1="        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_payment, null);"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/fragment/PaymentDialogFragment.java"
+            line="85"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="UseGetLayoutInflater"
+        message="Use of LayoutInflater.from(getContext()) detected. Consider using getLayoutInflater() instead"
+        errorLine1="        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_payment_option, null);"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/fragment/PaymentDialogFragment.java"
+            line="149"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="ScopedStorage"
+        message="READ_EXTERNAL_STORAGE is deprecated (and is not granted) when targeting Android 13+. If you need to query or interact with MediaStore or media files on the shared storage, you should instead use one or more new storage permissions: `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO` or `READ_MEDIA_AUDIO`."
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot;/>"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="5"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="                            tvEarnings.setText(String.format(&quot;%.2f&quot;, earnings));"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/MainActivity.java"
+            line="196"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        tvOrderId.setText(String.format(&quot;订单号: %d&quot;, orderId));"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/fragment/PaymentDialogFragment.java"
+            line="117"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        tvOrderFee.setText(String.format(&quot;¥%.2f&quot;, orderFee));"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/fragment/PaymentDialogFragment.java"
+            line="118"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;tilTrackingNo&quot; in layout &quot;activity_publish_order&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="                android:id=&quot;@+id/tilTrackingNo&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="39"
+            column="17"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;tilPickupAddress&quot; in layout &quot;activity_publish_order&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="                android:id=&quot;@+id/tilPickupAddress&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="85"
+            column="17"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;tilDeliveryAddress&quot; in layout &quot;activity_publish_order&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="                android:id=&quot;@+id/tilDeliveryAddress&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="109"
+            column="17"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;tilFee&quot; in layout &quot;activity_publish_order&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="                android:id=&quot;@+id/tilFee&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="133"
+            column="17"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;etExpectedTime&quot; in layout &quot;activity_publish_order&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="                    android:id=&quot;@+id/etExpectedTime&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="170"
+            column="21"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;progressBar&quot; in layout &quot;activity_publish_order&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="        android:id=&quot;@+id/progressBar&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="220"
+            column="9"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="MissingPrefix"
+        message="Attribute is missing the Android namespace prefix"
+        errorLine1="        cx=&quot;12&quot;"
+        errorLine2="        ~~~~~~~">
+        <location
+            file="src/main/res/drawable/ic_delivery.xml"
+            line="11"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="MissingPrefix"
+        message="Attribute is missing the Android namespace prefix"
+        errorLine1="        cy=&quot;9&quot;"
+        errorLine2="        ~~~~~~">
+        <location
+            file="src/main/res/drawable/ic_delivery.xml"
+            line="12"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="MissingPrefix"
+        message="Attribute is missing the Android namespace prefix"
+        errorLine1="        r=&quot;2.5&quot;"
+        errorLine2="        ~~~~~~~">
+        <location
+            file="src/main/res/drawable/ic_delivery.xml"
+            line="13"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
+        errorLine1="        targetSdk 34"
+        errorLine2="        ~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="22"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="PropertyEscape"
+        message="Windows file separators (`\`) and drive letter separators (&apos;:&apos;) must be escaped (`\\`) in property files; use C\\:\\\\Users\\\\YaoFeng\\\\AppData\\\\Local\\\\Android\\\\Sdk"
+        errorLine1="sdk.dir=C:\\Users\\YaoFeng\\AppData\\Local\\Android\\Sdk"
+        errorLine2="         ~">
+        <location
+            file="$HOME/IdeaProjects/campus-courier/frontend-android/local.properties"
+            line="1"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="CustomSplashScreen"
+        message="The application should not provide its own launch screen"
+        errorLine1="public class SplashActivity extends AppCompatActivity {"
+        errorLine2="             ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/SplashActivity.java"
+            line="11"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="        View loadingView = LayoutInflater.from(activity).inflate(R.layout.layout_loading_fullscreen, null);"
+        errorLine2="                                                                                                     ~~~~">
+        <location
+            file="src/main/java/com/campus/courier/util/LoadingStateHelper.java"
+            line="28"
+            column="102"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="        View loadingView = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_loading_local, null);"
+        errorLine2="                                                                                                              ~~~~">
+        <location
+            file="src/main/java/com/campus/courier/util/LoadingStateHelper.java"
+            line="53"
+            column="111"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="        View emptyView = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_empty_state, null);"
+        errorLine2="                                                                                                          ~~~~">
+        <location
+            file="src/main/java/com/campus/courier/util/LoadingStateHelper.java"
+            line="80"
+            column="107"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="        View errorView = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_error_state, null);"
+        errorLine2="                                                                                                          ~~~~">
+        <location
+            file="src/main/java/com/campus/courier/util/LoadingStateHelper.java"
+            line="102"
+            column="107"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_payment_option, null);"
+        errorLine2="                                                                                            ~~~~">
+        <location
+            file="src/main/java/com/campus/courier/fragment/PaymentDialogFragment.java"
+            line="149"
+            column="93"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of Gradle than 8.13 is available: 8.14.4"
+        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/IdeaProjects/campus-courier/frontend-android/gradle/wrapper/gradle-wrapper.properties"
+            line="4"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of `compileSdkVersion` than 34 is available: 36"
+        errorLine1="    compileSdk 34"
+        errorLine2="    ~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="17"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.android.material:material than 1.8.0 is available: 1.13.0"
+        errorLine1="    implementation &apos;com.google.android.material:material:1.8.0&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="52"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.squareup.okhttp3:okhttp than 4.12.0 is available: 5.3.2"
+        errorLine1="    implementation &apos;com.squareup.okhttp3:okhttp:4.12.0&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="58"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.google.code.gson:gson than 2.10.1 is available: 2.13.2"
+        errorLine1="    implementation &apos;com.google.code.gson:gson:2.10.1&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="59"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.github.bumptech.glide:glide than 4.16.0 is available: 5.0.5"
+        errorLine1="    implementation &apos;com.github.bumptech.glide:glide:4.16.0&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="62"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/gray_400&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_empty_state.xml"
+            line="14"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/error&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_error_state.xml"
+            line="15"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="PermissionImpliesUnsupportedChromeOsHardware"
+        message="Permission exists without corresponding hardware `&lt;uses-feature android:name=&quot;android.hardware.camera&quot; required=&quot;false&quot;>` tag"
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.CAMERA&quot;/>"
+        errorLine2="     ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="6"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="InsecureBaseConfiguration"
+        message="Insecure Base Configuration"
+        errorLine1="    &lt;base-config cleartextTrafficPermitted=&quot;true&quot;>"
+        errorLine2="                                            ~~~~">
+        <location
+            file="src/main/res/xml/network_security_config.xml"
+            line="4"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="                runOnUiThread(() -> adapter.notifyDataSetChanged());"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/AdminUserListActivity.java"
+            line="124"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="                    adapter.notifyDataSetChanged();"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/MyCourierOrdersActivity.java"
+            line="50"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="                    adapter.notifyDataSetChanged();"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/MyOrdersActivity.java"
+            line="63"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="                    adapter.notifyDataSetChanged();"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/PendingOrdersActivity.java"
+            line="83"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_bg` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/gray_bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_courier_timeline.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_bg` with a theme that also paints a background (inferred theme is `@style/Theme_CampusCourier_NoActionBar`)"
+        errorLine1="    android:background=&quot;@color/gray_bg&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_bg` with a theme that also paints a background (inferred theme is `@style/Theme_CampusCourier_NoActionBar`)"
+        errorLine1="    android:background=&quot;@color/gray_bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_bg` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/gray_bg&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_bg` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:orientation=&quot;vertical&quot; android:background=&quot;@color/gray_bg&quot;>"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_profile.xml"
+            line="4"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_bg` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/gray_bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="4"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_bg` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/gray_bg&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/white` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/white&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="5"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/white` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/white&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_review.xml"
+            line="5"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/primary` with a theme that also paints a background (inferred theme is `@style/Theme_CampusCourier_NoActionBar`)"
+        errorLine1="    android:background=&quot;@color/primary&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_splash.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/surface` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/surface&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `#CCFFFFFF` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;#CCFFFFFF&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_loading_fullscreen.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/surface` with a theme that also paints a background (inferred theme is `@style/Theme.CampusCourier`)"
+        errorLine1="    android:background=&quot;@color/surface&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_loading_local.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_light` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_light&quot;>#64B5F6&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="6"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_variant` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_variant&quot;>#1565C0&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="7"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_100` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_100&quot;>#BBDEFB&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="10"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_200` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_200&quot;>#90CAF9&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="11"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_300` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_300&quot;>#64B5F6&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="12"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_400` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_400&quot;>#42A5F5&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="13"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_500&quot;>#1976D2&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="14"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_600` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_600&quot;>#1565C0&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="15"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_700&quot;>#0D47A1&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="16"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_800` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_800&quot;>#083885&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="17"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_900` appears to be unused"
+        errorLine1="    &lt;color name=&quot;primary_900&quot;>#06296E&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="18"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_light` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_light&quot;>#FFB74D&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="22"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_dark` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_dark&quot;>#E65100&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="23"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_50` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_50&quot;>#FFF3E0&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="25"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_100` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_100&quot;>#FFE0B2&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="26"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_200` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_200&quot;>#FFCC80&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="27"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_300` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_300&quot;>#FFB74D&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="28"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_400` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_400&quot;>#FF9800&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="29"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_500&quot;>#FF6F00&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="30"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_600` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_600&quot;>#E65100&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="31"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_700&quot;>#CC3700&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="32"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_800` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_800&quot;>#B32B00&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="33"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.accent_900` appears to be unused"
+        errorLine1="    &lt;color name=&quot;accent_900&quot;>#991F00&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="34"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.success_light` appears to be unused"
+        errorLine1="    &lt;color name=&quot;success_light&quot;>#81C784&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="38"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.success_dark` appears to be unused"
+        errorLine1="    &lt;color name=&quot;success_dark&quot;>#388E3C&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="39"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.success_50` appears to be unused"
+        errorLine1="    &lt;color name=&quot;success_50&quot;>#E8F5E9&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="40"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.success_200` appears to be unused"
+        errorLine1="    &lt;color name=&quot;success_200&quot;>#A5D6A7&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="41"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.success_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;success_700&quot;>#388E3C&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="42"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.error_light` appears to be unused"
+        errorLine1="    &lt;color name=&quot;error_light&quot;>#E57373&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="45"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.error_dark` appears to be unused"
+        errorLine1="    &lt;color name=&quot;error_dark&quot;>#D32F2F&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="46"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.error_50` appears to be unused"
+        errorLine1="    &lt;color name=&quot;error_50&quot;>#FFEBEE&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="47"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.error_200` appears to be unused"
+        errorLine1="    &lt;color name=&quot;error_200&quot;>#EF9A9A&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="48"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.error_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;error_700&quot;>#D32F2F&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="49"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.warning_light` appears to be unused"
+        errorLine1="    &lt;color name=&quot;warning_light&quot;>#FFB74D&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="52"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.warning_dark` appears to be unused"
+        errorLine1="    &lt;color name=&quot;warning_dark&quot;>#F57C00&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="53"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.warning_50` appears to be unused"
+        errorLine1="    &lt;color name=&quot;warning_50&quot;>#FFF3E0&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="54"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.warning_200` appears to be unused"
+        errorLine1="    &lt;color name=&quot;warning_200&quot;>#FFCC80&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="55"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.warning_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;warning_700&quot;>#F57C00&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="56"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.info_light` appears to be unused"
+        errorLine1="    &lt;color name=&quot;info_light&quot;>#64B5F6&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="59"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.info_dark` appears to be unused"
+        errorLine1="    &lt;color name=&quot;info_dark&quot;>#1976D2&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="60"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.info_50` appears to be unused"
+        errorLine1="    &lt;color name=&quot;info_50&quot;>#E3F2FD&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="61"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.info_200` appears to be unused"
+        errorLine1="    &lt;color name=&quot;info_200&quot;>#90CAF9&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="62"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.info_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;info_700&quot;>#1565C0&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="63"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.black` appears to be unused"
+        errorLine1="    &lt;color name=&quot;black&quot;>#000000&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="67"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_50` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_50&quot;>#FAFAFA&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="68"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_700&quot;>#616161&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="75"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_800` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_800&quot;>#424242&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="76"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_surface` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_surface&quot;>@color/gray_50&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="80"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.text_disabled` appears to be unused"
+        errorLine1="    &lt;color name=&quot;text_disabled&quot;>@color/gray_400&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="88"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.text_on_success` appears to be unused"
+        errorLine1="    &lt;color name=&quot;text_on_success&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="91"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.text_on_error` appears to be unused"
+        errorLine1="    &lt;color name=&quot;text_on_error&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="92"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.text_on_warning` appears to be unused"
+        errorLine1="    &lt;color name=&quot;text_on_warning&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="93"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.text_on_info` appears to be unused"
+        errorLine1="    &lt;color name=&quot;text_on_info&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="94"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.card_background` appears to be unused"
+        errorLine1="    &lt;color name=&quot;card_background&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="98"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.dialog_background` appears to be unused"
+        errorLine1="    &lt;color name=&quot;dialog_background&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="99"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.surface_variant` appears to be unused"
+        errorLine1="    &lt;color name=&quot;surface_variant&quot;>@color/gray_50&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="100"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.surface_elevated_1` appears to be unused"
+        errorLine1="    &lt;color name=&quot;surface_elevated_1&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="101"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.surface_elevated_2` appears to be unused"
+        errorLine1="    &lt;color name=&quot;surface_elevated_2&quot;>#FFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="102"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.outline_variant` appears to be unused"
+        errorLine1="    &lt;color name=&quot;outline_variant&quot;>@color/gray_200&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="106"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.shadow` appears to be unused"
+        errorLine1="    &lt;color name=&quot;shadow&quot;>#20000000&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="107"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.shadow_light` appears to be unused"
+        errorLine1="    &lt;color name=&quot;shadow_light&quot;>#1A000000&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="108"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.status_pending` appears to be unused"
+        errorLine1="    &lt;color name=&quot;status_pending&quot;>@color/accent_400&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="111"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.status_accepted` appears to be unused"
+        errorLine1="    &lt;color name=&quot;status_accepted&quot;>@color/primary_400&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="112"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.status_picking` appears to be unused"
+        errorLine1="    &lt;color name=&quot;status_picking&quot;>#9C27B0&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="113"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.status_completed` appears to be unused"
+        errorLine1="    &lt;color name=&quot;status_completed&quot;>@color/success&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="114"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.status_cancelled` appears to be unused"
+        errorLine1="    &lt;color name=&quot;status_cancelled&quot;>@color/gray_500&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="115"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.status_abnormal` appears to be unused"
+        errorLine1="    &lt;color name=&quot;status_abnormal&quot;>@color/error&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="116"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.credit_excellent` appears to be unused"
+        errorLine1="    &lt;color name=&quot;credit_excellent&quot;>#4CAF50&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="125"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.credit_good` appears to be unused"
+        errorLine1="    &lt;color name=&quot;credit_good&quot;>#8BC34A&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="126"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.credit_fair` appears to be unused"
+        errorLine1="    &lt;color name=&quot;credit_fair&quot;>#FFC107&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="127"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.credit_poor` appears to be unused"
+        errorLine1="    &lt;color name=&quot;credit_poor&quot;>#FF9800&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="128"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.credit_bad` appears to be unused"
+        errorLine1="    &lt;color name=&quot;credit_bad&quot;>#F44336&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="129"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_phone` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_phone.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.loading` appears to be unused"
+        errorLine1="    &lt;string name=&quot;loading&quot;>加载中...&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="8"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.loading_please_wait` appears to be unused"
+        errorLine1="    &lt;string name=&quot;loading_please_wait&quot;>请稍候...&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="9"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.empty_state_title` appears to be unused"
+        errorLine1="    &lt;string name=&quot;empty_state_title&quot;>暂无数据&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="10"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.empty_state_hint` appears to be unused"
+        errorLine1="    &lt;string name=&quot;empty_state_hint&quot;>尝试刷新或发布新订单&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="11"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.error_state_title` appears to be unused"
+        errorLine1="    &lt;string name=&quot;error_state_title&quot;>加载失败&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="12"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.error_state_hint` appears to be unused"
+        errorLine1="    &lt;string name=&quot;error_state_hint&quot;>请检查网络连接后重试&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="13"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.retry` appears to be unused"
+        errorLine1="    &lt;string name=&quot;retry&quot;>重试&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="14"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.cancel` appears to be unused"
+        errorLine1="    &lt;string name=&quot;cancel&quot;>取消&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="15"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.confirm` appears to be unused"
+        errorLine1="    &lt;string name=&quot;confirm&quot;>确认&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="16"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.payment_title` appears to be unused"
+        errorLine1="    &lt;string name=&quot;payment_title&quot;>选择支付方式&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="19"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.payment_amount` appears to be unused"
+        errorLine1="    &lt;string name=&quot;payment_amount&quot;>支付金额&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="20"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.payment_method` appears to be unused"
+        errorLine1="    &lt;string name=&quot;payment_method&quot;>支付方式&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="21"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.payment_confirm` appears to be unused"
+        errorLine1="    &lt;string name=&quot;payment_confirm&quot;>确认支付&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="22"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.payment_processing` appears to be unused"
+        errorLine1="    &lt;string name=&quot;payment_processing&quot;>支付处理中...&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.payment_success` appears to be unused"
+        errorLine1="    &lt;string name=&quot;payment_success&quot;>支付成功&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="24"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.payment_failed` appears to be unused"
+        errorLine1="    &lt;string name=&quot;payment_failed&quot;>支付失败&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="25"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.order_status_pending` appears to be unused"
+        errorLine1="    &lt;string name=&quot;order_status_pending&quot;>待接单&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.order_status_accepted` appears to be unused"
+        errorLine1="    &lt;string name=&quot;order_status_accepted&quot;>已接单&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="29"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.order_status_picking` appears to be unused"
+        errorLine1="    &lt;string name=&quot;order_status_picking&quot;>取件中&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="30"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.order_status_completed` appears to be unused"
+        errorLine1="    &lt;string name=&quot;order_status_completed&quot;>已完成&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="31"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.order_status_cancelled` appears to be unused"
+        errorLine1="    &lt;string name=&quot;order_status_cancelled&quot;>已取消&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="32"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.order_status_abnormal` appears to be unused"
+        errorLine1="    &lt;string name=&quot;order_status_abnormal&quot;>异常&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.status_pending_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;status_pending_desc&quot;>订单已发布，等待代取员接单&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="36"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.status_accepted_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;status_accepted_desc&quot;>代取员已接单，准备前往取件&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="37"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.status_picking_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;status_picking_desc&quot;>代取员正在取件途中&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="38"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.status_completed_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;status_completed_desc&quot;>订单已完成送达&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.status_cancelled_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;status_cancelled_desc&quot;>订单已取消&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="40"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.status_abnormal_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;status_abnormal_desc&quot;>订单出现异常&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="41"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.btn_publish_order` appears to be unused"
+        errorLine1="    &lt;string name=&quot;btn_publish_order&quot;>发布订单&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="48"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.btn_cancel` appears to be unused"
+        errorLine1="    &lt;string name=&quot;btn_cancel&quot;>取消&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.btn_submit` appears to be unused"
+        errorLine1="    &lt;string name=&quot;btn_submit&quot;>提交&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="50"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.btn_save` appears to be unused"
+        errorLine1="    &lt;string name=&quot;btn_save&quot;>保存&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="51"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.btn_delete` appears to be unused"
+        errorLine1="    &lt;string name=&quot;btn_delete&quot;>删除&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="52"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.btn_edit` appears to be unused"
+        errorLine1="    &lt;string name=&quot;btn_edit&quot;>编辑&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="53"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.btn_view_details` appears to be unused"
+        errorLine1="    &lt;string name=&quot;btn_view_details&quot;>查看详情&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="54"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.toast_success` appears to be unused"
+        errorLine1="    &lt;string name=&quot;toast_success&quot;>操作成功&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="57"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.toast_error` appears to be unused"
+        errorLine1="    &lt;string name=&quot;toast_error&quot;>操作失败&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="58"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.toast_network_error` appears to be unused"
+        errorLine1="    &lt;string name=&quot;toast_network_error&quot;>网络连接失败&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="59"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.toast_loading` appears to be unused"
+        errorLine1="    &lt;string name=&quot;toast_loading&quot;>加载中...&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="60"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_CampusCourier_Dark` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.CampusCourier.Dark&quot; parent=&quot;Theme.MaterialComponents.DayNight.DarkActionBar&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="27"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="TypographyEllipsis"
+        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
+        errorLine1="    &lt;string name=&quot;loading&quot;>加载中...&lt;/string>"
+        errorLine2="                           ~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="8"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="TypographyEllipsis"
+        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
+        errorLine1="    &lt;string name=&quot;loading_please_wait&quot;>请稍候...&lt;/string>"
+        errorLine2="                                       ~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="9"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="TypographyEllipsis"
+        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
+        errorLine1="    &lt;string name=&quot;payment_processing&quot;>支付处理中...&lt;/string>"
+        errorLine2="                                      ~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="23"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="TypographyEllipsis"
+        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
+        errorLine1="    &lt;string name=&quot;toast_loading&quot;>加载中...&lt;/string>"
+        errorLine2="                                 ~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="60"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="MonochromeLauncherIcon"
+        message="The application adaptive icon is missing a monochrome tag"
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/mipmap-anydpi-v26/ic_launcher.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MonochromeLauncherIcon"
+        message="The application adaptive roundIcon is missing a monochrome tag"
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etNickname&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_edit_profile.xml"
+            line="7"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etAvatar&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_edit_profile.xml"
+            line="10"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etTrackingNo&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="8"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etExpressCompany&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="13"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etPickupAddress&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="18"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etDeliveryAddress&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="23"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etRemark&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="34"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etRealName&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="27"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etStudentId&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="32"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etNickname&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="37"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etContent&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_review.xml"
+            line="20"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etRealName&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="6"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etStudentId&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="10"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etOld&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_change_password.xml"
+            line="5"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etNew&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_change_password.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etNew2&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_change_password.xml"
+            line="11"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etNickname&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_edit_profile.xml"
+            line="7"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etAvatar&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_edit_profile.xml"
+            line="10"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etPhone&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="7"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etCode&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="13"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etNewPwd&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="16"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etTrackingNo&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="8"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etExpressCompany&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="13"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etPickupAddress&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="18"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etDeliveryAddress&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="23"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etFee&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="28"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etRemark&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="34"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etPhone&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="22"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etRealName&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="27"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etStudentId&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="32"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etNickname&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="37"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etPassword&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="42"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText android:id=&quot;@+id/etConfirm&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="47"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etContent&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_review.xml"
+            line="20"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etRealName&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="6"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText android:id=&quot;@+id/etStudentId&quot;"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="10"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_payment_option.xml"
+            line="14"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_payment_option.xml"
+            line="48"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="                        nick + &quot;  &quot; + phone + &quot;\n角色：&quot; + roleStr + &quot;  状态：&quot; + statStr + violLine);"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/AdminUserListActivity.java"
+            line="57"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvWelcome.setText(&quot;你好，&quot; + ApiClient.getSavedNickname());"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/MainActivity.java"
+            line="52"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        errorLine1="                    tvCreditScore.setText(&quot;80&quot;); // 默认信用分"
+        errorLine2="                                          ~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/MainActivity.java"
+            line="183"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        errorLine1="                        tvEarnings.setText(&quot;0.00&quot;);"
+        errorLine2="                                           ~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/MainActivity.java"
+            line="204"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        errorLine1="            tvEarnings.setText(&quot;0.00&quot;);"
+        errorLine2="                               ~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/MainActivity.java"
+            line="210"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        h.tvOrderNo.setText(&quot;单号：&quot; + o.get(&quot;orderNo&quot;).getAsString());"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/adapter/OrderAdapter.java"
+            line="44"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        h.tvTracking.setText(&quot;快递：&quot; + o.get(&quot;trackingNo&quot;).getAsString());"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/adapter/OrderAdapter.java"
+            line="45"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        h.tvPickup.setText(&quot;取件：&quot; + o.get(&quot;pickupAddress&quot;).getAsString());"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/adapter/OrderAdapter.java"
+            line="46"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        h.tvDelivery.setText(&quot;送达：&quot; + o.get(&quot;deliveryAddress&quot;).getAsString());"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/adapter/OrderAdapter.java"
+            line="47"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        h.tvFee.setText(&quot;¥&quot; + o.get(&quot;fee&quot;).getAsString());"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/adapter/OrderAdapter.java"
+            line="48"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvOrderNo.setText(&quot;订单号：&quot; + o.get(&quot;orderNo&quot;).getAsString());"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="119"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvStatus.setText(&quot;状态：&quot; + STATUS_TEXT[Math.min(status, STATUS_TEXT.length - 1)]);"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="120"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvTracking.setText(&quot;快递单号：&quot; + o.get(&quot;trackingNo&quot;).getAsString());"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="121"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvPickup.setText(&quot;取件地址：&quot; + o.get(&quot;pickupAddress&quot;).getAsString());"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="122"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvDelivery.setText(&quot;送达地址：&quot; + o.get(&quot;deliveryAddress&quot;).getAsString());"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="123"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvFee.setText(&quot;¥&quot; + o.get(&quot;fee&quot;).getAsString());"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="124"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="        tvRemark.setText(&quot;备注：&quot; + remark);"
+        errorLine2="                         ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="128"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="            tvExpectedTime.setText(&quot;期望时间：&quot; + o.get(&quot;expectedTime&quot;).getAsString());"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="133"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="            tvAppeal.setText(&quot;申诉原因：&quot; + o.get(&quot;appealReason&quot;).getAsString());"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/OrderDetailActivity.java"
+            line="141"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="                    tvPhone.setText(&quot;手机号：&quot; + u.get(&quot;phone&quot;).getAsString());"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/ProfileActivity.java"
+            line="70"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="                    tvRole.setText(&quot;身份：&quot; + (role == 0 ? &quot;普通用户&quot; : role == 1 ? &quot;代取员&quot; : &quot;管理员&quot;));"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/ProfileActivity.java"
+            line="73"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="                    tvCredit.setText(&quot;信用分：&quot; + u.get(&quot;creditScore&quot;).getAsString());"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/ProfileActivity.java"
+            line="74"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
+        errorLine1="                    tvBalance.setText(&quot;余额：¥&quot; + u.get(&quot;balance&quot;).getAsString());"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/campus/courier/activity/ProfileActivity.java"
+            line="75"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;原密码&quot;, should use `@string` resource"
+        errorLine1="        android:hint=&quot;原密码&quot; android:inputType=&quot;textPassword&quot; android:layout_marginBottom=&quot;12dp&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_change_password.xml"
+            line="7"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;新密码（6-20位）&quot;, should use `@string` resource"
+        errorLine1="        android:hint=&quot;新密码（6-20位）&quot; android:inputType=&quot;textPassword&quot; android:layout_marginBottom=&quot;12dp&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_change_password.xml"
+            line="10"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;确认新密码&quot;, should use `@string` resource"
+        errorLine1="        android:hint=&quot;确认新密码&quot; android:inputType=&quot;textPassword&quot; android:layout_marginBottom=&quot;24dp&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_change_password.xml"
+            line="13"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;确认修改&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;确认修改&quot; android:backgroundTint=&quot;@color/primary&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_change_password.xml"
+            line="16"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;昵称&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;昵称&quot; android:layout_marginBottom=&quot;12dp&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_edit_profile.xml"
+            line="9"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;头像图片 URL（选填）&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;头像图片 URL（选填）&quot; android:layout_marginBottom=&quot;24dp&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_edit_profile.xml"
+            line="12"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;保存&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;保存&quot; android:backgroundTint=&quot;@color/primary&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_edit_profile.xml"
+            line="15"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;手机号&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;手机号&quot; android:inputType=&quot;phone&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="9"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;获取验证码（模拟短信）&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;获取验证码（模拟短信）&quot; android:layout_marginTop=&quot;8dp&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="12"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;6位验证码&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;6位验证码&quot; android:inputType=&quot;number&quot; android:layout_marginTop=&quot;16dp&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="15"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;新密码（6-20位）&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;新密码（6-20位）&quot; android:inputType=&quot;textPassword&quot; android:layout_marginTop=&quot;8dp&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;重置密码&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;重置密码&quot; android:layout_marginTop=&quot;24dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_forgot_password.xml"
+            line="21"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;校园代取&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;校园代取&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="15"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;便捷校园生活助手&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;便捷校园生活助手&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="28"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;用户登录&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;用户登录&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="59"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;账号/手机号&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;账号/手机号&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="73"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;密码&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;密码&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="96"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;登 录&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;登 录&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="122"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;忘记密码？&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;忘记密码？&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="134"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;没有账号？立即注册&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;没有账号？立即注册&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="147"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;© 2024 校园代取平台&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;© 2024 校园代取平台&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_login.xml"
+            line="164"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;欢迎回到校园代取平台&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;欢迎回到校园代取平台&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="51"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;--&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;--&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="80"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;我的订单&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;我的订单&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="88"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;--&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;--&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="109"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;信用分&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;信用分&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="117"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;--&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;--&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="138"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;累计收益&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;累计收益&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="146"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;快捷操作&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;快捷操作&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="178"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;发布需求&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;发布需求&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="195"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;查看订单&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;查看订单&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="206"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;接单大厅&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;接单大厅&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="225"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;个人中心&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;个人中心&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="236"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;管理后台&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;管理后台&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="252"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;发布需求&quot;, should use `@string` resource"
+        errorLine1="        android:contentDescription=&quot;发布需求&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="265"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;状态：待接单&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;状态：待接单&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="56"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;订单号：&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;订单号：&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="69"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;快递单号：&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;快递单号：&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="81"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;取件地址：&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;取件地址：&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="94"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;送达地址：&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;送达地址：&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="107"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;¥0.00&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;¥0.00&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="120"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;代取费用&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;代取费用&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="131"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;备注：&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;备注：&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="143"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;期望时间：&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;期望时间：&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="156"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;申诉原因：&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;申诉原因：&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="169"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;请先完成支付，支付后代取员才能在广场看到本单。&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;请先完成支付，支付后代取员才能在广场看到本单。&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="187"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;接单&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;接单&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="217"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;立即支付&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;立即支付&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="226"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;去评价&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;去评价&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="236"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;取消订单&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;取消订单&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="253"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;异常申诉&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;异常申诉&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_detail.xml"
+            line="263"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;待接单大厅&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;待接单大厅&quot;/>"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_list.xml"
+            line="26"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;智能推荐&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;智能推荐&quot;/>"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_list.xml"
+            line="32"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;暂无数据&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;暂无数据&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_order_list.xml"
+            line="53"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;申请成为代取员&quot;, should use `@string` resource"
+        errorLine1="        android:layout_margin=&quot;16dp&quot; android:text=&quot;申请成为代取员&quot;"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_profile.xml"
+            line="37"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;代取审核进度&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;代取审核进度&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_profile.xml"
+            line="43"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;查看我接的订单&quot;, should use `@string` resource"
+        errorLine1="        android:layout_marginHorizontal=&quot;16dp&quot; android:text=&quot;查看我接的订单&quot;"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_profile.xml"
+            line="49"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;修改资料&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;修改资料&quot; android:backgroundTint=&quot;#5C6BC0&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_profile.xml"
+            line="55"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;修改密码&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;修改密码&quot; android:backgroundTint=&quot;#78909C&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_profile.xml"
+            line="60"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;快递单号 *&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;快递单号 *&quot; android:layout_marginBottom=&quot;12dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="10"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;快递公司（如：顺丰、京东）&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;快递公司（如：顺丰、京东）&quot; android:layout_marginBottom=&quot;12dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="15"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;取件地址（快递站位置）*&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;取件地址（快递站位置）*&quot; android:layout_marginBottom=&quot;12dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="20"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;送达地址（宿舍楼/房间号）*&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;送达地址（宿舍楼/房间号）*&quot; android:layout_marginBottom=&quot;12dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="25"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;发布代取订单&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;发布代取订单&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="28"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;代取费用（元，默认2元）&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;代取费用（元，默认2元）&quot; android:inputType=&quot;numberDecimal&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="30"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;备注（选填）&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;备注（选填）&quot; android:minLines=&quot;2&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="36"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;发 布&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;发 布&quot; android:textSize=&quot;16sp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_publish_order.xml"
+            line="42"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;快递单号 *&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;快递单号 *&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="43"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;快递公司&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;快递公司&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="66"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;取件地址 *&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;取件地址 *&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="89"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;送达地址 *&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;送达地址 *&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="113"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;代取费用（元）&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;代取费用（元）&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="137"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;2.00&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;2.00&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="151"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;期望送达时间（选填）&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;期望送达时间（选填）&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="162"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;备注（选填）&quot;, should use `@string` resource"
+        errorLine1="                android:hint=&quot;备注（选填）&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="185"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;发布订单&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;发布订单&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_publish_order.xml"
+            line="212"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;注册账号&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;注册账号&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="16"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;手机号 *&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;手机号 *&quot; android:inputType=&quot;phone&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="24"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;真实姓名 *&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;真实姓名 *&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="29"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;学号 *（5～32位字母或数字）&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;学号 *（5～32位字母或数字）&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="34"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;昵称（选填）&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;昵称（选填）&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;密码 *&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;密码 *&quot; android:inputType=&quot;textPassword&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;确认密码 *&quot;, should use `@string` resource"
+        errorLine1="            android:hint=&quot;确认密码 *&quot; android:inputType=&quot;textPassword&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;注 册&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;注 册&quot; android:textSize=&quot;16sp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="54"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;已有账号？返回登录&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;已有账号？返回登录&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_register.xml"
+            line="59"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;评分&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;评分&quot; android:textSize=&quot;15sp&quot; android:layout_marginBottom=&quot;8dp&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_review.xml"
+            line="13"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;写下你的评价（选填）&quot;, should use `@string` resource"
+        errorLine1="        android:hint=&quot;写下你的评价（选填）&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_review.xml"
+            line="22"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;提交评价&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;提交评价&quot; android:backgroundTint=&quot;@color/primary&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_review.xml"
+            line="29"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;📦&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;📦&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_splash.xml"
+            line="12"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;校园代取&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;校园代取&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_splash.xml"
+            line="18"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;让取件更轻松&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;让取件更轻松&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_splash.xml"
+            line="27"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;首页&quot;, should use `@string` resource"
+        errorLine1="    &lt;item android:id=&quot;@+id/nav_home&quot;    android:title=&quot;首页&quot;   android:icon=&quot;@android:drawable/ic_menu_today&quot;/>"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/menu/bottom_nav_menu.xml"
+            line="3"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;我的订单&quot;, should use `@string` resource"
+        errorLine1="    &lt;item android:id=&quot;@+id/nav_orders&quot;  android:title=&quot;我的订单&quot; android:icon=&quot;@android:drawable/ic_menu_agenda&quot;/>"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/menu/bottom_nav_menu.xml"
+            line="4"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;接单&quot;, should use `@string` resource"
+        errorLine1="    &lt;item android:id=&quot;@+id/nav_courier&quot; android:title=&quot;接单&quot;   android:icon=&quot;@android:drawable/ic_menu_directions&quot;/>"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/menu/bottom_nav_menu.xml"
+            line="5"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;我的&quot;, should use `@string` resource"
+        errorLine1="    &lt;item android:id=&quot;@+id/nav_profile&quot; android:title=&quot;我的&quot;   android:icon=&quot;@android:drawable/ic_menu_myplaces&quot;/>"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/menu/bottom_nav_menu.xml"
+            line="6"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;真实姓名 *&quot;, should use `@string` resource"
+        errorLine1="        android:hint=&quot;真实姓名 *&quot; android:layout_marginBottom=&quot;12dp&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="8"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;学号 *&quot;, should use `@string` resource"
+        errorLine1="        android:hint=&quot;学号 *&quot; android:layout_marginBottom=&quot;12dp&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="12"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;校园卡照片（选填）：未选择&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;校园卡照片（选填）：未选择&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="16"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;选择校园卡照片&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;选择校园卡照片&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_apply_courier.xml"
+            line="22"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;选择支付方式&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;选择支付方式&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="14"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;订单号: 123456&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;订单号: 123456&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;¥0.00&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;¥0.00&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="42"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;支付金额&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;支付金额&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="51"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;支付方式&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;支付方式&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="61"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;已选择: &quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;已选择: &quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="89"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;微信支付&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;微信支付&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="97"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;确认支付&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;确认支付&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_payment.xml"
+            line="114"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;处理中...&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;处理中...&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_progress.xml"
+            line="24"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;支付方式&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;支付方式&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_payment_option.xml"
+            line="32"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;支付描述&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;支付描述&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_payment_option.xml"
+            line="41"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;暂无数据&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;暂无数据&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_empty_state.xml"
+            line="21"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;尝试刷新或发布新订单&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;尝试刷新或发布新订单&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_empty_state.xml"
+            line="30"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;加载失败&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;加载失败&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_error_state.xml"
+            line="22"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;请检查网络连接后重试&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;请检查网络连接后重试&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_error_state.xml"
+            line="31"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;重试&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;重试&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_error_state.xml"
+            line="40"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;加载中...&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;加载中...&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_loading_fullscreen.xml"
+            line="29"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;加载中...&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;加载中...&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_loading_local.xml"
+            line="21"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;退出登录&quot;, should use `@string` resource"
+        errorLine1="        android:title=&quot;退出登录&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/menu/main_menu.xml"
+            line="5"
+            column="9"/>
+    </issue>
+
+</issues>

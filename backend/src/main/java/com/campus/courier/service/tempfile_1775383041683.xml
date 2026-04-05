@@ -1,0 +1,101 @@
+NEW_FILE_CODE
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.courier.mapper.OrderAdminMapper">
+
+    <select id="selectOrdersWithDetails" resultType="java.util.HashMap">
+        SELECT
+            o.id,
+            o.order_no,
+            o.status,
+            o.fee,
+            o.created_at,
+            u.nickname AS publisher_name,
+            c.nickname AS courier_name,
+            p.pay_status,
+            p.pay_type
+        FROM `order` o
+        LEFT JOIN `user` u ON o.publisher_id = u.id
+        LEFT JOIN `user` c ON o.courier_id = c.id
+        LEFT JOIN payment p ON o.id = p.order_id
+        <where>
+            <if test="status != null">
+                AND o.status = #{status}
+            </if>
+            <if test="minFee != null">
+                AND o.fee &gt;= #{minFee}
+            </if>
+            <if test="maxFee != null">
+                AND o.fee &lt;= #{maxFee}
+            </if>
+            <if test="since != null">
+                AND o.created_at &gt;= #{since}
+            </if>
+            <if test="areaKeyword != null and areaKeyword != ''">
+                AND (o.pickup_address LIKE CONCAT('%', #{areaKeyword}, '%')
+                     OR o.delivery_address LIKE CONCAT('%', #{areaKeyword}, '%'))
+            </if>
+        </where>
+        ORDER BY o.created_at DESC
+    </select>
+
+    <select id="selectDailyOrderStats" resultType="java.util.HashMap">
+        SELECT
+            DATE(created_at) AS stat_date,
+            COUNT(*) AS order_count,
+            SUM(fee) AS total_fee,
+            SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS completed_count
+        FROM `order`
+        <where>
+            <if test="from != null">
+                AND created_at &gt;= #{from}
+            </if>
+            <if test="to != null">
+                AND created_at &lt;= #{to}
+            </if>
+        </where>
+        GROUP BY DATE(created_at)
+        ORDER BY stat_date DESC
+    </select>
+
+    <select id="selectTopCouriers" resultType="java.util.HashMap">
+        SELECT
+            o.courier_id,
+            u.nickname,
+            COUNT(*) AS completed_orders,
+            SUM(o.fee) AS total_earnings
+        FROM `order` o
+        LEFT JOIN `user` u ON o.courier_id = u.id
+        WHERE o.status = 3
+        <if test="from != null">
+            AND o.completed_at &gt;= #{from}
+        </if>
+        <if test="to != null">
+            AND o.completed_at &lt;= #{to}
+        </if>
+        GROUP BY o.courier_id, u.nickname
+        ORDER BY completed_orders DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectPaymentSummary" resultType="java.util.HashMap">
+        SELECT
+            p.pay_type,
+            COUNT(*) AS payment_count,
+            SUM(p.amount) AS total_amount,
+            SUM(CASE WHEN p.pay_status = 1 THEN p.amount ELSE 0 END) AS paid_amount,
+            SUM(CASE WHEN p.pay_status = 2 THEN p.amount ELSE 0 END) AS refunded_amount
+        FROM payment p
+        <where>
+            <if test="from != null">
+                AND p.created_at &gt;= #{from}
+            </if>
+            <if test="to != null">
+                AND p.created_at &lt;= #{to}
+            </if>
+        </where>
+        GROUP BY p.pay_type
+    </select>
+
+</mapper>

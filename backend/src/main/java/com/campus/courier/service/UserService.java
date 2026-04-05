@@ -341,4 +341,33 @@ public class UserService {
         cacheService.deleteCache("user-profile:" + targetUserId);
         return Result.ok("角色已更新");
     }
+
+    public Result<?> recordViolation(Long targetUserId, String violationType, String description) {
+        User user = userMapper.selectById(targetUserId);
+        if (user == null) return Result.fail("用户不存在");
+
+        int currentCount = user.getViolationCount() != null ? user.getViolationCount() : 0;
+        int newCount = currentCount + 1;
+        
+        String remark = user.getViolationRemark();
+        String newRemark = String.format("[%s] %s (累计%d次)", 
+                violationType, description, newCount);
+        if (remark != null && !remark.isEmpty()) {
+            newRemark = remark + "\n" + newRemark;
+        }
+
+        user.setViolationCount(newCount);
+        user.setViolationRemark(newRemark);
+
+        if (newCount >= 3) {
+            user.setStatus(0);
+            userMapper.updateById(user);
+            cacheService.deleteCache("user-profile:" + targetUserId);
+            return Result.ok(String.format("违规记录已添加，累计%d次，账号已自动禁用", newCount));
+        }
+
+        userMapper.updateById(user);
+        cacheService.deleteCache("user-profile:" + targetUserId);
+        return Result.ok(String.format("违规记录已添加，累计%d次", newCount));
+    }
 }

@@ -1,0 +1,16 @@
+# 启用方式：spring.profiles.active=https
+# 例如：mvn spring-boot:run -Dspring-boot.run.profiles=https
+# Android 将 strings.xml 中 api_base_url 改为 https://10.0.2.2:8443（模拟器）或 https://<电脑局域网IP>:8443
+spring:
+  config:
+    activate:
+      on-profile: https
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: campus-courier

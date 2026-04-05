@@ -1,9 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 主色调：蓝色系列 (保持现有蓝色主题，扩展层次) -->
     <color name="primary">#1976D2</color>
     <color name="primary_dark">#0D47A1</color>
+    <color name="primary_light">#64B5F6</color>
+    <color name="primary_variant">#1565C0</color>
+    <!-- 扩展蓝色层次 -->
+    <color name="primary_50">#E3F2FD</color>
+    <color name="primary_100">#BBDEFB</color>
+    <color name="primary_200">#90CAF9</color>
+    <color name="primary_300">#64B5F6</color>
+    <color name="primary_400">#42A5F5</color>
+    <color name="primary_500">#1976D2</color>
+    <color name="primary_600">#1565C0</color>
+    <color name="primary_700">#0D47A1</color>
+    <color name="primary_800">#083885</color>
+    <color name="primary_900">#06296E</color>
+
+    <!-- 强调色：橙色 (保持现有，扩展层次) -->
     <color name="accent">#FF6F00</color>
+    <color name="accent_light">#FFB74D</color>
+    <color name="accent_dark">#E65100</color>
+    <!-- 扩展橙色层次 -->
+    <color name="accent_50">#FFF3E0</color>
+    <color name="accent_100">#FFE0B2</color>
+    <color name="accent_200">#FFCC80</color>
+    <color name="accent_300">#FFB74D</color>
+    <color name="accent_400">#FF9800</color>
+    <color name="accent_500">#FF6F00</color>
+    <color name="accent_600">#E65100</color>
+    <color name="accent_700">#CC3700</color>
+    <color name="accent_800">#B32B00</color>
+    <color name="accent_900">#991F00</color>
+
+    <!-- 辅助色：功能状态 (优化层次) -->
+    <color name="success">#4CAF50</color>
+    <color name="success_light">#81C784</color>
+    <color name="success_dark">#388E3C</color>
+    <color name="success_50">#E8F5E9</color>
+    <color name="success_200">#A5D6A7</color>
+    <color name="success_700">#388E3C</color>
+
+    <color name="error">#F44336</color>
+    <color name="error_light">#E57373</color>
+    <color name="error_dark">#D32F2F</color>
+    <color name="error_50">#FFEBEE</color>
+    <color name="error_200">#EF9A9A</color>
+    <color name="error_700">#D32F2F</color>
+
+    <color name="warning">#FF9800</color>
+    <color name="warning_light">#FFB74D</color>
+    <color name="warning_dark">#F57C00</color>
+    <color name="warning_50">#FFF3E0</color>
+    <color name="warning_200">#FFCC80</color>
+    <color name="warning_700">#F57C00</color>
+
+    <color name="info">#2196F3</color>
+    <color name="info_light">#64B5F6</color>
+    <color name="info_dark">#1976D2</color>
+    <color name="info_50">#E3F2FD</color>
+    <color name="info_200">#90CAF9</color>
+    <color name="info_700">#1565C0</color>
+
+    <!-- 中性色 (扩展层次) -->
     <color name="white">#FFFFFF</color>
-    <color name="gray_bg">#F5F5F5</color>
-    <color name="text_secondary">#757575</color>
+    <color name="black">#000000</color>
+    <color name="gray_50">#FAFAFA</color>
+    <color name="gray_100">#F5F5F5</color>
+    <color name="gray_200">#EEEEEE</color>
+    <color name="gray_300">#E0E0E0</color>
+    <color name="gray_400">#BDBDBD</color>
+    <color name="gray_500">#9E9E9E</color>
+    <color name="gray_600">#757575</color>
+    <color name="gray_700">#616161</color>
+    <color name="gray_800">#424242</color>
+    <color name="gray_900">#212121</color>
+
+    <color name="gray_bg">@color/gray_100</color>
+    <color name="gray_surface">@color/gray_50</color>
+    <color name="gray_border">@color/gray_300</color>
+    <color name="gray_divider">@color/gray_200</color>
+
+    <!-- 文本颜色 -->
+    <color name="text_primary">@color/gray_900</color>
+    <color name="text_secondary">@color/gray_600</color>
+    <color name="text_hint">@color/gray_500</color>
+    <color name="text_disabled">@color/gray_400</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_on_accent">#FFFFFF</color>
+    <color name="text_on_success">#FFFFFF</color>
+    <color name="text_on_error">#FFFFFF</color>
+    <color name="text_on_warning">#FFFFFF</color>
+    <color name="text_on_info">#FFFFFF</color>
+
+    <!-- 卡片和表面 -->
+    <color name="surface">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="dialog_background">#FFFFFF</color>
+    <color name="surface_variant">@color/gray_50</color>
+    <color name="surface_elevated_1">#FFFFFF</color>
+    <color name="surface_elevated_2">#FFFFFF</color>
+
+    <!-- 阴影和边框 -->
+    <color name="outline">@color/gray_300</color>
+    <color name="outline_variant">@color/gray_200</color>
+    <color name="shadow">#20000000</color>
+    <color name="shadow_light">#1A000000</color>
+
+    <!-- 状态颜色 (使用层次色) -->
+    <color name="status_pending">@color/accent_400</color>
+    <color name="status_accepted">@color/primary_400</color>
+    <color name="status_picking">#9C27B0</color>
+    <color name="status_completed">@color/success</color>
+    <color name="status_cancelled">@color/gray_500</color>
+    <color name="status_abnormal">@color/error</color>
+
+    <!-- 支付相关颜色 -->
+    <color name="payment_wechat">#09BB07</color>
+    <color name="payment_alipay">#1296DB</color>
+    <color name="payment_balance">#FF9800</color>
+    <color name="payment_card">#673AB7</color>
+
+    <!-- 信用评分颜色 -->
+    <color name="credit_excellent">#4CAF50</color>
+    <color name="credit_good">#8BC34A</color>
+    <color name="credit_fair">#FFC107</color>
+    <color name="credit_poor">#FF9800</color>
+    <color name="credit_bad">#F44336</color>
 </resources>

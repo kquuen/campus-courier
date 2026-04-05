@@ -2,7 +2,11 @@ package com.campus.courier.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.campus.courier.dto.Result;
-import com.campus.courier.entity.*;
+import com.campus.courier.entity.Order;
+import com.campus.courier.entity.OrderStatus;
+import com.campus.courier.entity.Review;
+import com.campus.courier.entity.ReviewType;
+import com.campus.courier.entity.User;
 import com.campus.courier.mapper.OrderMapper;
 import com.campus.courier.mapper.ReviewMapper;
 import com.campus.courier.mapper.UserMapper;
@@ -11,8 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +26,8 @@ public class ReviewService {
     private final ReviewMapper reviewMapper;
     private final OrderMapper orderMapper;
     private final UserMapper userMapper;
+    private final CreditScoreCalculator creditScoreCalculator;
 
-    /**
-     * 提交评价（双向）
-     */
     @Transactional
     public Result<?> submitReview(Long reviewerId, Long orderId, Integer score,
                                   String content, ReviewType type) {
@@ -64,11 +67,6 @@ public class ReviewService {
         return Result.ok("评价提交成功");
     }
 
-    /**
-     * 加权信用分更新：
-     * 新信用分 = 历史均分 * 0.7 + 本次评分 * 20 * 0.3
-     * 范围限制在 [0, 100]
-     */
     private void updateCreditScore(Long userId) {
         User user = userMapper.selectById(userId);
         List<Review> reviews = reviewMapper.selectList(
@@ -76,33 +74,63 @@ public class ReviewService {
 
         if (reviews.isEmpty()) return;
 
-        double avg = reviews.stream()
-                .mapToInt(Review::getScore)
-                .average()
-                .orElse(3.0);
+        List<Integer> scores = reviews.stream().map(Review::getScore).toList();
+        
+        long totalOrders = ordersByUser(userId);
+        long completedOrders = reviews.size();
+        long onTimeOrders = completedOrders;
 
-        BigDecimal currentCredit = user.getCreditScore() != null
-                ? user.getCreditScore() : new BigDecimal("100.0");
-        double newScore = currentCredit.doubleValue() * 0.7 + (avg * 20) * 0.3;
-        newScore = Math.min(100, Math.max(0, newScore));
+        BigDecimal newCreditScore = creditScoreCalculator.calculateFromReviews(
+                scores, (int) totalOrders, (int) completedOrders, (int) onTimeOrders);
 
-        user.setCreditScore(BigDecimal.valueOf(newScore).setScale(1, RoundingMode.HALF_UP));
+        user.setCreditScore(newCreditScore);
         userMapper.updateById(user);
     }
 
-    /** 查询某订单的所有评价 */
+    private long ordersByUser(Long userId) {
+        return orderMapper.selectCount(
+                new LambdaQueryWrapper<Order>()
+                        .eq(Order::getPublisherId, userId)
+                        .or()
+                        .eq(Order::getCourierId, userId));
+    }
+
     public Result<List<Review>> getOrderReviews(Long orderId) {
         List<Review> reviews = reviewMapper.selectList(
                 new LambdaQueryWrapper<Review>().eq(Review::getOrderId, orderId));
         return Result.ok(reviews);
     }
 
-    /** 查询某用户收到的所有评价 */
     public Result<List<Review>> getUserReviews(Long userId) {
         List<Review> reviews = reviewMapper.selectList(
                 new LambdaQueryWrapper<Review>()
                         .eq(Review::getRevieweeId, userId)
                         .orderByDesc(Review::getCreatedAt));
         return Result.ok(reviews);
+    }
+
+    public Result<Map<String, Object>> getCreditProfile(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) return Result.fail("用户不存在");
+
+        List<Review> reviews = reviewMapper.selectList(
+                new LambdaQueryWrapper<Review>()
+                        .eq(Review::getRevieweeId, userId)
+                        .orderByDesc(Review::getCreatedAt));
+
+        double avgScore = reviews.isEmpty() ? 0.0 :
+                reviews.stream().mapToInt(Review::getScore).average().orElse(0.0);
+
+        List<Review> recentReviews = reviews.stream().limit(10).toList();
+
+        Map<String, Object> profile = new HashMap<>();
+        profile.put("userId", userId);
+        profile.put("nickname", user.getNickname());
+        profile.put("creditScore", user.getCreditScore());
+        profile.put("avgScore", avgScore);
+        profile.put("totalReviews", reviews.size());
+        profile.put("recentReviews", recentReviews);
+
+        return Result.ok(profile);
     }
 }

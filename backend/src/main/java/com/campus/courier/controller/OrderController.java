@@ -8,9 +8,12 @@ import com.campus.courier.dto.Result;
 import com.campus.courier.entity.UserRole;
 import com.campus.courier.security.RequireRole;
 import com.campus.courier.service.OrderService;
+import com.campus.courier.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/order")
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final PaymentService paymentService;
 
     @PostMapping("/publish")
     public Result<?> publish(@Valid @RequestBody PublishOrderRequest request) {
@@ -35,6 +39,11 @@ public class OrderController {
         return orderService.startPickup(UserContext.getUserId(), id);
     }
 
+    @PostMapping("/{id}/deliver")
+    public Result<?> deliver(@PathVariable Long id) {
+        return orderService.startDeliver(UserContext.getUserId(), id);
+    }
+
     @PostMapping("/{id}/complete")
     public Result<?> complete(@PathVariable Long id,
                               @RequestBody CompleteOrderRequest request) {
@@ -47,6 +56,11 @@ public class OrderController {
         return orderService.cancelOrder(UserContext.getUserId(), id);
     }
 
+    @PostMapping("/{id}/refund-cancel")
+    public Result<?> refundCancel(@PathVariable Long id) {
+        return paymentService.refundForOrder(UserContext.getUserId(), id);
+    }
+
     @PostMapping("/{id}/appeal")
     public Result<?> appeal(@PathVariable Long id,
                             @Valid @RequestBody AppealRequest request) {
@@ -55,8 +69,13 @@ public class OrderController {
 
     @GetMapping("/pending")
     public Result<?> pending(@RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "10") int size) {
-        return orderService.listPendingOrders(page, size, UserContext.getUserId());
+                             @RequestParam(defaultValue = "10") int size,
+                             @RequestParam(required = false) BigDecimal minFee,
+                             @RequestParam(required = false) BigDecimal maxFee,
+                             @RequestParam(required = false) String since,
+                             @RequestParam(required = false) String areaKeyword) {
+        return orderService.listPendingOrders(page, size, UserContext.getUserId(), 
+                minFee, maxFee, since, areaKeyword);
     }
 
     @GetMapping("/recommend")
@@ -84,7 +103,11 @@ public class OrderController {
     @RequireRole(UserRole.ADMIN)
     public Result<?> adminList(@RequestParam(defaultValue = "1") int page,
                                @RequestParam(defaultValue = "20") int size,
-                               @RequestParam(required = false) Integer status) {
-        return orderService.adminListOrders(page, size, status);
+                               @RequestParam(required = false) Integer status,
+                               @RequestParam(required = false) BigDecimal minFee,
+                               @RequestParam(required = false) BigDecimal maxFee,
+                               @RequestParam(required = false) String since,
+                               @RequestParam(required = false) String areaKeyword) {
+        return orderService.adminListOrders(page, size, status, minFee, maxFee, since, areaKeyword);
     }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="20dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText android:id="@+id/etNickname"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="昵称" android:layout_marginBottom="12dp"/>
+        <EditText android:id="@+id/etAvatar"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="头像图片 URL（选填）" android:layout_marginBottom="24dp"/>
+        <Button android:id="@+id/btnSave"
+            android:layout_width="match_parent" android:layout_height="52dp"
+            android:text="保存" android:backgroundTint="@color/primary"/>
+    </LinearLayout>
+</ScrollView>

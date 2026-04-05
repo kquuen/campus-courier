@@ -8,8 +8,9 @@ import lombok.Data;
 @Data
 public class LoginRequest {
 
-    @NotBlank(message = "手机号不能为空")
-    @Pattern(regexp = "^1[3-9]\\d{9}$|^admin$", message = "手机号格式不正确")
+    @NotBlank(message = "账号不能为空")
+    @Pattern(regexp = "^(1[3-9]\\d{9}|[a-zA-Z0-9_]{3,20})$",
+             message = "请输入有效的手机号或用户名（3-20位字母、数字、下划线）")
     private String phone;
 
     @NotBlank(message = "密码不能为空")

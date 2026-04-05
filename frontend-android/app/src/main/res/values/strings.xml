@@ -3,4 +3,59 @@
     <string name="app_name">校园代取</string>
     <!-- 默认 HTTP。若后端使用 https profile（8443），改为 https://10.0.2.2:8443 或电脑局域网 IP -->
     <string name="api_base_url">http://10.0.2.2:8082</string>
+
+    <!-- 加载状态相关 -->
+    <string name="loading">加载中...</string>
+    <string name="loading_please_wait">请稍候...</string>
+    <string name="empty_state_title">暂无数据</string>
+    <string name="empty_state_hint">尝试刷新或发布新订单</string>
+    <string name="error_state_title">加载失败</string>
+    <string name="error_state_hint">请检查网络连接后重试</string>
+    <string name="retry">重试</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+
+    <!-- 支付相关 -->
+    <string name="payment_title">选择支付方式</string>
+    <string name="payment_amount">支付金额</string>
+    <string name="payment_method">支付方式</string>
+    <string name="payment_confirm">确认支付</string>
+    <string name="payment_processing">支付处理中...</string>
+    <string name="payment_success">支付成功</string>
+    <string name="payment_failed">支付失败</string>
+
+    <!-- 订单状态相关 -->
+    <string name="order_status_pending">待接单</string>
+    <string name="order_status_accepted">已接单</string>
+    <string name="order_status_picking">取件中</string>
+    <string name="order_status_completed">已完成</string>
+    <string name="order_status_cancelled">已取消</string>
+    <string name="order_status_abnormal">异常</string>
+
+    <!-- 描述文本 -->
+    <string name="status_pending_desc">订单已发布，等待代取员接单</string>
+    <string name="status_accepted_desc">代取员已接单，准备前往取件</string>
+    <string name="status_picking_desc">代取员正在取件途中</string>
+    <string name="status_completed_desc">订单已完成送达</string>
+    <string name="status_cancelled_desc">订单已取消</string>
+    <string name="status_abnormal_desc">订单出现异常</string>
+
+    <!-- 图标描述 -->
+    <string name="empty_state_icon">空状态图标</string>
+    <string name="error_state_icon">错误状态图标</string>
+
+    <!-- 按钮文本 -->
+    <string name="btn_publish_order">发布订单</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_submit">提交</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_delete">删除</string>
+    <string name="btn_edit">编辑</string>
+    <string name="btn_view_details">查看详情</string>
+
+    <!-- 提示信息 -->
+    <string name="toast_success">操作成功</string>
+    <string name="toast_error">操作失败</string>
+    <string name="toast_network_error">网络连接失败</string>
+    <string name="toast_loading">加载中...</string>
 </resources>

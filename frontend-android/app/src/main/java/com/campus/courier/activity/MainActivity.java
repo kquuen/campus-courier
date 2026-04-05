@@ -4,16 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.campus.courier.R;
 import com.campus.courier.api.ApiClient;
+import com.campus.courier.util.LoadingStateHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TextView tvOrderCount, tvCreditScore, tvEarnings;
+    private MaterialButton btnQuickPublish, btnQuickOrders, btnQuickCourier, btnQuickProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +30,37 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        initViews();
+        setupClickListeners();
+        loadDashboardData();
+
+        // 设置首页为选中状态
+        BottomNavigationView nav = findViewById(R.id.bottomNav);
+        nav.setSelectedItemId(R.id.nav_home);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 每次回到主页时刷新数据
+        loadDashboardData();
+    }
+
+    private void initViews() {
+        // 欢迎文本
         TextView tvWelcome = findViewById(R.id.tvWelcome);
         tvWelcome.setText("你好，" + ApiClient.getSavedNickname());
+
+        // 数据统计视图
+        tvOrderCount = findViewById(R.id.tvOrderCount);
+        tvCreditScore = findViewById(R.id.tvCreditScore);
+        tvEarnings = findViewById(R.id.tvEarnings);
+
+        // 快捷操作按钮
+        btnQuickPublish = findViewById(R.id.btnQuickPublish);
+        btnQuickOrders = findViewById(R.id.btnQuickOrders);
+        btnQuickCourier = findViewById(R.id.btnQuickCourier);
+        btnQuickProfile = findViewById(R.id.btnQuickProfile);
 
         // 发布需求按钮
         FloatingActionButton fabPublish = findViewById(R.id.fabPublish);
@@ -37,26 +73,30 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_home) {
                 // 首页（当前页）
+                return true;
             } else if (id == R.id.nav_orders) {
                 startActivity(new Intent(this, MyOrdersActivity.class));
+                return true;
             } else if (id == R.id.nav_courier) {
                 if (ApiClient.getSavedRole() >= 1) {
                     startActivity(new Intent(this, PendingOrdersActivity.class));
                 } else {
-                    android.widget.Toast.makeText(this, "请先申请成为代取员", android.widget.Toast.LENGTH_SHORT).show();
+                    LoadingStateHelper.showInfoSnackbar(nav, "请先申请成为代取员");
                 }
+                return true;
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
+                return true;
             }
-            return true;
+            return false;
         });
 
         // 管理员入口
         if (ApiClient.getSavedRole() == 2) {
-            Button btnAdmin = findViewById(R.id.btnAdmin);
-            btnAdmin.setVisibility(android.view.View.VISIBLE);
+            com.google.android.material.button.MaterialButton btnAdmin = findViewById(R.id.btnAdmin);
+            btnAdmin.setVisibility(View.VISIBLE);
             btnAdmin.setOnClickListener(v ->
-                    new android.app.AlertDialog.Builder(this)
+                    new android.app.AlertDialog.Builder(this, R.style.Dialog_CampusCourier)
                             .setTitle("管理后台")
                             .setItems(new String[]{
                                     "用户账号管理",
@@ -75,6 +115,102 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setupClickListeners() {
+        // 快捷操作按钮
+        btnQuickPublish.setOnClickListener(v ->
+                startActivity(new Intent(this, PublishOrderActivity.class)));
+
+        btnQuickOrders.setOnClickListener(v ->
+                startActivity(new Intent(this, MyOrdersActivity.class)));
+
+        btnQuickCourier.setOnClickListener(v -> {
+            if (ApiClient.getSavedRole() >= 1) {
+                startActivity(new Intent(this, PendingOrdersActivity.class));
+            } else {
+                LoadingStateHelper.showInfoSnackbar(btnQuickCourier, "请先申请成为代取员");
+            }
+        });
+
+        btnQuickProfile.setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class)));
+    }
+
+    private void loadDashboardData() {
+        // 显示加载状态
+        tvOrderCount.setText("...");
+        tvCreditScore.setText("...");
+        tvEarnings.setText("...");
+
+        // 加载订单统计数据
+        ApiClient.get("/api/order/user/stats", new ApiClient.ApiCallback() {
+            @Override
+            public void onSuccess(JsonElement data) {
+                if (data != null && data.isJsonObject()) {
+                    JsonObject stats = data.getAsJsonObject();
+                    int total = stats.get("total").getAsInt();
+                    int pending = stats.get("pending").getAsInt();
+                    int completed = stats.get("completed").getAsInt();
+
+                    runOnUiThread(() -> {
+                        tvOrderCount.setText(String.valueOf(total));
+                    });
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                runOnUiThread(() -> {
+                    tvOrderCount.setText("0");
+                });
+            }
+        });
+
+        // 加载用户信用分
+        ApiClient.get("/api/user/credit", new ApiClient.ApiCallback() {
+            @Override
+            public void onSuccess(JsonElement data) {
+                if (data != null && data.isJsonPrimitive()) {
+                    int credit = data.getAsInt();
+                    runOnUiThread(() -> {
+                        tvCreditScore.setText(String.valueOf(credit));
+                    });
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                runOnUiThread(() -> {
+                    tvCreditScore.setText("80"); // 默认信用分
+                });
+            }
+        });
+
+        // 加载代取员收益（如果是代取员）
+        if (ApiClient.getSavedRole() >= 1) {
+            ApiClient.get("/api/courier/earnings/total", new ApiClient.ApiCallback() {
+                @Override
+                public void onSuccess(JsonElement data) {
+                    if (data != null && data.isJsonPrimitive()) {
+                        double earnings = data.getAsDouble();
+                        runOnUiThread(() -> {
+                            tvEarnings.setText(String.format("%.2f", earnings));
+                        });
+                    }
+                }
+
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() -> {
+                        tvEarnings.setText("0.00");
+                    });
+                }
+            });
+        } else {
+            // 普通用户显示为0
+            tvEarnings.setText("0.00");
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -84,13 +220,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            ApiClient.post("/api/user/logout", new Object(), new ApiClient.ApiCallback() {
-                @Override public void onSuccess(com.google.gson.JsonElement d) {}
-                @Override public void onError(String m) {}
-            });
-            ApiClient.clearLoginInfo();
-            startActivity(new Intent(this, LoginActivity.class));
-            finishAffinity();
+            LoadingStateHelper.showConfirmDialog(this,
+                    "确认退出",
+                    "确定要退出登录吗？",
+                    "退出",
+                    "取消",
+                    () -> {
+                        ApiClient.post("/api/user/logout", new Object(), new ApiClient.ApiCallback() {
+                            @Override public void onSuccess(com.google.gson.JsonElement d) {}
+                            @Override public void onError(String m) {}
+                        });
+                        ApiClient.clearLoginInfo();
+                        startActivity(new Intent(this, LoginActivity.class));
+                        finishAffinity();
+                    },
+                    null
+            );
             return true;
         }
         return super.onOptionsItemSelected(item);

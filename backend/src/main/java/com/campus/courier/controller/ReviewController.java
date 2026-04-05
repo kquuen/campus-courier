@@ -36,4 +36,9 @@ public class ReviewController {
     public Result<?> byUser(@PathVariable Long userId) {
         return reviewService.getUserReviews(userId);
     }
+
+    @GetMapping("/credit-profile/{userId}")
+    public Result<?> creditProfile(@PathVariable Long userId) {
+        return reviewService.getCreditProfile(userId);
+    }
 }
