@@ -9,5 +9,15 @@
 
     <EditText android:id="@+id/etStudentId"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="学号 *"/>
+        android:hint="学号 *" android:layout_marginBottom="12dp"/>
+
+    <TextView android:id="@+id/tvCardStatus"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="校园卡照片（选填）：未选择"
+        android:textSize="13sp"
+        android:layout_marginBottom="8dp"/>
+
+    <Button android:id="@+id/btnPickCard"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="选择校园卡照片"/>
 </LinearLayout>

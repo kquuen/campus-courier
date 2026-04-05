@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">校园代取</string>
+    <!-- 默认 HTTP。若后端使用 https profile（8443），改为 https://10.0.2.2:8443 或电脑局域网 IP -->
+    <string name="api_base_url">http://10.0.2.2:8082</string>
 </resources>

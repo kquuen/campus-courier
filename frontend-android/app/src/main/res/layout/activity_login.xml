@@ -53,12 +53,22 @@
         android:backgroundTint="@color/primary"/>
 
     <TextView
+        android:id="@+id/tvForgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码？"
+        android:textColor="@color/text_secondary"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:padding="8dp"/>
+
+    <TextView
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="没有账号？立即注册"
         android:textColor="@color/primary"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:padding="8dp"/>
 </LinearLayout>

@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusCourier"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true">
 
         <!-- 启动页 -->
@@ -25,6 +26,12 @@
         </activity>
 
         <activity android:name=".activity.LoginActivity"
+            android:exported="false"/>
+        <activity android:name=".activity.ForgotPasswordActivity"
+            android:exported="false"/>
+        <activity android:name=".activity.EditProfileActivity"
+            android:exported="false"/>
+        <activity android:name=".activity.ChangePasswordActivity"
             android:exported="false"/>
         <activity android:name=".activity.RegisterActivity"
             android:exported="false"/>
@@ -43,7 +50,12 @@
             android:exported="false"/>
         <activity android:name=".activity.ProfileActivity"
             android:exported="false"/>
+        <activity android:name=".activity.CourierApplicationTimelineActivity"
+            android:exported="false"/>
         <activity android:name=".activity.MyCourierOrdersActivity" android:exported="false"/>
         <activity android:name=".activity.AdminUserListActivity"   android:exported="false"/>
+        <activity android:name=".activity.AdminCourierAuditActivity" android:exported="false"/>
+        <activity android:name=".activity.AdminStatsActivity" android:exported="false"/>
+        <activity android:name=".activity.AdminAppealListActivity" android:exported="false"/>
     </application>
 </manifest>

@@ -31,6 +31,12 @@
             android:layout_marginBottom="12dp"
             android:background="@color/white" android:padding="12dp"/>
 
+        <EditText android:id="@+id/etExpectedTime"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="期望送达时间（选填，格式 2026-04-05 18:00:00）"
+            android:layout_marginBottom="12dp"
+            android:background="@color/white" android:padding="12dp"/>
+
         <EditText android:id="@+id/etRemark"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="备注（选填）" android:minLines="2"

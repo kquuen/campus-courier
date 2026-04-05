@@ -33,8 +33,22 @@
                 <TextView android:id="@+id/tvRemark"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:textSize="13sp" android:textColor="@color/text_secondary"/>
+                <TextView android:id="@+id/tvExpectedTime"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textSize="13sp" android:layout_marginTop="8dp"
+                    android:visibility="gone"/>
+                <TextView android:id="@+id/tvAppeal"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textSize="13sp" android:textColor="#C62828"
+                    android:layout_marginTop="8dp" android:visibility="gone"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <TextView android:id="@+id/tvPayHint"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="请先完成支付，支付后代取员才能在广场看到本单。"
+            android:textSize="13sp" android:textColor="#E65100"
+            android:visibility="gone" android:layout_marginBottom="8dp"/>
 
         <Button android:id="@+id/btnAction"
             android:layout_width="match_parent" android:layout_height="52dp"
@@ -51,5 +65,8 @@
         <Button android:id="@+id/btnCancel"
             android:layout_width="match_parent" android:layout_height="52dp"
             android:text="取消订单" android:backgroundTint="#9E9E9E" android:visibility="gone"/>
+        <Button android:id="@+id/btnAppeal"
+            android:layout_width="match_parent" android:layout_height="52dp"
+            android:text="异常申诉" android:backgroundTint="#FF9800" android:visibility="gone"/>
     </LinearLayout>
 </ScrollView>

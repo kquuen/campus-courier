@@ -1,9 +1,11 @@
 package com.campus.courier.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class PublishOrderRequest {
@@ -29,4 +31,8 @@ public class PublishOrderRequest {
     @DecimalMin(value = "0.01", message = "代取费用必须大于0")
     @DecimalMax(value = "999.99", message = "代取费用不能超过999.99")
     private BigDecimal fee;
+
+    /** 期望送达/取件时间（可选） */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime expectedTime;
 }

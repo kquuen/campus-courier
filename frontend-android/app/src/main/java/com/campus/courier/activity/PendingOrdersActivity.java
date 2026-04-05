@@ -3,7 +3,9 @@ package com.campus.courier.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +26,7 @@ public class PendingOrdersActivity extends AppCompatActivity {
     private final List<JsonObject> orderList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefresh;
     private TextView tvEmpty;
+    private boolean recommendMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +35,24 @@ public class PendingOrdersActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setTitle("待接单列表");
 
         swipeRefresh = findViewById(R.id.swipeRefresh);
-        tvEmpty      = findViewById(R.id.tvEmpty);
+        tvEmpty = findViewById(R.id.tvEmpty);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RadioGroup rgListMode = findViewById(R.id.rgListMode);
+        rgListMode.setVisibility(View.VISIBLE);
 
         adapter = new OrderAdapter(orderList, order -> {
             Intent intent = new Intent(this, OrderDetailActivity.class);
             intent.putExtra("orderId", order.get("id").getAsLong());
-            intent.putExtra("mode", "courier");  // 代取员模式
+            intent.putExtra("mode", "courier");
             startActivity(intent);
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        rgListMode.setOnCheckedChangeListener((g, id) -> {
+            recommendMode = id == R.id.rbRecommend;
+            loadPendingOrders();
+        });
 
         swipeRefresh.setOnRefreshListener(this::loadPendingOrders);
         loadPendingOrders();
@@ -55,7 +65,10 @@ public class PendingOrdersActivity extends AppCompatActivity {
     }
 
     private void loadPendingOrders() {
-        ApiClient.get("/api/order/pending?page=1&size=20", new ApiClient.ApiCallback() {
+        String path = recommendMode
+                ? "/api/order/recommend?page=1&size=20"
+                : "/api/order/pending?page=1&size=20";
+        ApiClient.get(path, new ApiClient.ApiCallback() {
             @Override
             public void onSuccess(JsonElement data) {
                 orderList.clear();
@@ -72,6 +85,7 @@ public class PendingOrdersActivity extends AppCompatActivity {
                     swipeRefresh.setRefreshing(false);
                 });
             }
+
             @Override
             public void onError(String message) {
                 runOnUiThread(() -> {

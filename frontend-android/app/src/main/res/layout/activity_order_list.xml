@@ -5,24 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:background="@color/gray_bg">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <RadioGroup
+            android:id="@+id/rgListMode"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
-            android:clipToPadding="false"/>
-
-        <TextView
-            android:id="@+id/tvEmpty"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="暂无数据"
-            android:textSize="16sp"
-            android:textColor="@color/text_secondary"
-            android:visibility="gone"/>
-    </FrameLayout>
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/rbHall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="待接单大厅"/>
+
+            <RadioButton
+                android:id="@+id/rbRecommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="智能推荐"/>
+        </RadioGroup>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/gray_bg">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:clipToPadding="false"/>
+
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="暂无数据"
+                android:textSize="16sp"
+                android:textColor="@color/text_secondary"
+                android:visibility="gone"/>
+        </FrameLayout>
+    </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

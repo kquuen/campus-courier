@@ -35,6 +35,12 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- AOP：@RequireRole 方法级权限 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
         <!-- Redis 缓存支持 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -23,6 +23,10 @@ CREATE TABLE IF NOT EXISTS `user` (
     `status`       TINYINT NOT NULL DEFAULT 1 COMMENT '状态: 1正常 0禁用',
     `real_name`    VARCHAR(30) COMMENT '真实姓名（代取员认证用）',
     `id_verified`  TINYINT NOT NULL DEFAULT 0 COMMENT '是否实名认证',
+    `courier_audit_status` TINYINT NOT NULL DEFAULT 0 COMMENT '代取员审核: 0未申请 1待审核 2已通过 3已驳回',
+    `campus_card_image_url` VARCHAR(500) NULL COMMENT '校园卡照片URL',
+    `violation_count` INT NOT NULL DEFAULT 0 COMMENT '违规次数',
+    `violation_remark` VARCHAR(500) NULL COMMENT '最近违规说明',
     `created_at`   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_user_phone` (`phone`),
@@ -48,6 +52,9 @@ CREATE TABLE IF NOT EXISTS `order` (
     `picked_at`       TIMESTAMP COMMENT '取件时间',
     `completed_at`    TIMESTAMP COMMENT '完成时间',
     `image_url`       VARCHAR(200) COMMENT '取件凭证图片',
+    `version`         INT NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+    `appeal_reason`   VARCHAR(500) NULL COMMENT '申诉原因',
+    `arbitrate_remark` VARCHAR(500) NULL COMMENT '仲裁说明',
     `created_at`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_order_publisher` (`publisher_id`),
@@ -99,3 +106,14 @@ CREATE TABLE IF NOT EXISTS `withdrawal` (
     INDEX `idx_withdrawal_courier` (`courier_id`),
     INDEX `idx_withdrawal_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代取员提现记录表';
+
+-- ============ 代取员申请审核进度 ============
+CREATE TABLE IF NOT EXISTS `courier_application_log` (
+    `id`          BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
+    `user_id`     BIGINT NOT NULL COMMENT '用户ID',
+    `event_type`  VARCHAR(32) NOT NULL COMMENT '事件: SUBMITTED/APPROVED/REJECTED',
+    `remark`      VARCHAR(500) NULL COMMENT '备注/驳回原因',
+    `created_at`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX `idx_cal_user` (`user_id`),
+    INDEX `idx_cal_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代取员申请审核进度';

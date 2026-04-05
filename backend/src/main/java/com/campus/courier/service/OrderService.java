@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campus.courier.dto.PublishOrderRequest;
 import com.campus.courier.dto.Result;
+import com.campus.courier.entity.CourierAuditStatus;
 import com.campus.courier.entity.Order;
 import com.campus.courier.entity.OrderStatus;
+import com.campus.courier.entity.PayStatus;
 import com.campus.courier.entity.User;
 import com.campus.courier.entity.UserRole;
 import com.campus.courier.mapper.OrderMapper;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -33,6 +36,7 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final UserMapper userMapper;
     private final CacheService cacheService;
+    private final PaymentService paymentService;
 
     private static final BigDecimal STANDARD_FEE = new BigDecimal("2.00");
     private static final BigDecimal DEFAULT_CREDIT = new BigDecimal("100.0");
@@ -51,6 +55,7 @@ public class OrderService {
         order.setDeliveryAddress(request.getDeliveryAddress());
         order.setRemark(request.getRemark());
         order.setFee(request.getFee() != null ? request.getFee() : STANDARD_FEE);
+        order.setExpectedTime(request.getExpectedTime());
         order.setStatus(OrderStatus.PENDING);
 
         orderMapper.insert(order);
@@ -65,16 +70,26 @@ public class OrderService {
         if (order == null) return Result.fail("订单不存在");
         if (order.getStatus() != OrderStatus.PENDING) return Result.fail("该订单已被接单或已完成");
         if (order.getPublisherId().equals(courierId)) return Result.fail("不能接自己发布的订单");
+        if (!paymentService.isOrderPaid(orderId)) {
+            return Result.fail("发单方尚未完成支付，无法接单");
+        }
 
         User courier = userMapper.selectById(courierId);
-        if (courier == null || !courier.getRole().isAtLeast(UserRole.COURIER)) {
+        if (courier == null || courier.getRole() != UserRole.COURIER) {
             return Result.fail("您不是代取员");
+        }
+        if (courier.getCourierAuditStatus() != CourierAuditStatus.APPROVED) {
+            return Result.fail("代取员资质未通过审核，无法接单");
         }
 
         order.setCourierId(courierId);
         order.setStatus(OrderStatus.ACCEPTED);
         order.setAcceptedAt(LocalDateTime.now());
-        orderMapper.updateById(order);
+        int rows = orderMapper.updateById(order);
+        if (rows == 0) {
+            return Result.fail("接单失败，订单可能已被他人接单，请刷新列表");
+        }
+        evictOrderRelatedCaches(order);
         return Result.ok("接单成功");
     }
 
@@ -87,7 +102,11 @@ public class OrderService {
 
         order.setStatus(OrderStatus.PICKING);
         order.setPickedAt(LocalDateTime.now());
-        orderMapper.updateById(order);
+        int rows = orderMapper.updateById(order);
+        if (rows == 0) {
+            return Result.fail("状态已变更，请刷新后重试");
+        }
+        evictOrderRelatedCaches(order);
         return Result.ok("已更新为取件中");
     }
 
@@ -97,11 +116,17 @@ public class OrderService {
         Order order = getAndCheckCourier(courierId, orderId);
         if (order == null) return Result.fail("无权操作或订单不存在");
         if (order.getStatus() != OrderStatus.PICKING) return Result.fail("当前订单状态不允许此操作");
+        if (!paymentService.isOrderPaid(orderId)) {
+            return Result.fail("订单未支付，无法完成履约结算");
+        }
 
         order.setStatus(OrderStatus.COMPLETED);
         order.setCompletedAt(LocalDateTime.now());
         order.setImageUrl(imageUrl);
-        orderMapper.updateById(order);
+        int rows = orderMapper.updateById(order);
+        if (rows == 0) {
+            return Result.fail("状态已变更，请刷新后重试");
+        }
 
         User courier = userMapper.selectById(courierId);
         if (courier == null) {
@@ -116,6 +141,7 @@ public class OrderService {
         userMapper.updateById(courier);
 
         cacheService.deleteCache("user-profile:" + courierId);
+        evictOrderRelatedCaches(order);
         return Result.ok("订单已完成，收益已到账");
     }
 
@@ -126,21 +152,25 @@ public class OrderService {
         if (order == null) return Result.fail("订单不存在");
         if (!order.getPublisherId().equals(publisherId)) return Result.fail("无权操作");
         if (order.getStatus() != OrderStatus.PENDING) return Result.fail("订单已在处理中，无法取消");
+        if (paymentService.isOrderPaid(orderId)) {
+            return Result.fail("订单已支付，无法直接取消，请联系客服或发起申诉");
+        }
 
         order.setStatus(OrderStatus.CANCELLED);
         orderMapper.updateById(order);
+        evictOrderRelatedCaches(order);
         return Result.ok("订单已取消");
     }
 
-    /** 查询待接单列表（供代取员浏览） */
-    @Cacheable(value = "orders", key = "#page + '-' + #size", unless = "#result == null || #result.data == null")
-    public Result<IPage<Order>> listPendingOrders(int page, int size) {
+    /** 查询待接单列表（供已认证代取员浏览） */
+    @Cacheable(value = "orders", key = "#page + '-' + #size + '-' + #viewerId", unless = "#result == null || #result.data == null || #result.code != 200")
+    public Result<IPage<Order>> listPendingOrders(int page, int size, Long viewerId) {
+        if (!isApprovedCourier(viewerId)) {
+            return Result.fail(403, "需要已通过资质审核的代取员");
+        }
         IPage<Order> result = orderMapper.selectPage(
                 new Page<>(page, size),
-                new LambdaQueryWrapper<Order>()
-                        .eq(Order::getStatus, OrderStatus.PENDING)
-                        .orderByDesc(Order::getCreatedAt)
-        );
+                paidPendingWrapper().orderByDesc(Order::getCreatedAt));
         return Result.ok(result);
     }
 
@@ -148,14 +178,14 @@ public class OrderService {
      * 智能推荐订单 — 综合评分后排序推荐
      * 综合得分 = 费率权重(30%) + 信用分权重(40%) + 时间权重(30%)
      */
-    @Cacheable(value = "orders", key = "'recommend-' + #page + '-' + #size", unless = "#result == null || #result.data == null")
-    public Result<IPage<Order>> smartRecommendOrders(int page, int size) {
+    @Cacheable(value = "orders", key = "'recommend-' + #page + '-' + #size + '-' + #viewerId", unless = "#result == null || #result.data == null || #result.code != 200")
+    public Result<IPage<Order>> smartRecommendOrders(int page, int size, Long viewerId) {
+        if (!isApprovedCourier(viewerId)) {
+            return Result.fail(403, "需要已通过资质审核的代取员");
+        }
         IPage<Order> rawOrders = orderMapper.selectPage(
                 new Page<>(page, size * 2),
-                new LambdaQueryWrapper<Order>()
-                        .eq(Order::getStatus, OrderStatus.PENDING)
-                        .orderByDesc(Order::getCreatedAt)
-        );
+                paidPendingWrapper().orderByDesc(Order::getCreatedAt));
 
         // 批量查询发布者信息，避免 N+1
         Set<Long> publisherIds = rawOrders.getRecords().stream()
@@ -169,22 +199,24 @@ public class OrderService {
             User publisher = userMap.get(order.getPublisherId());
             if (publisher == null) continue;
 
-            // 费率得分（标准费率2元，越高越好）
-            BigDecimal feeScore = order.getFee()
-                    .divide(STANDARD_FEE, 2, RoundingMode.HALF_UP)
-                    .multiply(BigDecimal.valueOf(30));
+            // 费率 0~30：相对标准费，封顶 2 倍映射满 30 分
+            double feeMult = order.getFee()
+                    .divide(STANDARD_FEE, 4, RoundingMode.HALF_UP)
+                    .doubleValue();
+            double feeNorm = Math.min(feeMult, 2.0) / 2.0;
+            BigDecimal feePart = BigDecimal.valueOf(feeNorm * 30);
 
-            // 信用分得分（0-100映射到0-40分）
-            BigDecimal creditScore = publisher.getCreditScore() != null
+            // 信用分 0~40：信用分满 100 对应 40 分
+            BigDecimal creditVal = publisher.getCreditScore() != null
                     ? publisher.getCreditScore() : DEFAULT_CREDIT;
-            BigDecimal creditScoreWeighted = creditScore.multiply(BigDecimal.valueOf(0.4));
+            BigDecimal creditPart = creditVal.multiply(BigDecimal.valueOf(0.4));
 
-            // 时间得分（最近48小时内发布的得分更高）
-            long hoursSincePublish = java.time.Duration.between(order.getCreatedAt(), LocalDateTime.now()).toHours();
-            double timeRatio = Math.min(hoursSincePublish, 48) / 48.0;
-            BigDecimal timeScore = BigDecimal.valueOf(40 - timeRatio * 30);
+            // 时间 0~30：发布时间越新越高（48 小时内线性衰减）
+            long hoursSincePublish = Duration.between(order.getCreatedAt(), LocalDateTime.now()).toHours();
+            double timeT = Math.min(hoursSincePublish, 48) / 48.0;
+            BigDecimal timePart = BigDecimal.valueOf((1.0 - timeT) * 30);
 
-            BigDecimal totalScore = feeScore.add(creditScoreWeighted).add(timeScore);
+            BigDecimal totalScore = feePart.add(creditPart).add(timePart);
             order.setMatchScore(totalScore);
             scoredOrders.add(order);
         }
@@ -241,8 +273,63 @@ public class OrderService {
     public Result<IPage<Order>> adminListOrders(int page, int size, Integer status) {
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<Order>()
                 .orderByDesc(Order::getCreatedAt);
-        if (status != null) wrapper.eq(Order::getStatus, status);
+        if (status != null) {
+            for (OrderStatus s : OrderStatus.values()) {
+                if (s.getCode() == status) {
+                    wrapper.eq(Order::getStatus, s);
+                    break;
+                }
+            }
+        }
         return Result.ok(orderMapper.selectPage(new Page<>(page, size), wrapper));
+    }
+
+    /** 发单方/接单方：异常申诉（进入异常状态，由管理员仲裁） */
+    @Transactional
+    @CacheEvict(value = "orders", allEntries = true)
+    public Result<?> submitAppeal(Long userId, Long orderId, String reason) {
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) return Result.fail("订单不存在");
+        boolean publisher = userId.equals(order.getPublisherId());
+        boolean courier = order.getCourierId() != null && userId.equals(order.getCourierId());
+        if (!publisher && !courier) return Result.fail("无权发起申诉");
+
+        OrderStatus st = order.getStatus();
+        if (st == OrderStatus.PENDING || st == OrderStatus.CANCELLED || st == OrderStatus.ERROR) {
+            return Result.fail("当前状态不可发起申诉");
+        }
+
+        order.setStatus(OrderStatus.ERROR);
+        order.setAppealReason(reason);
+        orderMapper.updateById(order);
+        evictOrderRelatedCaches(order);
+        return Result.ok("申诉已提交，等待管理员处理");
+    }
+
+    /** 管理员仲裁异常订单 */
+    @Transactional
+    @CacheEvict(value = "orders", allEntries = true)
+    public Result<?> arbitrateOrder(Long orderId, Integer targetStatusCode, String remark) {
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) return Result.fail("订单不存在");
+        if (order.getStatus() != OrderStatus.ERROR) {
+            return Result.fail("仅异常/申诉中的订单可仲裁");
+        }
+        OrderStatus next = null;
+        for (OrderStatus s : OrderStatus.values()) {
+            if (s.getCode() == targetStatusCode) {
+                next = s;
+                break;
+            }
+        }
+        if (next != OrderStatus.COMPLETED && next != OrderStatus.CANCELLED) {
+            return Result.fail("仲裁目标状态仅支持：3 已完成 或 4 已取消");
+        }
+        order.setStatus(next);
+        order.setArbitrateRemark(remark);
+        orderMapper.updateById(order);
+        evictOrderRelatedCaches(order);
+        return Result.ok("仲裁处理完成");
     }
 
     /** 订单详情 */
@@ -268,5 +355,32 @@ public class OrderService {
         Order order = orderMapper.selectById(orderId);
         if (order == null || !courierId.equals(order.getCourierId())) return null;
         return order;
+    }
+
+    /** 仅展示「已支付」的待接单订单，与接单规则一致 */
+    private LambdaQueryWrapper<Order> paidPendingWrapper() {
+        return new LambdaQueryWrapper<Order>()
+                .eq(Order::getStatus, OrderStatus.PENDING)
+                .apply("EXISTS (SELECT 1 FROM payment p WHERE p.order_id = `order`.id AND p.pay_status = {0})",
+                        PayStatus.PAID.getCode());
+    }
+
+    private boolean isApprovedCourier(Long userId) {
+        User u = userMapper.selectById(userId);
+        return u != null
+                && u.getRole() == UserRole.COURIER
+                && u.getCourierAuditStatus() == CourierAuditStatus.APPROVED;
+    }
+
+    private void evictOrderRelatedCaches(Order order) {
+        if (order.getId() != null) {
+            cacheService.deleteCache("order-details:" + order.getId());
+        }
+        if (order.getPublisherId() != null) {
+            cacheService.deleteCache("user-orders:" + order.getPublisherId());
+        }
+        if (order.getCourierId() != null) {
+            cacheService.deleteCache("courier-orders:" + order.getCourierId());
+        }
     }
 }

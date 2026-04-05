@@ -56,7 +56,22 @@ public class MainActivity extends AppCompatActivity {
             Button btnAdmin = findViewById(R.id.btnAdmin);
             btnAdmin.setVisibility(android.view.View.VISIBLE);
             btnAdmin.setOnClickListener(v ->
-                    startActivity(new Intent(this, AdminUserListActivity.class)));
+                    new android.app.AlertDialog.Builder(this)
+                            .setTitle("管理后台")
+                            .setItems(new String[]{
+                                    "用户账号管理",
+                                    "代取员资质审核",
+                                    "异常订单仲裁",
+                                    "运营数据统计"
+                            }, (d, which) -> {
+                                Intent intent = null;
+                                if (which == 0) intent = new Intent(this, AdminUserListActivity.class);
+                                else if (which == 1) intent = new Intent(this, AdminCourierAuditActivity.class);
+                                else if (which == 2) intent = new Intent(this, AdminAppealListActivity.class);
+                                else if (which == 3) intent = new Intent(this, AdminStatsActivity.class);
+                                if (intent != null) startActivity(intent);
+                            })
+                            .show());
         }
     }
 

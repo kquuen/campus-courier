@@ -25,6 +25,7 @@ public class PublishOrderActivity extends AppCompatActivity {
         EditText etDeliveryAddress = findViewById(R.id.etDeliveryAddress);
         EditText etFee             = findViewById(R.id.etFee);
         EditText etRemark          = findViewById(R.id.etRemark);
+        EditText etExpectedTime    = findViewById(R.id.etExpectedTime);
         Button   btnSubmit         = findViewById(R.id.btnSubmit);
 
         btnSubmit.setOnClickListener(v -> {
@@ -45,6 +46,10 @@ public class PublishOrderActivity extends AppCompatActivity {
             body.put("deliveryAddress", delivery);
             body.put("fee",             fee.isEmpty() ? "2.00" : fee);
             body.put("remark",          etRemark.getText().toString().trim());
+            String exp = etExpectedTime.getText().toString().trim();
+            if (!exp.isEmpty()) {
+                body.put("expectedTime", exp);
+            }
 
             ApiClient.post("/api/order/publish", body, new ApiClient.ApiCallback() {
                 @Override
