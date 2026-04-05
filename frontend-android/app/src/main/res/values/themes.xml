@@ -10,6 +10,10 @@
         <item name="colorOnSecondary">@color/text_on_accent</item>
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
+        <item name="android:actionMenuTextColor">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="popupTheme">@style/PopupMenu_CampusCourier</item>
     </style>
 
     <style name="Theme.CampusCourier.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -21,6 +25,10 @@
         <item name="colorOnSecondary">@color/text_on_accent</item>
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
+        <item name="android:actionMenuTextColor">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="popupTheme">@style/PopupMenu_CampusCourier</item>
     </style>
 
     <!-- 深色主题 (基础支持) -->
@@ -33,6 +41,10 @@
         <item name="colorOnSecondary">@color/text_on_accent</item>
         <item name="android:statusBarColor">@color/primary_800</item>
         <item name="android:navigationBarColor">@color/primary_900</item>
+        <item name="android:actionMenuTextColor">@color/text_on_primary</item>
+        <item name="android:textColorPrimary">@color/text_on_primary</item>
+        <item name="android:textColorSecondary">@color/gray_300</item>
+        <item name="popupTheme">@style/PopupMenu_CampusCourier</item>
     </style>
 
     <!-- 对话框主题 -->
@@ -44,5 +56,13 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
         <item name="buttonBarButtonStyle">@style/Widget.CampusCourier.Button</item>
+    </style>
+
+    <!-- 弹出菜单主题 -->
+    <style name="PopupMenu_CampusCourier" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:background">@color/surface</item>
     </style>
 </resources>
