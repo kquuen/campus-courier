@@ -115,21 +115,24 @@ public class OrderDetailActivity extends AppCompatActivity
     }
 
     private void renderOrder(JsonObject o) {
-        int status = o.get("status").getAsInt();
+        // 安全获取状态，默认0（待接单）
+        int status = 0;
+        if (o.has("status") && !o.get("status").isJsonNull()) {
+            status = o.get("status").getAsInt();
+        }
 
         // 更新状态时间线
         statusTimelineView.setCurrentStatus(status);
 
-        // 更新文本内容
-        tvOrderNo.setText("订单号：" + o.get("orderNo").getAsString());
+        // 安全获取文本字段，默认"未知"
+        tvOrderNo.setText("订单号：" + safeGetString(o, "orderNo", "未知"));
         tvStatus.setText("状态：" + STATUS_TEXT[Math.min(status, STATUS_TEXT.length - 1)]);
-        tvTracking.setText("快递单号：" + o.get("trackingNo").getAsString());
-        tvPickup.setText("取件地址：" + o.get("pickupAddress").getAsString());
-        tvDelivery.setText("送达地址：" + o.get("deliveryAddress").getAsString());
-        tvFee.setText("¥" + o.get("fee").getAsString());
+        tvTracking.setText("快递单号：" + safeGetString(o, "trackingNo", "暂无"));
+        tvPickup.setText("取件地址：" + safeGetString(o, "pickupAddress", "未知"));
+        tvDelivery.setText("送达地址：" + safeGetString(o, "deliveryAddress", "未知"));
+        tvFee.setText("¥" + safeGetString(o, "fee", "0"));
 
-        String remark = o.has("remark") && !o.get("remark").isJsonNull()
-                ? o.get("remark").getAsString() : "无";
+        String remark = safeGetString(o, "remark", "无");
         tvRemark.setText("备注：" + remark);
 
         // 期望时间
@@ -157,9 +160,8 @@ public class OrderDetailActivity extends AppCompatActivity
         tvPayHint.setVisibility(View.GONE);
 
         long myId = ApiClient.getSavedUserId();
-        long publisherId = o.get("publisherId").getAsLong();
-        long courierId = o.has("courierId") && !o.get("courierId").isJsonNull()
-                ? o.get("courierId").getAsLong() : -1;
+        long publisherId = safeGetLong(o, "publisherId", -1L);
+        long courierId = safeGetLong(o, "courierId", -1L);
 
         boolean imCourierSide = "courier".equals(mode) || myId == courierId;
         boolean imPublisher = myId == publisherId;
@@ -171,6 +173,20 @@ public class OrderDetailActivity extends AppCompatActivity
             // 发布者视角
             setupPublisherButtons(status, myId, publisherId, courierId);
         }
+    }
+
+    private String safeGetString(JsonObject o, String key, String defaultValue) {
+        if (o == null || !o.has(key) || o.get(key).isJsonNull()) {
+            return defaultValue;
+        }
+        return o.get(key).getAsString();
+    }
+
+    private long safeGetLong(JsonObject o, String key, long defaultValue) {
+        if (o == null || !o.has(key) || o.get(key).isJsonNull()) {
+            return defaultValue;
+        }
+        return o.get(key).getAsLong();
     }
 
     private void setupCourierButtons(int status, long myId, long publisherId, long courierId) {
