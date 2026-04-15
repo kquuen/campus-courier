@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 主色调：蓝色系列 (保持现有蓝色主题，扩展层次) -->
+    <!-- 主色调：蓝色系列 (Material Design) -->
     <color name="primary">#1976D2</color>
     <color name="primary_dark">#0D47A1</color>
     <color name="primary_light">#64B5F6</color>
-    <color name="primary_variant">#1565C0</color>
     <!-- 扩展蓝色层次 -->
     <color name="primary_50">#E3F2FD</color>
     <color name="primary_100">#BBDEFB</color>
@@ -17,10 +16,9 @@
     <color name="primary_800">#083885</color>
     <color name="primary_900">#06296E</color>
 
-    <!-- 强调色：橙色 (保持现有，扩展层次) -->
-    <color name="accent">#FF6F00</color>
+    <!-- 强调色：橙色 (Material Design 标准) -->
+    <color name="accent">#FF9800</color>
     <color name="accent_light">#FFB74D</color>
-    <color name="accent_dark">#E65100</color>
     <!-- 扩展橙色层次 -->
     <color name="accent_50">#FFF3E0</color>
     <color name="accent_100">#FFE0B2</color>
@@ -98,21 +96,21 @@
     <color name="card_background">#FFFFFF</color>
     <color name="dialog_background">#FFFFFF</color>
     <color name="surface_variant">@color/gray_50</color>
-    <color name="surface_elevated_1">#FFFFFF</color>
-    <color name="surface_elevated_2">#FFFFFF</color>
+    <color name="surface_elevated_1">@color/white</color>
+    <color name="surface_elevated_2">@color/gray_50</color>
 
     <!-- 阴影和边框 -->
     <color name="outline">@color/gray_300</color>
     <color name="outline_variant">@color/gray_200</color>
-    <color name="shadow">#20000000</color>
-    <color name="shadow_light">#1A000000</color>
+    <color name="shadow">#40000000</color>
+    <color name="shadow_light">#20000000</color>
 
     <!-- 状态颜色 (使用层次色) -->
     <color name="status_pending">@color/accent_400</color>
     <color name="status_accepted">@color/primary_400</color>
     <color name="status_picking">#9C27B0</color>
     <color name="status_completed">@color/success</color>
-    <color name="status_cancelled">@color/gray_500</color>
+    <color name="status_cancelled">@color/gray_600</color>
     <color name="status_abnormal">@color/error</color>
 
     <!-- 支付相关颜色 -->
