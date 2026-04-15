@@ -1,0 +1,2 @@
+﻿"Time","Kind","Trigger","Pid","Name","Path","Cmd","ParentPid","ParentName","ParentPath","ParentCmd"
+"2026-04-16 00:52:21.786","PORT5037","ListenerPidChanged","34388","adb.exe","C:\Users\YaoFeng\AppData\Local\Android\Sdk\platform-tools\adb.exe","adb -L tcp:5037 fork-server server --reply-fd 744","16712","","",""
