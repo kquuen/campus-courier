@@ -30,14 +30,14 @@ public class WxPayClientMock implements ThirdPartyPayClient {
         String sign = generateSign(result);
         result.put("paySign", sign);
 
-        log.info("[寰俊鏀粯Mock] 鐢熸垚棰勬敮浠樿鍗? orderNo={}, amount={}", orderNo, amount);
+        log.info("[微信支付Mock] 生成预支付订单 orderNo={}, amount={}", orderNo, amount);
         return result;
     }
 
     @Override
     public boolean verifyNotify(Map<String, String> params, String signature) {
         if (signature == null || signature.isEmpty()) {
-            log.warn("[寰俊鏀粯Mock] 绛惧悕涓虹┖");
+            log.warn("[微信支付Mock] 签名为空");
             return false;
         }
 
@@ -45,9 +45,9 @@ public class WxPayClientMock implements ThirdPartyPayClient {
         boolean valid = expectedSign.equals(signature);
 
         if (!valid) {
-            log.warn("[寰俊鏀粯Mock] 楠岀澶辫触: expected={}, actual={}", expectedSign, signature);
+            log.warn("[微信支付Mock] 验签失败: expected={}, actual={}", expectedSign, signature);
         } else {
-            log.info("[寰俊鏀粯Mock] 楠岀鎴愬姛");
+            log.info("[微信支付Mock] 验签成功");
         }
 
         return valid;
@@ -73,7 +73,7 @@ public class WxPayClientMock implements ThirdPartyPayClient {
             byte[] hash = mac.doFinal(sb.toString().getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hash);
         } catch (Exception e) {
-            throw new RuntimeException("绛惧悕鐢熸垚澶辫触", e);
+            throw new RuntimeException("签名生成失败", e);
         }
     }
 

@@ -40,8 +40,11 @@ public class ReviewService {
         if (type == ReviewType.USER_TO_COURIER && !order.getPublisherId().equals(reviewerId)) {
             return Result.fail("无权评价");
         }
-        if (type == ReviewType.COURIER_TO_USER && !order.getCourierId().equals(reviewerId)) {
-            return Result.fail("无权评价");
+        if (type == ReviewType.COURIER_TO_USER) {
+            Long courierId = order.getCourierId();
+            if (courierId == null || !courierId.equals(reviewerId)) {
+                return Result.fail("无权评价");
+            }
         }
 
         Long exists = reviewMapper.selectCount(

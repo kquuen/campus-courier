@@ -181,6 +181,9 @@ public class PublishOrderActivity extends AppCompatActivity {
             return;
         }
 
+        // 禁用提交按钮，防止重复点击
+        btnSubmit.setEnabled(false);
+
         // 显示加载状态
         showLoading(true);
 
@@ -193,7 +196,8 @@ public class PublishOrderActivity extends AppCompatActivity {
         body.put("remark", etRemark.getText().toString().trim());
 
         String exp = etExpectedTime.getText().toString().trim();
-        if (!exp.isEmpty()) {
+        // 只发送有效的日期格式
+        if (!exp.isEmpty() && exp.matches("\\d{4}-\\d{2}-\\d{2}.*")) {
             body.put("expectedTime", exp);
         }
 

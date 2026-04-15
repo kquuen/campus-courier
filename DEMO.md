@@ -28,7 +28,7 @@
 ### Web接口
 - **后端API**：http://localhost:8082
 - **Redis/监控**：需使用Redis客户端连接 localhost:6379（Windows使用Memurai）
-- **健康检查**：http://localhost:8082/actuator/health
+- **健康检查**：http://localhost:8082/api/user/profile（需携带 Token）
 
 ### 测试账号
 系统已预置以下测试账号：
@@ -57,7 +57,7 @@
 
 ### 1. 用户登录
 ```bash
-POST http://localhost:8082/api/auth/login
+POST http://localhost:8082/api/user/login
 Content-Type: application/json
 
 {
@@ -68,7 +68,7 @@ Content-Type: application/json
 
 ### 2. 获取用户信息
 ```bash
-GET http://localhost:8082/api/user/info
+GET http://localhost:8082/api/user/profile
 Authorization: Bearer {token}
 ```
 
@@ -120,8 +120,8 @@ campus-courier/
 
 ## ⚡ 快速开始演示
 
-### 方法一：使用启动脚本（推荐）
-1. 双击运行 `start-demo.bat`
+### 方法一：使用启动脚本（如已配置）
+1. 双击运行 `start-demo.bat`（如项目根目录存在此脚本）
 2. 脚本会自动：
    - 检查并启动Redis服务
    - 启动后端Spring Boot应用

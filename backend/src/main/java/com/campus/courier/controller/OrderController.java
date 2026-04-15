@@ -94,6 +94,14 @@ public class OrderController {
         return orderService.myCourierOrders(UserContext.getUserId());
     }
 
+    @GetMapping("/list")
+    public Result<?> list(@RequestParam(defaultValue = "1") int page,
+                         @RequestParam(defaultValue = "10") int size,
+                         @RequestParam(required = false) Integer status,
+                         @RequestParam(required = false) String role) {
+        return orderService.listMyOrders(page, size, UserContext.getUserId(), status, role);
+    }
+
     @GetMapping("/{id}")
     public Result<?> detail(@PathVariable Long id) {
         return orderService.getDetail(id);

@@ -65,7 +65,11 @@ public class AdminController {
     @PutMapping("/users/{userId}/role")
     public Result<?> assignRole(@PathVariable Long userId,
                                 @Valid @RequestBody AssignRoleRequest request) {
-        UserRole role = UserRole.values()[request.getRole()];
+        int roleCode = request.getRole();
+        if (roleCode < 0 || roleCode >= UserRole.values().length) {
+            return Result.fail(400, "无效的角色");
+        }
+        UserRole role = UserRole.values()[roleCode];
         return userService.assignUserRole(userId, role);
     }
 

@@ -10,10 +10,10 @@ public enum OrderStatus {
     PENDING(0, "待接单"),
     ACCEPTED(1, "已接单"),
     PICKING(2, "取件中"),
-    DELIVERING(6, "配送中"),
-    COMPLETED(3, "已完成"),
-    CANCELLED(4, "已取消"),
-    ERROR(5, "异常");
+    DELIVERING(3, "配送中"),
+    COMPLETED(4, "已完成"),
+    CANCELLED(5, "已取消"),
+    ERROR(6, "异常");
 
     @EnumValue
     @JsonValue

@@ -14,6 +14,7 @@ import com.campus.courier.dto.CourierApplicationTimelineVo;
 import com.campus.courier.dto.UpdateProfileRequest;
 import com.campus.courier.entity.CourierApplicationLog;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -103,8 +105,8 @@ public class UserService {
             try {
                 Long uid = jwtUtil.getUserId(token);
                 cacheService.deleteCache("user-profile:" + uid);
-            } catch (Exception ignored) {
-                // token 无效时仍完成黑名单注销
+            } catch (Exception e) {
+                log.warn("注销时解析用户ID失败（token可能已失效）: {}", e.getMessage());
             }
         }
         return Result.ok("已退出登录");

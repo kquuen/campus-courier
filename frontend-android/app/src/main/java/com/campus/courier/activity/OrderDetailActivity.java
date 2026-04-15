@@ -87,6 +87,11 @@ public class OrderDetailActivity extends AppCompatActivity
     }
 
     private void loadDetail() {
+        if (orderId <= 0) {
+            showLoading(false);
+            LoadingStateHelper.showErrorSnackbar(btnAction, "无效的订单ID");
+            return;
+        }
         showLoading(true);
 
         ApiClient.get("/api/order/" + orderId, new ApiClient.ApiCallback() {

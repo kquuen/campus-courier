@@ -343,6 +343,34 @@ public class OrderService {
         return Result.ok(orders);
     }
 
+    /** 查询我的订单（发单+接单） */
+    public Result<IPage<Order>> listMyOrders(int page, int size, Long userId,
+                                              Integer status, String role) {
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<Order>();
+
+        // 根据 role 筛选：publisher=我发布的, courier=我接单的, 默认两者都查
+        if ("publisher".equalsIgnoreCase(role)) {
+            wrapper.eq(Order::getPublisherId, userId);
+        } else if ("courier".equalsIgnoreCase(role)) {
+            wrapper.eq(Order::getCourierId, userId);
+        } else {
+            wrapper.and(w -> w.eq(Order::getPublisherId, userId)
+                    .or().eq(Order::getCourierId, userId));
+        }
+
+        if (status != null) {
+            for (OrderStatus s : OrderStatus.values()) {
+                if (s.getCode() == status) {
+                    wrapper.eq(Order::getStatus, s);
+                    break;
+                }
+            }
+        }
+
+        wrapper.orderByDesc(Order::getCreatedAt);
+        return Result.ok(orderMapper.selectPage(new Page<>(page, size), wrapper));
+    }
+
     /** 管理员查看所有订单 */
     public Result<IPage<Order>> adminListOrders(int page, int size, Integer status,
                                                  BigDecimal minFee, BigDecimal maxFee,

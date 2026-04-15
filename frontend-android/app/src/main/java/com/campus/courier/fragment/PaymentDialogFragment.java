@@ -218,15 +218,15 @@ public class PaymentDialogFragment extends DialogFragment {
         Map<String, Object> body = new HashMap<>();
         body.put("orderId", orderId);
         body.put("payType", selectedPayType);
-        
+
         ApiClient.post("/api/payment/pay", body, new ApiClient.ApiCallback() {
             @Override
             public void onSuccess(JsonElement data) {
-                requireActivity().runOnUiThread(() -> {
+                runUiSafely(() -> {
                     if (data != null && data.isJsonObject()) {
                         JsonObject obj = data.getAsJsonObject();
                         boolean needCallback = obj.has("needCallback") && obj.get("needCallback").getAsBoolean();
-                        
+
                         if (needCallback && obj.has("paymentNo")) {
                             String paymentNo = obj.get("paymentNo").getAsString();
                             showThirdPartyPaymentConfirm(paymentNo);
@@ -243,10 +243,9 @@ public class PaymentDialogFragment extends DialogFragment {
 
             @Override
             public void onError(String message) {
-                requireActivity().runOnUiThread(() -> {
+                runUiSafely(() -> {
                     resetPaymentButton();
                     Toast.makeText(getContext(), "支付失败: " + message, Toast.LENGTH_LONG).show();
-                    
                     if (callback != null) {
                         callback.onPaymentFailure(message);
                     }
@@ -277,17 +276,15 @@ public class PaymentDialogFragment extends DialogFragment {
         ApiClient.post("/api/payment/callback/" + paymentNo, new Object(), new ApiClient.ApiCallback() {
             @Override
             public void onSuccess(JsonElement data) {
-                requireActivity().runOnUiThread(() -> {
-                    handlePaymentSuccess();
-                });
+                // 使用安全的方式执行 UI 操作
+                runUiSafely(() -> handlePaymentSuccess());
             }
 
             @Override
             public void onError(String message) {
-                requireActivity().runOnUiThread(() -> {
+                runUiSafely(() -> {
                     resetPaymentButton();
                     Toast.makeText(getContext(), "支付确认失败: " + message, Toast.LENGTH_LONG).show();
-                    
                     if (callback != null) {
                         callback.onPaymentFailure(message);
                     }
@@ -296,18 +293,36 @@ public class PaymentDialogFragment extends DialogFragment {
         });
     }
 
+    /** 安全地执行 UI 操作，避免 Activity 已销毁时崩溃 */
+    private void runUiSafely(Runnable action) {
+        if (!isAdded() || getActivity() == null) return;
+        getActivity().runOnUiThread(action);
+    }
+
     private void handlePaymentSuccess() {
         resetPaymentButton();
         Toast.makeText(getContext(), "支付成功！", Toast.LENGTH_LONG).show();
-        
+
         if (callback != null) {
             callback.onPaymentSuccess();
         }
-        
-        dismiss();
+
+        // 使用安全的 dismiss 方式，避免 Activity 销毁后崩溃
+        safeDismiss();
+    }
+
+    private void safeDismiss() {
+        if (!isAdded() || getActivity() == null || getActivity().isFinishing()) return;
+        if (getDialog() == null) return;
+        try {
+            dismiss();
+        } catch (Exception e) {
+            // 忽略 dismiss 异常
+        }
     }
 
     private void resetPaymentButton() {
+        if (btnConfirmPayment == null || progressBar == null) return;
         btnConfirmPayment.setEnabled(true);
         btnConfirmPayment.setText("确认支付");
         progressBar.setVisibility(View.GONE);

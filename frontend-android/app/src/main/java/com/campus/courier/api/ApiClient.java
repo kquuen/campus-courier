@@ -195,6 +195,10 @@ public class ApiClient {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    callback.onError("请求失败: " + response.code());
+                    return;
+                }
                 String body = response.body() != null ? response.body().string() : "{}";
                 try {
                     JsonObject json = JsonParser.parseString(body).getAsJsonObject();
