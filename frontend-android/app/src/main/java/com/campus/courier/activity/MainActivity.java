@@ -142,14 +142,12 @@ public class MainActivity extends AppCompatActivity {
         tvEarnings.setText("...");
 
         // 加载订单统计数据
-        ApiClient.get("/api/order/user/stats", new ApiClient.ApiCallback() {
+        ApiClient.get("/api/order/list?page=1&size=1", new ApiClient.ApiCallback() {
             @Override
             public void onSuccess(JsonElement data) {
                 if (data != null && data.isJsonObject()) {
-                    JsonObject stats = data.getAsJsonObject();
-                    int total = stats.get("total").getAsInt();
-                    int pending = stats.get("pending").getAsInt();
-                    int completed = stats.get("completed").getAsInt();
+                    JsonObject obj = data.getAsJsonObject();
+                    int total = obj.has("total") ? obj.get("total").getAsInt() : 0;
 
                     runOnUiThread(() -> {
                         tvOrderCount.setText(String.valueOf(total));
@@ -165,12 +163,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 加载用户信用分
-        ApiClient.get("/api/user/credit", new ApiClient.ApiCallback() {
+        // 加载用户信用分（从用户资料接口）
+        ApiClient.get("/api/user/profile", new ApiClient.ApiCallback() {
             @Override
             public void onSuccess(JsonElement data) {
-                if (data != null && data.isJsonPrimitive()) {
-                    int credit = data.getAsInt();
+                if (data != null && data.isJsonObject()) {
+                    JsonObject profile = data.getAsJsonObject();
+                    int credit = profile.has("creditScore") ? profile.get("creditScore").getAsInt() : 80;
                     runOnUiThread(() -> {
                         tvCreditScore.setText(String.valueOf(credit));
                     });
@@ -187,11 +186,12 @@ public class MainActivity extends AppCompatActivity {
 
         // 加载代取员收益（如果是代取员）
         if (ApiClient.getSavedRole() >= 1) {
-            ApiClient.get("/api/courier/earnings/total", new ApiClient.ApiCallback() {
+            ApiClient.get("/api/courier/earnings/summary", new ApiClient.ApiCallback() {
                 @Override
                 public void onSuccess(JsonElement data) {
-                    if (data != null && data.isJsonPrimitive()) {
-                        double earnings = data.getAsDouble();
+                    if (data != null && data.isJsonObject()) {
+                        JsonObject summary = data.getAsJsonObject();
+                        double earnings = summary.has("totalEarn") ? summary.get("totalEarn").getAsDouble() : 0.0;
                         runOnUiThread(() -> {
                             tvEarnings.setText(String.format("%.2f", earnings));
                         });

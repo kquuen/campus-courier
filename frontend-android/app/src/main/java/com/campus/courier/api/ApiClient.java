@@ -10,9 +10,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import okhttp3.*;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class ApiClient {
@@ -23,6 +28,7 @@ public class ApiClient {
     private static OkHttpClient client;
     private static Context appContext;
     private static final Gson gson = new Gson();
+    private static final ExecutorService uploadExecutor = Executors.newSingleThreadExecutor();
 
     public static void init(Context context) {
         appContext = context.getApplicationContext();
@@ -137,7 +143,7 @@ public class ApiClient {
             callback.onError("客户端未初始化");
             return;
         }
-        client.dispatcher().executorService().execute(() -> {
+        uploadExecutor.execute(() -> {
             try (InputStream is = appContext.getContentResolver().openInputStream(imageUri)) {
                 if (is == null) {
                     callback.onError("无法读取图片");
@@ -189,17 +195,20 @@ public class ApiClient {
     private static void execute(Request request, ApiCallback callback) {
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@Nullable Call call, @NotNull IOException e) {
                 callback.onError("网络错误：" + e.getMessage());
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     callback.onError("请求失败: " + response.code());
                     return;
                 }
-                String body = response.body() != null ? response.body().string() : "{}";
+                String body;
+                try (ResponseBody responseBody = response.body()) {
+                    body = responseBody.string();
+                }
                 try {
                     JsonObject json = JsonParser.parseString(body).getAsJsonObject();
                     int code = json.get("code").getAsInt();
