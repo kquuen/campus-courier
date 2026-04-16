@@ -32,7 +32,14 @@ public class SettlementService {
     private BigDecimal platformRate;
 
     @Transactional
-    public void settleOrder(Long orderId, Long courierId) {
+    public BigDecimal settleOrder(Long orderId, Long courierId) {
+        // 幂等检查：防止重复结算
+        Long existingCount = settlementMapper.selectCount(
+                new LambdaQueryWrapper<Settlement>().eq(Settlement::getOrderId, orderId));
+        if (existingCount > 0) {
+            throw new IllegalStateException("订单已结算，禁止重复操作");
+        }
+
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
             throw new IllegalArgumentException("订单不存在");
@@ -55,21 +62,24 @@ public class SettlementService {
         settlement.setCourierEarn(courierEarn);
         settlement.setSettledAt(LocalDateTime.now());
         settlementMapper.insert(settlement);
+        return courierEarn;
     }
 
     public Result<Map<String, Object>> getEarningsSummary(Long courierId) {
-        List<Settlement> settlements = settlementMapper.selectList(
+        Long totalOrders = settlementMapper.selectCount(
                 new LambdaQueryWrapper<Settlement>()
                         .eq(Settlement::getCourierId, courierId));
 
         BigDecimal totalEarn = BigDecimal.ZERO;
-        if (!settlements.isEmpty()) {
+        if (totalOrders > 0) {
+            List<Settlement> settlements = settlementMapper.selectList(
+                    new LambdaQueryWrapper<Settlement>()
+                            .select(Settlement::getCourierEarn)
+                            .eq(Settlement::getCourierId, courierId));
             totalEarn = settlements.stream()
                     .map(Settlement::getCourierEarn)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
-
-        long totalOrders = settlements.size();
 
         Map<String, Object> summary = new HashMap<>();
         summary.put("totalEarn", totalEarn);

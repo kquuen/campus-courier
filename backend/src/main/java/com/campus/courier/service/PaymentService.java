@@ -11,9 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -124,10 +121,8 @@ public class PaymentService {
         return Result.ok("支付成功（模拟回调）");
     }
 
-    @PostMapping("/notify/wechat")
     @Transactional
-    public Result<?> wechatNotify(@RequestBody Map<String, String> params,
-                                   @RequestHeader(value = "X-Signature", required = false) String signature) {
+    public Result<?> wechatNotify(Map<String, String> params, String signature) {
         String paymentNo = params.get("out_trade_no");
         if (paymentNo == null) {
             return Result.fail(400, "缺少订单号");
@@ -159,10 +154,8 @@ public class PaymentService {
         return Result.ok("success");
     }
 
-    @PostMapping("/notify/alipay")
     @Transactional
-    public Result<?> alipayNotify(@RequestBody Map<String, String> params,
-                                   @RequestHeader(value = "X-Signature", required = false) String signature) {
+    public Result<?> alipayNotify(Map<String, String> params, String signature) {
         String paymentNo = params.get("out_trade_no");
         if (paymentNo == null) {
             return Result.fail(400, "缺少订单号");
@@ -210,13 +203,14 @@ public class PaymentService {
         if (payment == null) return Result.fail("订单未支付，无需退款");
         if (payment.getPayStatus() == PayStatus.REFUNDED) return Result.fail("订单已退款");
 
-        if (payment.getPayType() == PayType.BALANCE || payment.getPayType() == PayType.CAMPUS_CARD) {
+        if (payment.getPayType() == PayType.BALANCE) {
             User user = userMapper.selectById(userId);
             if (user == null) return Result.fail("用户不存在");
             BigDecimal currentBalance = user.getBalance() != null ? user.getBalance() : BigDecimal.ZERO;
             user.setBalance(currentBalance.add(payment.getAmount()));
             userMapper.updateById(user);
         }
+        // CAMPUS_CARD 支付未从 balance 扣款，不退回余额
 
         payment.setPayStatus(PayStatus.REFUNDED);
         paymentMapper.updateById(payment);

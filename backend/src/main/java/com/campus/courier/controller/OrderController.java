@@ -46,7 +46,7 @@ public class OrderController {
 
     @PostMapping("/{id}/complete")
     public Result<?> complete(@PathVariable Long id,
-                              @RequestBody CompleteOrderRequest request) {
+                              @Valid @RequestBody CompleteOrderRequest request) {
         return orderService.completeOrder(
                 UserContext.getUserId(), id, request.getImageUrl());
     }
@@ -104,7 +104,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public Result<?> detail(@PathVariable Long id) {
-        return orderService.getDetail(id);
+        return orderService.getDetail(UserContext.getUserId(), id);
     }
 
     @GetMapping("/admin/list")

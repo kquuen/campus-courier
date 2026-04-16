@@ -167,7 +167,7 @@ public class OrderService {
             return Result.fail("状态已变更，请刷新后重试");
         }
 
-        settlementService.settleOrder(orderId, courierId);
+        BigDecimal courierEarn = settlementService.settleOrder(orderId, courierId);
 
         User courier = userMapper.selectById(courierId);
         if (courier == null) {
@@ -176,10 +176,6 @@ public class OrderService {
 
         BigDecimal currentBalance = courier.getBalance() != null ? courier.getBalance() : BigDecimal.ZERO;
         BigDecimal currentCredit = courier.getCreditScore() != null ? courier.getCreditScore() : DEFAULT_CREDIT;
-
-        BigDecimal orderFee = order.getFee();
-        BigDecimal platformFee = orderFee.multiply(new BigDecimal("0.1")).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal courierEarn = orderFee.subtract(platformFee);
 
         courier.setBalance(currentBalance.add(courierEarn));
         courier.setCreditScore(currentCredit.add(CREDIT_INCREMENT));
@@ -207,7 +203,10 @@ public class OrderService {
         }
 
         order.setStatus(OrderStatus.CANCELLED);
-        orderMapper.updateById(order);
+        int rows = orderMapper.updateById(order);
+        if (rows == 0) {
+            return Result.fail("操作失败，请刷新后重试");
+        }
         evictOrderRelatedCaches(order);
         return Result.ok("订单已取消");
     }
@@ -217,6 +216,7 @@ public class OrderService {
     public Result<IPage<Order>> listPendingOrders(int page, int size, Long viewerId,
                                                    BigDecimal minFee, BigDecimal maxFee,
                                                    String since, String areaKeyword) {
+        size = Math.min(size, 100);
         if (!isApprovedCourier(viewerId)) {
             return Result.fail(403, "需要已通过资质审核的代取员");
         }
@@ -254,6 +254,7 @@ public class OrderService {
      */
     @Cacheable(value = "orders", key = "'recommend-' + #page + '-' + #size + '-' + #viewerId", unless = "#result == null || #result.data == null || #result.code != 200")
     public Result<IPage<Order>> smartRecommendOrders(int page, int size, Long viewerId) {
+        size = Math.min(size, 100);
         if (!isApprovedCourier(viewerId)) {
             return Result.fail(403, "需要已通过资质审核的代取员");
         }
@@ -320,6 +321,7 @@ public class OrderService {
                 new LambdaQueryWrapper<Order>()
                         .eq(Order::getPublisherId, publisherId)
                         .orderByDesc(Order::getCreatedAt)
+                        .last("LIMIT 200")
         );
 
         cacheService.setCache("user-orders:" + publisherId, orders, 1800, TimeUnit.SECONDS);
@@ -337,6 +339,7 @@ public class OrderService {
                 new LambdaQueryWrapper<Order>()
                         .eq(Order::getCourierId, courierId)
                         .orderByDesc(Order::getCreatedAt)
+                        .last("LIMIT 200")
         );
 
         cacheService.setCache("courier-orders:" + courierId, orders, 1800, TimeUnit.SECONDS);
@@ -346,6 +349,7 @@ public class OrderService {
     /** 查询我的订单（发单+接单） */
     public Result<IPage<Order>> listMyOrders(int page, int size, Long userId,
                                               Integer status, String role) {
+        size = Math.min(size, 100);
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<Order>();
 
         // 根据 role 筛选：publisher=我发布的, courier=我接单的, 默认两者都查
@@ -375,6 +379,7 @@ public class OrderService {
     public Result<IPage<Order>> adminListOrders(int page, int size, Integer status,
                                                  BigDecimal minFee, BigDecimal maxFee,
                                                  String since, String areaKeyword) {
+        size = Math.min(size, 100);
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<Order>();
         
         if (status != null) {
@@ -432,7 +437,10 @@ public class OrderService {
 
         order.setStatus(OrderStatus.ERROR);
         order.setAppealReason(reason);
-        orderMapper.updateById(order);
+        int rows = orderMapper.updateById(order);
+        if (rows == 0) {
+            return Result.fail("操作失败，请刷新后重试");
+        }
         evictOrderRelatedCaches(order);
         return Result.ok("申诉已提交，等待管理员处理");
     }
@@ -453,7 +461,7 @@ public class OrderService {
             }
         }
         if (next != OrderStatus.COMPLETED && next != OrderStatus.CANCELLED) {
-            return Result.fail("仲裁目标状态仅支持：3 已完成 或 4 已取消");
+            return Result.fail("仲裁目标状态仅支持：已完成(" + OrderStatus.COMPLETED.getCode() + ") 或 已取消(" + OrderStatus.CANCELLED.getCode() + ")");
         }
         
         try {
@@ -464,20 +472,34 @@ public class OrderService {
         
         order.setStatus(next);
         order.setArbitrateRemark(remark);
-        orderMapper.updateById(order);
+        int rows = orderMapper.updateById(order);
+        if (rows == 0) {
+            return Result.fail("操作失败，请刷新后重试");
+        }
         evictOrderRelatedCaches(order);
         return Result.ok("仲裁处理完成");
     }
 
-    /** 订单详情 */
-    public Result<Order> getDetail(Long orderId) {
+    /** 订单详情（含权限校验） */
+    public Result<Order> getDetail(Long userId, Long orderId) {
         Order cachedOrder = (Order) cacheService.getCache("order-details:" + orderId);
         if (cachedOrder != null) {
+            if (!userId.equals(cachedOrder.getPublisherId())
+                    && !userId.equals(cachedOrder.getCourierId())
+                    && !isAdmin(userId)) {
+                return Result.fail(403, "无权查看此订单");
+            }
             return Result.ok(cachedOrder);
         }
 
         Order order = orderMapper.selectById(orderId);
         if (order == null) return Result.fail("订单不存在");
+
+        if (!userId.equals(order.getPublisherId())
+                && !userId.equals(order.getCourierId())
+                && !isAdmin(userId)) {
+            return Result.fail(403, "无权查看此订单");
+        }
 
         cacheService.setCache("order-details:" + orderId, order, 1800, TimeUnit.SECONDS);
         return Result.ok(order);
@@ -507,6 +529,11 @@ public class OrderService {
         return u != null
                 && u.getRole() == UserRole.COURIER
                 && u.getCourierAuditStatus() == CourierAuditStatus.APPROVED;
+    }
+
+    private boolean isAdmin(Long userId) {
+        User u = userMapper.selectById(userId);
+        return u != null && u.getRole() == UserRole.ADMIN;
     }
 
     private void evictOrderRelatedCaches(Order order) {
