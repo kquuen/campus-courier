@@ -484,9 +484,10 @@ public class OrderService {
     public Result<Order> getDetail(Long userId, Long orderId) {
         Order cachedOrder = (Order) cacheService.getCache("order-details:" + orderId);
         if (cachedOrder != null) {
-            if (!userId.equals(cachedOrder.getPublisherId())
-                    && !userId.equals(cachedOrder.getCourierId())
-                    && !isAdmin(userId)) {
+            if (userId == null
+                    || (!userId.equals(cachedOrder.getPublisherId())
+                        && !userId.equals(cachedOrder.getCourierId())
+                        && !isAdmin(userId))) {
                 return Result.fail(403, "无权查看此订单");
             }
             return Result.ok(cachedOrder);
@@ -495,9 +496,10 @@ public class OrderService {
         Order order = orderMapper.selectById(orderId);
         if (order == null) return Result.fail("订单不存在");
 
-        if (!userId.equals(order.getPublisherId())
-                && !userId.equals(order.getCourierId())
-                && !isAdmin(userId)) {
+        if (userId == null
+                || (!userId.equals(order.getPublisherId())
+                    && !userId.equals(order.getCourierId())
+                    && !isAdmin(userId))) {
             return Result.fail(403, "无权查看此订单");
         }
 

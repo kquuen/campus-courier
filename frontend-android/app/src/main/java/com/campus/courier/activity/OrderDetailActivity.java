@@ -112,6 +112,11 @@ public class OrderDetailActivity extends AppCompatActivity
                 });
             }
         });
+
+        // 超时保护：15秒后强制关闭loading
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+            showLoading(false);
+        }, 15000);
     }
 
     private void renderOrder(JsonObject o) {
@@ -258,6 +263,13 @@ public class OrderDetailActivity extends AppCompatActivity
                 });
             }
         });
+
+        // 超时保护
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+            btnPay.setVisibility(View.VISIBLE);
+            tvPayHint.setVisibility(View.VISIBLE);
+            btnPay.setOnClickListener(v -> showModernPayDialog());
+        }, 15000);
     }
 
     private void showModernPayDialog() {
@@ -424,6 +436,10 @@ public class OrderDetailActivity extends AppCompatActivity
 
     private void showLoading(boolean show) {
         if (show) {
+            // 先移除旧的loading（防止重复创建）
+            if (loadingOverlay != null) {
+                LoadingStateHelper.hideFullScreenLoading(this, loadingOverlay);
+            }
             loadingOverlay = LoadingStateHelper.showFullScreenLoading(this);
             progressBar.setVisibility(View.VISIBLE);
             setButtonsEnabled(false);
