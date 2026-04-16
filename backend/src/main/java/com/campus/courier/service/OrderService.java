@@ -303,7 +303,7 @@ public class OrderService {
 
         IPage<Order> result = new Page<>(page, size);
         result.setRecords(sortedOrders);
-        result.setTotal(sortedOrders.size());
+        result.setTotal(rawOrders.getTotal());
         result.setSize(size);
         result.setCurrent(page);
 
@@ -484,10 +484,7 @@ public class OrderService {
     public Result<Order> getDetail(Long userId, Long orderId) {
         Order cachedOrder = (Order) cacheService.getCache("order-details:" + orderId);
         if (cachedOrder != null) {
-            if (userId == null
-                    || (!userId.equals(cachedOrder.getPublisherId())
-                        && !userId.equals(cachedOrder.getCourierId())
-                        && !isAdmin(userId))) {
+            if (!canViewOrderDetail(userId, cachedOrder)) {
                 return Result.fail(403, "无权查看此订单");
             }
             return Result.ok(cachedOrder);
@@ -496,10 +493,7 @@ public class OrderService {
         Order order = orderMapper.selectById(orderId);
         if (order == null) return Result.fail("订单不存在");
 
-        if (userId == null
-                || (!userId.equals(order.getPublisherId())
-                    && !userId.equals(order.getCourierId())
-                    && !isAdmin(userId))) {
+        if (!canViewOrderDetail(userId, order)) {
             return Result.fail(403, "无权查看此订单");
         }
 
@@ -538,6 +532,17 @@ public class OrderService {
         return u != null && u.getRole() == UserRole.ADMIN;
     }
 
+    private boolean canViewOrderDetail(Long userId, Order order) {
+        if (userId == null || order == null) {
+            return false;
+        }
+        if (userId.equals(order.getPublisherId())
+                || userId.equals(order.getCourierId())
+                || isAdmin(userId)) {
+            return true;
+        }
+        return order.getStatus() == OrderStatus.PENDING && isApprovedCourier(userId);
+    }
     private void evictOrderRelatedCaches(Order order) {
         if (order.getId() != null) {
             cacheService.deleteCache("order-details:" + order.getId());

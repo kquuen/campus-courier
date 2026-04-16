@@ -23,13 +23,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="待接单大厅"/>
+                android:text="接单大厅" />
 
             <RadioButton
                 android:id="@+id/rbRecommend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="智能推荐"/>
+                android:text="智能推荐" />
         </RadioGroup>
 
         <FrameLayout
@@ -42,8 +42,8 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
-                android:clipToPadding="false"/>
+                android:clipToPadding="false"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/tvEmpty"
@@ -51,9 +51,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="暂无数据"
-                android:textSize="16sp"
                 android:textColor="@color/text_secondary"
-                android:visibility="gone"/>
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
