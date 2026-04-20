@@ -11,7 +11,8 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="头像图片 URL（选填）" android:layout_marginBottom="24dp"/>
         <Button android:id="@+id/btnSave"
-            android:layout_width="match_parent" android:layout_height="52dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="52dp"
             android:text="保存" android:backgroundTint="@color/primary"/>
     </LinearLayout>
 </ScrollView>

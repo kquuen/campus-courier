@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class PayRequest {
 
-    @NotNull(message = "订单ID不能为空")
+    @NotNull(message = "\u8ba2\u5355ID\u4e0d\u80fd\u4e3a\u7a7a")
     private Long orderId;
 
-    @NotNull(message = "支付方式不能为空")
-    @Min(value = 1, message = "支付方式无效")
-    @Max(value = 3, message = "支付方式无效")
+    @NotNull(message = "\u652f\u4ed8\u65b9\u5f0f\u4e0d\u80fd\u4e3a\u7a7a")
+    @Min(value = 1, message = "\u652f\u4ed8\u65b9\u5f0f\u65e0\u6548")
+    @Max(value = 4, message = "\u652f\u4ed8\u65b9\u5f0f\u65e0\u6548")
     private Integer payType;
 }

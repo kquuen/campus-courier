@@ -107,6 +107,22 @@ CREATE TABLE IF NOT EXISTS `withdrawal` (
     INDEX `idx_withdrawal_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代取员提现记录表';
 
+-- ============ 订单结算表 ============
+CREATE TABLE IF NOT EXISTS `settlement` (
+    `id`            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `order_id`      BIGINT NOT NULL,
+    `courier_id`    BIGINT NOT NULL,
+    `order_fee`     DECIMAL(8,2) NOT NULL,
+    `platform_rate` DECIMAL(5,4) NOT NULL,
+    `platform_fee`  DECIMAL(8,2) NOT NULL,
+    `courier_earn`  DECIMAL(8,2) NOT NULL,
+    `settled_at`    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `created_at`    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY `uk_settlement_order` (`order_id`),
+    INDEX `idx_settlement_courier` (`courier_id`),
+    INDEX `idx_settlement_settled_at` (`settled_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- ============ 代取员申请审核进度 ============
 CREATE TABLE IF NOT EXISTS `courier_application_log` (
     `id`          BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',

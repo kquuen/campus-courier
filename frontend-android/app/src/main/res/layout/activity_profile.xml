@@ -33,29 +33,34 @@
 
     <!-- 操作按钮 -->
     <Button android:id="@+id/btnApplyCourier"
-        android:layout_width="match_parent" android:layout_height="52dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="52dp"
         android:layout_margin="16dp" android:text="申请成为代取员"
         android:backgroundTint="@color/accent" android:visibility="gone"/>
 
     <Button android:id="@+id/btnCourierTimeline"
-        android:layout_width="match_parent" android:layout_height="48dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_marginHorizontal="16dp"
         android:text="代取审核进度"
         android:visibility="gone"
         android:backgroundTint="#00897B"/>
 
     <Button android:id="@+id/btnMyCourierOrders"
-        android:layout_width="match_parent" android:layout_height="52dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="52dp"
         android:layout_marginHorizontal="16dp" android:text="查看我接的订单"
         android:backgroundTint="@color/primary" android:visibility="gone"/>
 
     <Button android:id="@+id/btnEditProfile"
-        android:layout_width="match_parent" android:layout_height="48dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_marginHorizontal="16dp" android:layout_marginTop="8dp"
         android:text="修改资料" android:backgroundTint="#5C6BC0"/>
 
     <Button android:id="@+id/btnChangePassword"
-        android:layout_width="match_parent" android:layout_height="48dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_marginHorizontal="16dp" android:layout_marginTop="8dp"
         android:text="修改密码" android:backgroundTint="#78909C"/>
 </LinearLayout>

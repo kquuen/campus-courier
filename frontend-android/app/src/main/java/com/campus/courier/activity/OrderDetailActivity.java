@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.campus.courier.R;
 import com.campus.courier.api.ApiClient;
 import com.campus.courier.fragment.PaymentDialogFragment;
+import com.campus.courier.fragment.RefundDialogFragment;
 import com.campus.courier.util.LoadingStateHelper;
 import com.campus.courier.view.OrderStatusTimelineView;
 import com.google.android.material.button.MaterialButton;
@@ -19,23 +22,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OrderDetailActivity extends AppCompatActivity
-        implements PaymentDialogFragment.PaymentCallback {
+        implements PaymentDialogFragment.PaymentCallback, RefundDialogFragment.RefundCallback {
+
+    private static final String[] STATUS_TEXT = {
+            "\u5f85\u63a5\u5355",
+            "\u5df2\u63a5\u5355",
+            "\u53d6\u4ef6\u4e2d",
+            "\u914d\u9001\u4e2d",
+            "\u5df2\u5b8c\u6210",
+            "\u5df2\u53d6\u6d88",
+            "\u5f02\u5e38"
+    };
+
+    private static final String PAY_STATUS_PAID = "\u5df2\u652f\u4ed8";
 
     private long orderId;
     private String mode;
     private JsonObject currentOrder;
+    private boolean lastKnownPaidStatus;
 
-    // 视图组件
     private OrderStatusTimelineView statusTimelineView;
-    private TextView tvOrderNo, tvStatus, tvTracking, tvPickup, tvDelivery, tvFee, tvRemark;
-    private TextView tvExpectedTime, tvAppeal, tvPayHint;
-    private MaterialButton btnAction, btnCancel, btnPay, btnReview, btnAppeal;
+    private TextView tvOrderNo;
+    private TextView tvStatus;
+    private TextView tvTracking;
+    private TextView tvPickup;
+    private TextView tvDelivery;
+    private TextView tvFee;
+    private TextView tvRemark;
+    private TextView tvExpectedTime;
+    private TextView tvAppeal;
+    private TextView tvPayHint;
+    private MaterialButton btnAction;
+    private MaterialButton btnCancel;
+    private MaterialButton btnPay;
+    private MaterialButton btnReview;
+    private MaterialButton btnAppeal;
     private ProgressBar progressBar;
-
-    // 状态文本
-    private static final String[] STATUS_TEXT = {
-            "待接单", "已接单", "取件中", "已完成", "已取消", "异常"
-    };
 
     private View loadingOverlay;
 
@@ -43,11 +65,15 @@ public class OrderDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle("订单详情");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("\u8ba2\u5355\u8be6\u60c5");
+        }
 
-        orderId = getIntent().getLongExtra("orderId", -1);
+        orderId = getIntent().getLongExtra("orderId", -1L);
         mode = getIntent().getStringExtra("mode");
-        if (mode == null) mode = "user";
+        if (mode == null) {
+            mode = "user";
+        }
 
         initViews();
         loadDetail();
@@ -60,10 +86,8 @@ public class OrderDetailActivity extends AppCompatActivity
     }
 
     private void initViews() {
-        // 状态时间线
         statusTimelineView = findViewById(R.id.statusTimelineView);
 
-        // 文本视图
         tvOrderNo = findViewById(R.id.tvOrderNo);
         tvStatus = findViewById(R.id.tvStatus);
         tvTracking = findViewById(R.id.tvTracking);
@@ -75,32 +99,40 @@ public class OrderDetailActivity extends AppCompatActivity
         tvAppeal = findViewById(R.id.tvAppeal);
         tvPayHint = findViewById(R.id.tvPayHint);
 
-        // 按钮
         btnAction = findViewById(R.id.btnAction);
         btnCancel = findViewById(R.id.btnCancel);
         btnPay = findViewById(R.id.btnPay);
         btnReview = findViewById(R.id.btnReview);
         btnAppeal = findViewById(R.id.btnAppeal);
 
-        // 加载指示器
         progressBar = findViewById(R.id.progressBar);
     }
 
     private void loadDetail() {
-        if (orderId <= 0) {
+        if (orderId <= 0L) {
             showLoading(false);
-            LoadingStateHelper.showErrorSnackbar(btnAction, "无效的订单ID");
+            LoadingStateHelper.showErrorSnackbar(
+                    btnAction,
+                    "\u65e0\u6548\u7684\u8ba2\u5355ID");
             return;
         }
-        showLoading(true);
 
+        showLoading(true);
         ApiClient.get("/api/order/" + orderId, new ApiClient.ApiCallback() {
             @Override
             public void onSuccess(JsonElement data) {
-                currentOrder = data.getAsJsonObject();
+                currentOrder = data != null && data.isJsonObject()
+                        ? data.getAsJsonObject()
+                        : null;
                 runOnUiThread(() -> {
                     showLoading(false);
-                    renderOrder(currentOrder);
+                    if (currentOrder != null) {
+                        renderOrder(currentOrder);
+                    } else {
+                        LoadingStateHelper.showErrorSnackbar(
+                                btnAction,
+                                "\u8ba2\u5355\u6570\u636e\u89e3\u6790\u5931\u8d25");
+                    }
                 });
             }
 
@@ -108,55 +140,48 @@ public class OrderDetailActivity extends AppCompatActivity
             public void onError(String message) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    LoadingStateHelper.showErrorSnackbar(btnAction, "加载失败: " + message);
+                    LoadingStateHelper.showErrorSnackbar(
+                            btnAction,
+                            "\u52a0\u8f7d\u5931\u8d25: " + message);
                 });
             }
         });
 
-        // 超时保护：15秒后强制关闭loading
-        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-            showLoading(false);
-        }, 15000);
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
+                () -> showLoading(false),
+                15000);
     }
 
-    private void renderOrder(JsonObject o) {
-        // 安全获取状态，默认0（待接单）
-        int status = 0;
-        if (o.has("status") && !o.get("status").isJsonNull()) {
-            status = o.get("status").getAsInt();
-        }
+    private void renderOrder(JsonObject order) {
+        int status = safeGetInt(order, "status", 0);
 
-        // 更新状态时间线
         statusTimelineView.setCurrentStatus(status);
+        tvOrderNo.setText("\u8ba2\u5355\u53f7\uff1a" + safeGetString(order, "orderNo", "\u672a\u77e5"));
+        tvStatus.setText("\u72b6\u6001\uff1a" + statusText(status));
+        tvTracking.setText("\u5feb\u9012\u5355\u53f7\uff1a" + safeGetString(order, "trackingNo", "\u6682\u65e0"));
+        tvPickup.setText("\u53d6\u4ef6\u5730\u5740\uff1a" + safeGetString(order, "pickupAddress", "\u672a\u77e5"));
+        tvDelivery.setText("\u9001\u8fbe\u5730\u5740\uff1a" + safeGetString(order, "deliveryAddress", "\u672a\u77e5"));
+        tvFee.setText("\u00a5" + safeGetString(order, "fee", "0"));
 
-        // 安全获取文本字段，默认"未知"
-        tvOrderNo.setText("订单号：" + safeGetString(o, "orderNo", "未知"));
-        tvStatus.setText("状态：" + STATUS_TEXT[Math.min(status, STATUS_TEXT.length - 1)]);
-        tvTracking.setText("快递单号：" + safeGetString(o, "trackingNo", "暂无"));
-        tvPickup.setText("取件地址：" + safeGetString(o, "pickupAddress", "未知"));
-        tvDelivery.setText("送达地址：" + safeGetString(o, "deliveryAddress", "未知"));
-        tvFee.setText("¥" + safeGetString(o, "fee", "0"));
+        String remark = safeGetString(order, "remark", "\u65e0");
+        tvRemark.setText("\u5907\u6ce8\uff1a" + remark);
 
-        String remark = safeGetString(o, "remark", "无");
-        tvRemark.setText("备注：" + remark);
-
-        // 期望时间
-        if (o.has("expectedTime") && !o.get("expectedTime").isJsonNull()) {
+        if (order.has("expectedTime") && !order.get("expectedTime").isJsonNull()) {
             tvExpectedTime.setVisibility(View.VISIBLE);
-            tvExpectedTime.setText("期望时间：" + o.get("expectedTime").getAsString());
+            tvExpectedTime.setText(
+                    "\u671f\u671b\u65f6\u95f4\uff1a" + order.get("expectedTime").getAsString());
         } else {
             tvExpectedTime.setVisibility(View.GONE);
         }
 
-        // 申诉原因
-        if (status == 5 && o.has("appealReason") && !o.get("appealReason").isJsonNull()) {
+        if (status == 5 && order.has("appealReason") && !order.get("appealReason").isJsonNull()) {
             tvAppeal.setVisibility(View.VISIBLE);
-            tvAppeal.setText("申诉原因：" + o.get("appealReason").getAsString());
+            tvAppeal.setText(
+                    "\u7533\u8bc9\u539f\u56e0\uff1a" + order.get("appealReason").getAsString());
         } else {
             tvAppeal.setVisibility(View.GONE);
         }
 
-        // 隐藏所有按钮和提示
         btnAction.setVisibility(View.GONE);
         btnCancel.setVisibility(View.GONE);
         btnPay.setVisibility(View.GONE);
@@ -165,49 +190,75 @@ public class OrderDetailActivity extends AppCompatActivity
         tvPayHint.setVisibility(View.GONE);
 
         long myId = ApiClient.getSavedUserId();
-        long publisherId = safeGetLong(o, "publisherId", -1L);
-        long courierId = safeGetLong(o, "courierId", -1L);
+        long publisherId = safeGetLong(order, "publisherId", -1L);
+        long courierId = safeGetLong(order, "courierId", -1L);
 
-        boolean imCourierSide = "courier".equals(mode) || myId == courierId;
-        boolean imPublisher = myId == publisherId;
+        boolean courierSide = "courier".equals(mode) || myId == courierId;
+        boolean publisherSide = myId == publisherId;
 
-        if (imCourierSide) {
-            // 代取员视角
+        if (courierSide) {
             setupCourierButtons(status, myId, publisherId, courierId);
-        } else if (imPublisher) {
-            // 发布者视角
+        } else if (publisherSide) {
             setupPublisherButtons(status, myId, publisherId, courierId);
         }
     }
 
-    private String safeGetString(JsonObject o, String key, String defaultValue) {
-        if (o == null || !o.has(key) || o.get(key).isJsonNull()) {
-            return defaultValue;
-        }
-        return o.get(key).getAsString();
+    private String statusText(int status) {
+        int index = Math.max(0, Math.min(status, STATUS_TEXT.length - 1));
+        return STATUS_TEXT[index];
     }
 
-    private long safeGetLong(JsonObject o, String key, long defaultValue) {
-        if (o == null || !o.has(key) || o.get(key).isJsonNull()) {
+    private int safeGetInt(JsonObject order, String key, int defaultValue) {
+        if (order == null || !order.has(key) || order.get(key).isJsonNull()) {
             return defaultValue;
         }
-        return o.get(key).getAsLong();
+        try {
+            return order.get(key).getAsInt();
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    private String safeGetString(JsonObject order, String key, String defaultValue) {
+        if (order == null || !order.has(key) || order.get(key).isJsonNull()) {
+            return defaultValue;
+        }
+        try {
+            return order.get(key).getAsString();
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    private long safeGetLong(JsonObject order, String key, long defaultValue) {
+        if (order == null || !order.has(key) || order.get(key).isJsonNull()) {
+            return defaultValue;
+        }
+        try {
+            return order.get(key).getAsLong();
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 
     private void setupCourierButtons(int status, long myId, long publisherId, long courierId) {
         if (status == 0) {
-            btnAction.setText("接单");
+            btnAction.setText("\u63a5\u5355");
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setOnClickListener(v -> acceptOrder());
         } else if (status == 1) {
-            btnAction.setText("开始取件");
+            btnAction.setText("\u5f00\u59cb\u53d6\u4ef6");
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setOnClickListener(v -> startPickup());
         } else if (status == 2) {
-            btnAction.setText("确认完成");
+            btnAction.setText("\u5f00\u59cb\u914d\u9001");
+            btnAction.setVisibility(View.VISIBLE);
+            btnAction.setOnClickListener(v -> startDeliver());
+        } else if (status == 3) {
+            btnAction.setText("\u786e\u8ba4\u5b8c\u6210");
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setOnClickListener(v -> completeOrder());
-        } else if (status == 3 && myId == courierId) {
+        } else if (status == 4 && myId == courierId) {
             btnReview.setVisibility(View.VISIBLE);
             btnReview.setOnClickListener(v -> goReview(2));
         }
@@ -218,10 +269,15 @@ public class OrderDetailActivity extends AppCompatActivity
     private void setupPublisherButtons(int status, long myId, long publisherId, long courierId) {
         if (status == 0) {
             btnCancel.setVisibility(View.VISIBLE);
-            btnCancel.setOnClickListener(v -> cancelOrder());
+            btnCancel.setText("\u53d6\u6d88\u8ba2\u5355");
+            btnCancel.setOnClickListener(v -> handleCancelAction(false));
             tvPayHint.setVisibility(View.VISIBLE);
             refreshPublisherPayButtons();
-        } else if (status == 3) {
+        } else if (status == 1) {
+            btnCancel.setVisibility(View.VISIBLE);
+            btnCancel.setText("\u9000\u6b3e\u53d6\u6d88");
+            btnCancel.setOnClickListener(v -> handleCancelAction(true));
+        } else if (status == 4) {
             btnReview.setVisibility(View.VISIBLE);
             btnReview.setOnClickListener(v -> goReview(1));
         }
@@ -230,22 +286,30 @@ public class OrderDetailActivity extends AppCompatActivity
     }
 
     private void setupAppealButton(int status, long myId, long publisherId, long courierId) {
-        if (status == 0 || status == 4 || status == 5) return;
-        boolean canAppeal = (myId == publisherId) || (courierId > 0 && myId == courierId);
-        if (!canAppeal) return;
+        if (status == 0 || status == 4 || status == 5 || status == 6) {
+            return;
+        }
+        boolean canAppeal = myId == publisherId || (courierId > 0 && myId == courierId);
+        if (!canAppeal) {
+            return;
+        }
 
         btnAppeal.setVisibility(View.VISIBLE);
         btnAppeal.setOnClickListener(v -> showAppealDialog());
     }
 
-    /** 待接单时根据是否已支付显示「立即支付」 */
     private void refreshPublisherPayButtons() {
         ApiClient.get("/api/payment/status/" + orderId, new ApiClient.ApiCallback() {
             @Override
             public void onSuccess(JsonElement data) {
-                String desc = data != null && data.isJsonPrimitive() ? data.getAsString() : "";
-                boolean paid = "已支付".equals(desc);
+                String desc = data != null && data.isJsonPrimitive()
+                        ? data.getAsString()
+                        : "";
+                boolean paid = PAY_STATUS_PAID.equals(desc);
+                lastKnownPaidStatus = paid;
+
                 runOnUiThread(() -> {
+                    btnCancel.setText(paid ? "\u9000\u6b3e\u53d6\u6d88" : "\u53d6\u6d88\u8ba2\u5355");
                     btnPay.setVisibility(paid ? View.GONE : View.VISIBLE);
                     tvPayHint.setVisibility(paid ? View.GONE : View.VISIBLE);
                     if (!paid) {
@@ -256,7 +320,9 @@ public class OrderDetailActivity extends AppCompatActivity
 
             @Override
             public void onError(String message) {
+                lastKnownPaidStatus = false;
                 runOnUiThread(() -> {
+                    btnCancel.setText("\u53d6\u6d88\u8ba2\u5355");
                     btnPay.setVisibility(View.VISIBLE);
                     tvPayHint.setVisibility(View.VISIBLE);
                     btnPay.setOnClickListener(v -> showModernPayDialog());
@@ -264,63 +330,77 @@ public class OrderDetailActivity extends AppCompatActivity
             }
         });
 
-        // 超时保护
         new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-            btnPay.setVisibility(View.VISIBLE);
-            tvPayHint.setVisibility(View.VISIBLE);
-            btnPay.setOnClickListener(v -> showModernPayDialog());
+            if (!lastKnownPaidStatus) {
+                btnCancel.setText("\u53d6\u6d88\u8ba2\u5355");
+                btnPay.setVisibility(View.VISIBLE);
+                tvPayHint.setVisibility(View.VISIBLE);
+                btnPay.setOnClickListener(v -> showModernPayDialog());
+            }
         }, 15000);
     }
 
     private void showModernPayDialog() {
-        if (currentOrder == null) return;
+        if (currentOrder == null) {
+            return;
+        }
 
-        double fee = currentOrder.get("fee").getAsDouble();
+        double fee = currentOrder.has("fee") && !currentOrder.get("fee").isJsonNull()
+                ? currentOrder.get("fee").getAsDouble()
+                : 0d;
         PaymentDialogFragment dialog = PaymentDialogFragment.newInstance(orderId, fee);
         dialog.setPaymentCallback(this);
         dialog.show(getSupportFragmentManager(), "PaymentDialog");
     }
 
-    // PaymentDialogFragment.PaymentCallback 实现
     @Override
     public void onPaymentSuccess() {
-        LoadingStateHelper.showSuccessSnackbar(btnPay, "支付成功！");
-        loadDetail(); // 重新加载订单详情
+        LoadingStateHelper.showSuccessSnackbar(
+                btnPay,
+                "\u652f\u4ed8\u6210\u529f");
+        loadDetail();
     }
 
     @Override
     public void onPaymentFailure(String error) {
-        LoadingStateHelper.showErrorSnackbar(btnPay, "支付失败: " + error);
+        LoadingStateHelper.showErrorSnackbar(
+                btnPay,
+                "\u652f\u4ed8\u5931\u8d25: " + error);
     }
 
     @Override
     public void onPaymentCancelled() {
-        LoadingStateHelper.showInfoSnackbar(btnPay, "支付已取消");
+        LoadingStateHelper.showInfoSnackbar(
+                btnPay,
+                "\u652f\u4ed8\u5df2\u53d6\u6d88");
     }
 
     private void showAppealDialog() {
-        LoadingStateHelper.showConfirmDialog(this,
-                "异常申诉",
-                "请填写申诉原因，管理员将在24小时内处理。",
-                "提交申诉",
-                "取消",
+        LoadingStateHelper.showConfirmDialog(
+                this,
+                "\u5f02\u5e38\u7533\u8bc9",
+                "\u8bf7\u63d0\u4ea4\u7533\u8bc9\u8bf4\u660e\uff0c\u7ba1\u7406\u5458\u5c06\u5c3d\u5feb\u5904\u7406\u3002",
+                "\u63d0\u4ea4\u7533\u8bc9",
+                "\u53d6\u6d88",
                 () -> {
-                    // 这里可以扩展为更复杂的申诉表单
                     Map<String, String> body = new HashMap<>();
-                    body.put("reason", "用户手动申诉");
+                    body.put("reason", "\u7528\u6237\u624b\u52a8\u7533\u8bc9");
                     ApiClient.post("/api/order/" + orderId + "/appeal", body, new ApiClient.ApiCallback() {
                         @Override
                         public void onSuccess(JsonElement data) {
                             runOnUiThread(() -> {
-                                LoadingStateHelper.showSuccessSnackbar(btnAppeal, "申诉已提交");
+                                LoadingStateHelper.showSuccessSnackbar(
+                                        btnAppeal,
+                                        "\u7533\u8bc9\u5df2\u63d0\u4ea4");
                                 loadDetail();
                             });
                         }
 
                         @Override
-                        public void onError(String m) {
-                            runOnUiThread(() ->
-                                LoadingStateHelper.showErrorSnackbar(btnAppeal, "申诉失败: " + m));
+                        public void onError(String message) {
+                            runOnUiThread(() -> LoadingStateHelper.showErrorSnackbar(
+                                    btnAppeal,
+                                    "\u7533\u8bc9\u5931\u8d25: " + message));
                         }
                     });
                 },
@@ -335,16 +415,20 @@ public class OrderDetailActivity extends AppCompatActivity
             public void onSuccess(JsonElement data) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    LoadingStateHelper.showSuccessSnackbar(btnAction, "接单成功！");
+                    LoadingStateHelper.showSuccessSnackbar(
+                            btnAction,
+                            "\u63a5\u5355\u6210\u529f");
                     loadDetail();
                 });
             }
 
             @Override
-            public void onError(String m) {
+            public void onError(String message) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    LoadingStateHelper.showErrorSnackbar(btnAction, "接单失败: " + m);
+                    LoadingStateHelper.showErrorSnackbar(
+                            btnAction,
+                            "\u63a5\u5355\u5931\u8d25: " + message);
                 });
             }
         });
@@ -357,16 +441,46 @@ public class OrderDetailActivity extends AppCompatActivity
             public void onSuccess(JsonElement data) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    LoadingStateHelper.showSuccessSnackbar(btnAction, "已更新为取件中");
+                    LoadingStateHelper.showSuccessSnackbar(
+                            btnAction,
+                            "\u5df2\u66f4\u65b0\u4e3a\u53d6\u4ef6\u4e2d");
                     loadDetail();
                 });
             }
 
             @Override
-            public void onError(String m) {
+            public void onError(String message) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    LoadingStateHelper.showErrorSnackbar(btnAction, "更新失败: " + m);
+                    LoadingStateHelper.showErrorSnackbar(
+                            btnAction,
+                            "\u66f4\u65b0\u5931\u8d25: " + message);
+                });
+            }
+        });
+    }
+
+    private void startDeliver() {
+        showLoading(true);
+        ApiClient.post("/api/order/" + orderId + "/deliver", new Object(), new ApiClient.ApiCallback() {
+            @Override
+            public void onSuccess(JsonElement data) {
+                runOnUiThread(() -> {
+                    showLoading(false);
+                    LoadingStateHelper.showSuccessSnackbar(
+                            btnAction,
+                            "\u5df2\u66f4\u65b0\u4e3a\u914d\u9001\u4e2d");
+                    loadDetail();
+                });
+            }
+
+            @Override
+            public void onError(String message) {
+                runOnUiThread(() -> {
+                    showLoading(false);
+                    LoadingStateHelper.showErrorSnackbar(
+                            btnAction,
+                            "\u66f4\u65b0\u5931\u8d25: " + message);
                 });
             }
         });
@@ -381,50 +495,123 @@ public class OrderDetailActivity extends AppCompatActivity
             public void onSuccess(JsonElement data) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    LoadingStateHelper.showSuccessSnackbar(btnAction, "订单完成，收益已到账！");
+                    LoadingStateHelper.showSuccessSnackbar(
+                            btnAction,
+                            "\u8ba2\u5355\u5df2\u5b8c\u6210\uff0c\u6536\u76ca\u5df2\u5230\u8d26");
                     loadDetail();
                 });
             }
 
             @Override
-            public void onError(String m) {
+            public void onError(String message) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    LoadingStateHelper.showErrorSnackbar(btnAction, "完成失败: " + m);
+                    LoadingStateHelper.showErrorSnackbar(
+                            btnAction,
+                            "\u5b8c\u6210\u5931\u8d25: " + message);
                 });
             }
         });
     }
 
-    private void cancelOrder() {
-        LoadingStateHelper.showConfirmDialog(this,
-                "确认取消",
-                "确定要取消此订单吗？取消后无法恢复。",
-                "确认取消",
-                "返回",
-                () -> {
-                    showLoading(true);
-                    ApiClient.post("/api/order/" + orderId + "/cancel", new Object(), new ApiClient.ApiCallback() {
-                        @Override
-                        public void onSuccess(JsonElement data) {
-                            runOnUiThread(() -> {
-                                showLoading(false);
-                                LoadingStateHelper.showSuccessSnackbar(btnCancel, "订单已取消");
-                                loadDetail();
-                            });
-                        }
+    private void handleCancelAction(boolean assumePaidFallback) {
+        ApiClient.get("/api/payment/status/" + orderId, new ApiClient.ApiCallback() {
+            @Override
+            public void onSuccess(JsonElement data) {
+                String desc = data != null && data.isJsonPrimitive()
+                        ? data.getAsString()
+                        : "";
+                boolean paid = PAY_STATUS_PAID.equals(desc);
+                lastKnownPaidStatus = paid;
+                runOnUiThread(() -> {
+                    if (paid) {
+                        showRefundDemoDialog();
+                    } else {
+                        showCancelConfirmDialog();
+                    }
+                });
+            }
 
-                        @Override
-                        public void onError(String m) {
-                            runOnUiThread(() -> {
-                                showLoading(false);
-                                LoadingStateHelper.showErrorSnackbar(btnCancel, "取消失败: " + m);
-                            });
-                        }
-                    });
-                },
+            @Override
+            public void onError(String message) {
+                runOnUiThread(() -> {
+                    if (assumePaidFallback || lastKnownPaidStatus) {
+                        showRefundDemoDialog();
+                    } else {
+                        showCancelConfirmDialog();
+                    }
+                });
+            }
+        });
+    }
+
+    private void showCancelConfirmDialog() {
+        LoadingStateHelper.showConfirmDialog(
+                this,
+                "\u786e\u8ba4\u53d6\u6d88",
+                "\u786e\u5b9a\u8981\u53d6\u6d88\u8fd9\u4e2a\u672a\u652f\u4ed8\u8ba2\u5355\u5417\uff1f",
+                "\u786e\u8ba4\u53d6\u6d88",
+                "\u8fd4\u56de",
+                this::submitCancelOrder,
                 null
         );
+    }
+
+    private void submitCancelOrder() {
+        showLoading(true);
+        ApiClient.post("/api/order/" + orderId + "/cancel", new Object(), new ApiClient.ApiCallback() {
+            @Override
+            public void onSuccess(JsonElement data) {
+                runOnUiThread(() -> {
+                    showLoading(false);
+                    LoadingStateHelper.showSuccessSnackbar(
+                            btnCancel,
+                            "\u8ba2\u5355\u5df2\u53d6\u6d88");
+                    loadDetail();
+                });
+            }
+
+            @Override
+            public void onError(String message) {
+                runOnUiThread(() -> {
+                    showLoading(false);
+                    LoadingStateHelper.showErrorSnackbar(
+                            btnCancel,
+                            "\u53d6\u6d88\u5931\u8d25: " + message);
+                });
+            }
+        });
+    }
+
+    private void showRefundDemoDialog() {
+        double fee = currentOrder != null && currentOrder.has("fee") && !currentOrder.get("fee").isJsonNull()
+                ? currentOrder.get("fee").getAsDouble()
+                : 0d;
+        RefundDialogFragment dialog = RefundDialogFragment.newInstance(orderId, fee);
+        dialog.setRefundCallback(this);
+        dialog.show(getSupportFragmentManager(), "RefundDialog");
+    }
+
+    @Override
+    public void onRefundSuccess() {
+        LoadingStateHelper.showSuccessSnackbar(
+                btnCancel,
+                "\u6a21\u62df\u9000\u6b3e\u6210\u529f\uff0c\u8ba2\u5355\u5df2\u53d6\u6d88");
+        loadDetail();
+    }
+
+    @Override
+    public void onRefundFailure(String error) {
+        LoadingStateHelper.showErrorSnackbar(
+                btnCancel,
+                "\u9000\u6b3e\u5931\u8d25: " + error);
+    }
+
+    @Override
+    public void onRefundCancelled() {
+        LoadingStateHelper.showInfoSnackbar(
+                btnCancel,
+                "\u5df2\u53d6\u6d88\u9000\u6b3e\u6f14\u793a");
     }
 
     private void goReview(int type) {
@@ -436,7 +623,6 @@ public class OrderDetailActivity extends AppCompatActivity
 
     private void showLoading(boolean show) {
         if (show) {
-            // 先移除旧的loading（防止重复创建）
             if (loadingOverlay != null) {
                 LoadingStateHelper.hideFullScreenLoading(this, loadingOverlay);
             }

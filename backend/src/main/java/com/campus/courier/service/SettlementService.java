@@ -44,8 +44,11 @@ public class SettlementService {
         if (order == null) {
             throw new IllegalArgumentException("订单不存在");
         }
-    
+
         BigDecimal orderFee = order.getFee();
+        if (orderFee == null) {
+            throw new IllegalStateException("订单费用未设置，无法结算");
+        }
         BigDecimal platformFee = orderFee.multiply(platformRate).setScale(2, RoundingMode.HALF_UP);
         BigDecimal courierEarn = orderFee.subtract(platformFee);
             

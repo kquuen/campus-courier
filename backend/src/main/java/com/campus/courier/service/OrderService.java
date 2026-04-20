@@ -167,7 +167,12 @@ public class OrderService {
             return Result.fail("状态已变更，请刷新后重试");
         }
 
-        BigDecimal courierEarn = settlementService.settleOrder(orderId, courierId);
+        BigDecimal courierEarn;
+        try {
+            courierEarn = settlementService.settleOrder(orderId, courierId);
+        } catch (Exception e) {
+            return Result.fail("结算失败: " + e.getMessage());
+        }
 
         User courier = userMapper.selectById(courierId);
         if (courier == null) {
