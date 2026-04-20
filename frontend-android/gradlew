@@ -137,9 +137,12 @@ if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
         OURCYGPATTERN="$OURCYGPATTERN|($GRADLE_CYGPATTERN)"
     fi
     # Now convert the arguments - kludge to limit our expense on this fix
-    for i do
-        arg=`printf '%s\n' "$i" | sed \
-            -e "s|^$OURCYGPATTERN/||" -e 's|^/|./|'`
+    for i in "$@"; do
+        if [ -n "$OURCYGPATTERN" ]; then
+            arg=`printf '%s\n' "$i" | sed -e "s#^$OURCYGPATTERN/##" -e 's#^/#./#'`
+        else
+            arg="$i"
+        fi
         case "$arg" in
             ""|".")
                 continue
@@ -151,20 +154,21 @@ if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
                 arg="./$arg"
                 ;;
         esac
-        arg=`printf '%s\n' "$i" | sed -e "s|^$OURCYGPATTERN||"`
         arg=`cygpath --path --ignore --mixed "$arg"`
         args="$args $arg"
     done
 else
-    for i do
+    for i in "$@"; do
         args="$args \"$i\""
     done
 fi
 
 # Escape application args
 save () {
-    for i do printf %s\\n "$i" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/' \\\\/" ; done
-    echo " "
+    for i in "$@"; do
+        printf '%s\n' "$i" | sed "s/'/'\\\\''/g" | xargs printf "'%s' "
+    done
+    echo
 }
 APP_ARGS=$(save "$args")
 

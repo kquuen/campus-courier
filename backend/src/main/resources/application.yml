@@ -1,25 +1,26 @@
 server:
   port: 8082
   shutdown: graceful
-  # HTTPS配置（暂时禁用以启动应用）
-  # ssl:
-  #   enabled: true
-  #   key-store: classpath:keystore.p12
-  #   key-store-password: changeit
-  #   key-alias: tomcat
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 10MB
+
   datasource:
     url: jdbc:mysql://localhost:3306/campus_courier?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 30000
-      idle-timeout: 600000
-      max-lifetime: 1800000
+      maximum-pool-size: 30
+      minimum-idle: 10
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      leak-detection-threshold: 60000
+      pool-name: CampusCourierHikariCP
 
   sql:
     init:
@@ -33,17 +34,17 @@ spring:
       port: 6379
       password:
       database: 0
-      timeout: 3000ms
+      timeout: 2000ms
       lettuce:
         pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 0
-    # Redis缓存配置
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+          max-wait: 3000ms
     cache:
       type: redis
       redis:
-        time-to-live: 3600000  # 默认缓存1小时
+        time-to-live: 3600000
         key-prefix: "campus:courier:"
       cache-names:
         - orders
@@ -60,16 +61,37 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 
 app:
   jwt:
     secret: campus-courier-secret-key-2024-very-long-string
-    expiration: 86400000   # 24小时，毫秒
-    refreshExpiration: 604800000  # 7天，毫秒
+    expiration: 86400000
+    refreshExpiration: 604800000
   upload:
-    path: /uploads/
+    dir: ${user.home}/campus-courier-uploads
+    max-bytes: 5242880
+  campus:
+    identity:
+      enabled: true
+      whitelist: []
+  security:
+    expose-password-reset-code: true
+  settlement:
+    platform-rate: 0.1
 
 logging:
   level:
-    com.campus.courier: debug
+    com.campus.courier: info
+    com.zaxxer.hikari: warn
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/campus-courier.log
+    max-size: 10MB
+    max-history: 30

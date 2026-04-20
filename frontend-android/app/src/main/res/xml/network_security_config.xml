@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 开发期允许明文 HTTP（默认 api_base_url） -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <!-- 使用 HTTPS 自签名证书（res/raw/campus_courier.crt）时信任本机调试证书 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <trust-anchors>
+            <certificates src="@raw/campus_courier" />
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

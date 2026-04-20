@@ -13,7 +13,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminUserListActivity extends AppCompatActivity {
 
@@ -48,32 +50,55 @@ public class AdminUserListActivity extends AppCompatActivity {
                 String roleStr = role == 0 ? "用户" : role == 1 ? "代取员" : "管理员";
                 String statStr = status == 1 ? "正常" : "禁用";
 
+                int viol = u.has("violationCount") && !u.get("violationCount").isJsonNull()
+                        ? u.get("violationCount").getAsInt() : 0;
+                String violLine = viol > 0 ? "  违规" + viol + "次" : "";
                 ((TextView) h.itemView).setText(
-                        nick + "  " + phone + "\n角色：" + roleStr + "  状态：" + statStr);
+                        nick + "  " + phone + "\n角色：" + roleStr + "  状态：" + statStr + violLine);
 
-                h.itemView.setOnLongClickListener(v -> {
-                    long userId = u.get("id").getAsLong();
-                    int newStatus = status == 1 ? 0 : 1;
-                    String action = newStatus == 0 ? "禁用" : "启用";
-                    new android.app.AlertDialog.Builder(AdminUserListActivity.this)
-                            .setTitle(action + "用户")
-                            .setMessage("确认" + action + " " + nick + " 吗？")
-                            .setPositiveButton("确认", (d, w) ->
-                                    ApiClient.put("/api/user/" + userId + "/status?status=" + newStatus,
-                                            new Object(), new ApiClient.ApiCallback() {
-                                @Override public void onSuccess(JsonElement data) {
-                                    runOnUiThread(() -> {
-                                        Toast.makeText(AdminUserListActivity.this, action + "成功", Toast.LENGTH_SHORT).show();
-                                        loadUsers();
-                                    });
-                                }
-                                @Override public void onError(String m) {
-                                    runOnUiThread(() -> Toast.makeText(AdminUserListActivity.this, m, Toast.LENGTH_SHORT).show());
-                                }
-                            }))
-                            .setNegativeButton("取消", null).show();
-                    return true;
-                });
+                h.itemView.setOnClickListener(v -> new android.app.AlertDialog.Builder(AdminUserListActivity.this)
+                        .setTitle("管理：" + nick)
+                        .setItems(new String[]{"切换禁用/启用", "分配角色"}, (d, which) -> {
+                            long userId = u.get("id").getAsLong();
+                            if (which == 0) {
+                                int newStatus = status == 1 ? 0 : 1;
+                                String action = newStatus == 0 ? "禁用" : "启用";
+                                new android.app.AlertDialog.Builder(AdminUserListActivity.this)
+                                        .setMessage("确认" + action + "？")
+                                        .setPositiveButton("确认", (d2, w2) ->
+                                                ApiClient.put("/api/user/" + userId + "/status?status=" + newStatus,
+                                                        new Object(), new ApiClient.ApiCallback() {
+                                                            @Override public void onSuccess(JsonElement data) {
+                                                                runOnUiThread(() -> {
+                                                                    Toast.makeText(AdminUserListActivity.this, action + "成功", Toast.LENGTH_SHORT).show();
+                                                                    loadUsers();
+                                                                });
+                                                            }
+                                                            @Override public void onError(String m) {
+                                                                runOnUiThread(() -> Toast.makeText(AdminUserListActivity.this, m, Toast.LENGTH_SHORT).show());
+                                                            }
+                                                        }))
+                                        .setNegativeButton("取消", null).show();
+                            } else {
+                                new android.app.AlertDialog.Builder(AdminUserListActivity.this)
+                                        .setItems(new String[]{"普通用户", "代取员", "管理员"}, (d2, w2) -> {
+                                            Map<String, Object> body = new HashMap<>();
+                                            body.put("role", w2);
+                                            ApiClient.put("/api/admin/users/" + userId + "/role", body,
+                                                    new ApiClient.ApiCallback() {
+                                                        @Override public void onSuccess(JsonElement data) {
+                                                            runOnUiThread(() -> {
+                                                                Toast.makeText(AdminUserListActivity.this, "角色已更新", Toast.LENGTH_SHORT).show();
+                                                                loadUsers();
+                                                            });
+                                                        }
+                                                        @Override public void onError(String m) {
+                                                            runOnUiThread(() -> Toast.makeText(AdminUserListActivity.this, m, Toast.LENGTH_SHORT).show());
+                                                        }
+                                                    });
+                                        }).show();
+                            }
+                        }).show());
             }
             @Override
             public int getItemCount() { return userList.size(); }

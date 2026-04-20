@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp">
+
+    <ImageView
+        android:id="@+id/ivEmptyIcon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_empty"
+        android:tint="@color/gray_400"
+        android:contentDescription="@string/empty_state_icon" />
+
+    <TextView
+        android:id="@+id/tvEmptyMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="暂无数据"
+        android:textSize="16sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tvEmptyHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="尝试刷新或发布新订单"
+        android:textSize="12sp"
+        android:textColor="@color/text_hint"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

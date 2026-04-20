@@ -37,6 +37,16 @@ public class User {
 
     private Integer idVerified;
 
+    /** 代取员资质审核状态 */
+    private CourierAuditStatus courierAuditStatus;
+
+    /** 校园卡照片（URL，可由对象存储或后端上传接口生成） */
+    private String campusCardImageUrl;
+
+    private Integer violationCount;
+
+    private String violationRemark;
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
