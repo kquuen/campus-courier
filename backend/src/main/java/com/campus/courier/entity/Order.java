@@ -42,6 +42,13 @@ public class Order {
 
     private String imageUrl;
 
+    @Version
+    private Integer version;
+
+    private String appealReason;
+
+    private String arbitrateRemark;
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 

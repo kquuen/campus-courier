@@ -18,13 +18,17 @@ public class ReviewController {
 
     @PostMapping("/submit")
     public Result<?> submit(@Valid @RequestBody ReviewRequest request) {
-        ReviewType type = ReviewType.values()[request.getType() - 1];
+        int type = request.getType();
+        if (type < 1 || type > ReviewType.values().length) {
+            return Result.fail(400, "无效的评价类型");
+        }
+        ReviewType reviewType = ReviewType.values()[type - 1];
         return reviewService.submitReview(
                 UserContext.getUserId(),
                 request.getOrderId(),
                 request.getScore(),
                 request.getContent(),
-                type);
+                reviewType);
     }
 
     @GetMapping("/order/{orderId}")
@@ -35,5 +39,10 @@ public class ReviewController {
     @GetMapping("/user/{userId}")
     public Result<?> byUser(@PathVariable Long userId) {
         return reviewService.getUserReviews(userId);
+    }
+
+    @GetMapping("/credit-profile/{userId}")
+    public Result<?> creditProfile(@PathVariable Long userId) {
+        return reviewService.getCreditProfile(userId);
     }
 }

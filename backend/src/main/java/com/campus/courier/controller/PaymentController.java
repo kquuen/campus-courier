@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/payment")
 @RequiredArgsConstructor
@@ -26,6 +28,18 @@ public class PaymentController {
     @PostMapping("/callback/{paymentNo}")
     public Result<?> callback(@PathVariable String paymentNo) {
         return paymentService.mockCallback(paymentNo);
+    }
+
+    @PostMapping("/notify/wechat")
+    public Result<?> wechatNotify(@RequestBody Map<String, String> params,
+                                   @RequestHeader(value = "X-Signature", required = false) String signature) {
+        return paymentService.wechatNotify(params, signature);
+    }
+
+    @PostMapping("/notify/alipay")
+    public Result<?> alipayNotify(@RequestBody Map<String, String> params,
+                                   @RequestHeader(value = "X-Signature", required = false) String signature) {
+        return paymentService.alipayNotify(params, signature);
     }
 
     @GetMapping("/status/{orderId}")

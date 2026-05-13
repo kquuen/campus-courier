@@ -4,8 +4,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.campus.courier.R;
 import com.google.gson.JsonObject;
 
@@ -14,7 +16,13 @@ import java.util.List;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
     private static final String[] STATUS_TEXT = {
-            "待接单", "已接单", "取件中", "已完成", "已取消", "异常"
+            "\u5f85\u63a5\u5355",
+            "\u5df2\u63a5\u5355",
+            "\u53d6\u4ef6\u4e2d",
+            "\u914d\u9001\u4e2d",
+            "\u5df2\u5b8c\u6210",
+            "\u5df2\u53d6\u6d88",
+            "\u5f02\u5e38"
     };
 
     private final List<JsonObject> data;
@@ -25,7 +33,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     public OrderAdapter(List<JsonObject> data, OnItemClickListener listener) {
-        this.data     = data;
+        this.data = data;
         this.listener = listener;
     }
 
@@ -38,47 +46,62 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder h, int position) {
-        JsonObject o = data.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        JsonObject order = data.get(position);
 
-        h.tvOrderNo.setText("单号：" + o.get("orderNo").getAsString());
-        h.tvTracking.setText("快递：" + o.get("trackingNo").getAsString());
-        h.tvPickup.setText("取件：" + o.get("pickupAddress").getAsString());
-        h.tvDelivery.setText("送达：" + o.get("deliveryAddress").getAsString());
-        h.tvFee.setText("¥" + o.get("fee").getAsString());
+        holder.tvOrderNo.setText("\u5355\u53f7\uff1a" + order.get("orderNo").getAsString());
+        holder.tvTracking.setText("\u5feb\u9012\uff1a" + order.get("trackingNo").getAsString());
+        holder.tvPickup.setText("\u53d6\u4ef6\uff1a" + order.get("pickupAddress").getAsString());
+        holder.tvDelivery.setText("\u9001\u8fbe\uff1a" + order.get("deliveryAddress").getAsString());
+        holder.tvFee.setText("\u00a5" + order.get("fee").getAsString());
 
-        int status = o.get("status").getAsInt();
-        h.tvStatus.setText(STATUS_TEXT[Math.min(status, STATUS_TEXT.length - 1)]);
+        int status = order.get("status").getAsInt();
+        holder.tvStatus.setText(STATUS_TEXT[Math.min(status, STATUS_TEXT.length - 1)]);
+        holder.tvStatus.setTextColor(statusColor(status));
 
-        // 状态颜色
-        int color;
-        switch (status) {
-            case 0: color = 0xFF2196F3; break;  // 蓝：待接单
-            case 1: color = 0xFFFF9800; break;  // 橙：已接单
-            case 2: color = 0xFF9C27B0; break;  // 紫：取件中
-            case 3: color = 0xFF4CAF50; break;  // 绿：已完成
-            case 4: color = 0xFF9E9E9E; break;  // 灰：已取消
-            default: color = 0xFFF44336;         // 红：异常
-        }
-        h.tvStatus.setTextColor(color);
-
-        h.itemView.setOnClickListener(v -> listener.onClick(o));
+        holder.itemView.setOnClickListener(v -> listener.onClick(order));
     }
 
     @Override
-    public int getItemCount() { return data.size(); }
+    public int getItemCount() {
+        return data.size();
+    }
+
+    private int statusColor(int status) {
+        switch (status) {
+            case 0:
+                return 0xFF2196F3;
+            case 1:
+                return 0xFFFF9800;
+            case 2:
+                return 0xFF9C27B0;
+            case 3:
+                return 0xFF009688;
+            case 4:
+                return 0xFF4CAF50;
+            case 5:
+                return 0xFF9E9E9E;
+            default:
+                return 0xFFF44336;
+        }
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderNo, tvTracking, tvPickup, tvDelivery, tvFee, tvStatus;
+        final TextView tvOrderNo;
+        final TextView tvTracking;
+        final TextView tvPickup;
+        final TextView tvDelivery;
+        final TextView tvFee;
+        final TextView tvStatus;
 
-        ViewHolder(View v) {
-            super(v);
-            tvOrderNo  = v.findViewById(R.id.tvOrderNo);
-            tvTracking = v.findViewById(R.id.tvTracking);
-            tvPickup   = v.findViewById(R.id.tvPickup);
-            tvDelivery = v.findViewById(R.id.tvDelivery);
-            tvFee      = v.findViewById(R.id.tvFee);
-            tvStatus   = v.findViewById(R.id.tvStatus);
+        ViewHolder(View view) {
+            super(view);
+            tvOrderNo = view.findViewById(R.id.tvOrderNo);
+            tvTracking = view.findViewById(R.id.tvTracking);
+            tvPickup = view.findViewById(R.id.tvPickup);
+            tvDelivery = view.findViewById(R.id.tvDelivery);
+            tvFee = view.findViewById(R.id.tvFee);
+            tvStatus = view.findViewById(R.id.tvStatus);
         }
     }
 }

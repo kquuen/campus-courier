@@ -9,13 +9,13 @@ VALUES ('admin', '$2b$10$cS9d8sAW9u7R7sQxqh8A0exqnlfViFWBAU2NGvJLVllqqUri.Dt7C',
 
 -- 普通用户
 -- 密码：user123 (BCrypt加密)
-INSERT IGNORE INTO `user` (`phone`, `password`, `nickname`, `student_id`, `role`, `credit_score`, `balance`)
-VALUES ('13800138000', '$2b$10$WJqTIeL.sdq/QhIlitMXVOe/gOOf5MZUuMq8CCQ9Dew47MSiGy9wO', '张三', '20210001', 0, 100.0, 50.00);
+INSERT IGNORE INTO `user` (`phone`, `password`, `nickname`, `student_id`, `real_name`, `role`, `credit_score`, `balance`)
+VALUES ('13800138000', '$2b$10$WJqTIeL.sdq/QhIlitMXVOe/gOOf5MZUuMq8CCQ9Dew47MSiGy9wO', '张三', '20210001', '张三', 0, 100.0, 50.00);
 
 -- 代取员
 -- 密码：courier123 (BCrypt加密)
-INSERT IGNORE INTO `user` (`phone`, `password`, `nickname`, `student_id`, `role`, `credit_score`, `balance`, `real_name`, `id_verified`)
-VALUES ('13900139000', '$2b$10$HwpOAOtvmaXMQNoFwgCU9.c1rCTdeX5uReD7LK8.6ht7Z16f623v6', '李四', '20210002', 1, 98.5, 120.50, '李四', 1);
+INSERT IGNORE INTO `user` (`phone`, `password`, `nickname`, `student_id`, `role`, `credit_score`, `balance`, `real_name`, `id_verified`, `courier_audit_status`)
+VALUES ('13900139000', '$2b$10$HwpOAOtvmaXMQNoFwgCU9.c1rCTdeX5uReD7LK8.6ht7Z16f623v6', '李四', '20210002', 1, 98.5, 120.50, '李四', 1, 2);
 
 -- 测试订单
 INSERT IGNORE INTO `order` (`order_no`, `publisher_id`, `tracking_no`, `express_company`, `pickup_address`, `delivery_address`, `remark`, `fee`, `status`, `expected_time`)
@@ -27,7 +27,10 @@ VALUES ('CO202403150002', 2, 3, 'SF9876543210', '顺丰速运', '学校南门快
 INSERT IGNORE INTO `order` (`order_no`, `publisher_id`, `courier_id`, `tracking_no`, `express_company`, `pickup_address`, `delivery_address`, `fee`, `status`, `accepted_at`, `picked_at`)
 VALUES ('CO202403150003', 2, 3, 'ZT555666777', '中通快递', '学校东门菜鸟驿站', '实验楼308办公室', 3.00, 2, DATE_ADD(NOW(), INTERVAL -2 HOUR), DATE_ADD(NOW(), INTERVAL -30 MINUTE));
 
--- 支付记录
+-- 支付记录（含待接单订单1的支付，便于代取员大厅展示）
+INSERT IGNORE INTO `payment` (`payment_no`, `order_id`, `user_id`, `amount`, `pay_type`, `pay_status`, `paid_at`)
+VALUES ('PAY202403150000', 1, 2, 5.00, 1, 1, DATE_ADD(NOW(), INTERVAL -10 MINUTE));
+
 INSERT IGNORE INTO `payment` (`payment_no`, `order_id`, `user_id`, `amount`, `pay_type`, `pay_status`, `paid_at`)
 VALUES ('PAY202403150001', 2, 2, 8.00, 1, 1, DATE_ADD(NOW(), INTERVAL -25 MINUTE));
 

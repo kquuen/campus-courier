@@ -17,8 +17,12 @@ public class RegisterRequest {
     private String password;
 
     @NotBlank(message = "学号不能为空")
-    @Size(max = 30, message = "学号长度不能超过30位")
+    @Size(min = 5, max = 32, message = "学号长度须在5～32位")
     private String studentId;
+
+    @NotBlank(message = "真实姓名不能为空")
+    @Size(min = 2, max = 30, message = "姓名长度须在2～30个字符")
+    private String realName;
 
     @Size(max = 50, message = "昵称长度不能超过50位")
     private String nickname;

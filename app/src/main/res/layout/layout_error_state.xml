@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp">
+
+    <ImageView
+        android:id="@+id/ivErrorIcon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_error"
+        android:tint="@color/error"
+        android:contentDescription="@string/error_state_icon" />
+
+    <TextView
+        android:id="@+id/tvErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加载失败"
+        android:textSize="16sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tvErrorHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请检查网络连接后重试"
+        android:textSize="12sp"
+        android:textColor="@color/text_hint"
+        android:layout_marginTop="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="重试"
+        android:textAllCaps="false"
+        android:layout_marginTop="24dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:cornerRadius="8dp"
+        app:backgroundTint="@color/primary"
+        android:textColor="@color/text_on_primary" />
+
+</LinearLayout>
