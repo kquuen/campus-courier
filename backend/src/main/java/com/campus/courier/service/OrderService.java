@@ -226,30 +226,20 @@ public class OrderService {
             return Result.fail(403, "需要已通过资质审核的代取员");
         }
         
-        LambdaQueryWrapper<Order> wrapper = paidPendingWrapper();
-        
-        if (minFee != null) {
-            wrapper.ge(Order::getFee, minFee);
-        }
-        if (maxFee != null) {
-            wrapper.le(Order::getFee, maxFee);
-        }
+        LocalDateTime sinceTime = null;
         if (since != null) {
             try {
-                LocalDateTime sinceTime = LocalDateTime.parse(since);
-                wrapper.ge(Order::getCreatedAt, sinceTime);
+                sinceTime = LocalDateTime.parse(since);
             } catch (Exception e) {
                 return Result.fail(400, "时间格式错误，请使用ISO 8601格式");
             }
         }
-        if (areaKeyword != null && !areaKeyword.trim().isEmpty()) {
-            wrapper.and(w -> w.like(Order::getPickupAddress, areaKeyword)
-                    .or().like(Order::getDeliveryAddress, areaKeyword));
+
+        IPage<Order> result = queryPendingOrdersPage(page, size, minFee, maxFee, sinceTime, areaKeyword, true);
+        // Demo fallback: if there is no paid pending order, show all pending orders temporarily.
+        if (result.getRecords().isEmpty()) {
+            result = queryPendingOrdersPage(page, size, minFee, maxFee, sinceTime, areaKeyword, false);
         }
-        
-        IPage<Order> result = orderMapper.selectPage(
-                new Page<>(page, size),
-                wrapper.orderByDesc(Order::getCreatedAt));
         return Result.ok(result);
     }
 
@@ -263,19 +253,33 @@ public class OrderService {
         if (!isApprovedCourier(viewerId)) {
             return Result.fail(403, "需要已通过资质审核的代取员");
         }
-        IPage<Order> rawOrders = orderMapper.selectPage(
-                new Page<>(page, size * 2),
-                paidPendingWrapper().orderByDesc(Order::getCreatedAt));
+        IPage<Order> rawOrders = queryPendingOrdersPage(page, size * 2, null, null, null, null, true);
+        // Demo fallback: if there is no paid pending order, recommend from all pending orders.
+        if (rawOrders.getRecords().isEmpty()) {
+            rawOrders = queryPendingOrdersPage(page, size * 2, null, null, null, null, false);
+        }
+        if (rawOrders.getRecords().isEmpty()) {
+            IPage<Order> empty = new Page<>(page, size);
+            empty.setRecords(Collections.emptyList());
+            empty.setTotal(0);
+            return Result.ok(empty);
+        }
 
         // 批量查询发布者信息，避免 N+1
         Set<Long> publisherIds = rawOrders.getRecords().stream()
                 .map(Order::getPublisherId)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
-        Map<Long, User> userMap = userMapper.selectBatchIds(publisherIds).stream()
+        Map<Long, User> userMap = publisherIds.isEmpty()
+                ? Collections.emptyMap()
+                : userMapper.selectBatchIds(publisherIds).stream()
                 .collect(Collectors.toMap(User::getId, Function.identity()));
 
         List<Order> scoredOrders = new ArrayList<>();
         for (Order order : rawOrders.getRecords()) {
+            if (order.getFee() == null || order.getCreatedAt() == null) {
+                continue;
+            }
             User publisher = userMap.get(order.getPublisherId());
             if (publisher == null) continue;
 
@@ -519,10 +523,36 @@ public class OrderService {
 
     /** 仅展示「已支付」的待接单订单，与接单规则一致 */
     private LambdaQueryWrapper<Order> paidPendingWrapper() {
-        return new LambdaQueryWrapper<Order>()
-                .eq(Order::getStatus, OrderStatus.PENDING)
+        return pendingWrapper()
                 .apply("EXISTS (SELECT 1 FROM payment p WHERE p.order_id = `order`.id AND p.pay_status = {0})",
                         PayStatus.PAID.getCode());
+    }
+
+    private LambdaQueryWrapper<Order> pendingWrapper() {
+        return new LambdaQueryWrapper<Order>()
+                .eq(Order::getStatus, OrderStatus.PENDING);
+    }
+
+    private IPage<Order> queryPendingOrdersPage(int page, int size,
+                                                BigDecimal minFee, BigDecimal maxFee,
+                                                LocalDateTime sinceTime, String areaKeyword,
+                                                boolean paidOnly) {
+        LambdaQueryWrapper<Order> wrapper = paidOnly ? paidPendingWrapper() : pendingWrapper();
+        if (minFee != null) {
+            wrapper.ge(Order::getFee, minFee);
+        }
+        if (maxFee != null) {
+            wrapper.le(Order::getFee, maxFee);
+        }
+        if (sinceTime != null) {
+            wrapper.ge(Order::getCreatedAt, sinceTime);
+        }
+        if (areaKeyword != null && !areaKeyword.trim().isEmpty()) {
+            wrapper.and(w -> w.like(Order::getPickupAddress, areaKeyword)
+                    .or().like(Order::getDeliveryAddress, areaKeyword));
+        }
+
+        return orderMapper.selectPage(new Page<>(page, size), wrapper.orderByDesc(Order::getCreatedAt));
     }
 
     private boolean isApprovedCourier(Long userId) {
